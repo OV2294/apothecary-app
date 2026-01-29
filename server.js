@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT;
 
 // ==============================================
