@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - The Apothecary Diaries</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+</head>
+
+<body>
+    <img src="image/16211.jpg" alt="" class="bg-image" />
+    <img src="image/16210.jpg" alt="" class="bg-mb-image" />
+
+    <header>
+        <nav class="nav glass">
+            <div class="nav_bar">
+                <div class="nav_left">
+                    <div class="nav_logo">
+                        <a href="index.html">
+                            <img src="image/logo1.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <ul>
+                        <li class="item"><a href="Anime.html">Anime</a></li>
+                        <li class="item"><a href="manga.html">Manga</a></li>
+                        <li class="item"><a href="character.html">Characters</a></li>
+                        <li class="item"><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="nav_right">
+                    <a href="auth.html" class="user-icon">
+                        <img src="image/accicon.png" alt="Account" />
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="nav_mob">
+            <button onclick="menu.hidden^=1">≡</button>
+            <ul id="menu" hidden>
+                <a class="logo1" href="index.html">
+                    <img src="image/logo1.png" alt="Logo">
+                </a>
+                <a href="Anime.html">
+                    <li>Anime</li>
+                </a>
+                <a href="manga.html">
+                    <li>Manga</li>
+                </a>
+                <a href="character.html">
+                    <li>Characters</li>
+                </a>
+                <a href="about.html">
+                    <li>About</li>
+                </a>
+            </ul>
+            <a id="logoacc" href="auth.html">
+                <img src="image/accicon.png" alt="User Icon" class="user-icon">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="about-card glass">
+            <div class="about-text">
+                <h1>About Anime</h1>
+                <p>Anime is a diverse form of Japanese animation known for compelling storytelling and unique art
+                    styles.</p>
+
+                <h1>About Website</h1>
+                <p>“The Apothecary Diaries” is an educational platform for discovering web development components
+                    through an anime theme.</p>
+
+                <h2>What you can do here</h2>
+                <ul>
+                    <li>Explore anime seasons in a glassmorphism layout.</li>
+                    <li>View character profiles and series details.</li>
+                    <li>Reference the interface for your own design projects.</li>
+                </ul>
+            </div>
+
+            <div class="about-feedback">
+                <h2>Share your feedback</h2>
+                <form id="feedbackForm" class="feedback-form">
+                    <div class="field-group">
+                        <label for="fb-name">Name</label>
+                        <input type="text" id="fb-name" name="name" placeholder="Your name" />
+                    </div>
+                    <div class="field-group">
+                        <label for="fb-email">Email</label>
+                        <input type="email" id="fb-email" name="email" placeholder="you@example.com" />
+                    </div>
+                    <div class="field-group">
+                        <label for="fb-message">Feedback</label>
+                        <textarea id="fb-message" name="message" rows="4" placeholder="Write thoughts here..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="watch-btn">Send feedback</button>
+                    <p id="fb-status" class="feedback-status"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer
+        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+        <p>&copy; 2026 The Apothecary Diaries Project.</p>
+        <p style="margin-top: 5px;">
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
+            We do not own the rights to the anime, characters, or media content.
+            All rights belong to their respective owners.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="about.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

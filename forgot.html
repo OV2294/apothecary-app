@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - The Apothecary Diaries</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+</head>
+<body>
+    <img src="image/16211.jpg" class="bg-image" alt="">
+    <img src="image/16210.jpg" class="bg-mb-image" alt="">
+
+    <main style="height: 100vh; justify-content: center;">
+        <section class="auth-page glass">
+            <h2 style="text-align: center;">Reset Password</h2>
+
+            <form id="phone-reset-form" class="auth-form active">
+                <p style="text-align: center; font-size: 14px; margin-bottom: 15px; opacity: 0.8;">
+                    Verify your identity to reset your password.
+                </p>
+
+                <div class="auth-field">
+                    <label>Email Address</label>
+                    <input type="email" id="reset-email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="auth-field">
+                    <label>Phone Number</label>
+                    <input type="number" id="reset-phone" placeholder="Registered Phone Number" required>
+                </div>
+
+                <div class="auth-field">
+                    <label>New Password</label>
+                    <input type="password" id="new-password" placeholder="Min 6 characters" required>
+                </div>
+
+                <button type="submit" class="auth-btn">Reset Password</button>
+
+                <a href="auth.html" style="text-align: center; margin-top: 15px; color: black; text-decoration: none; font-size: 14px;">
+                    Back to Login
+                </a>
+            </form>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+        <p>&copy; 2026 The Apothecary Diaries Project.</p>
+        <p style="margin-top: 5px;">
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
+            We do not own the rights to the anime, characters, or media content.
+            All rights belong to their respective owners.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="forgot.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    const accountBtns = document.querySelectorAll('.user-icon, .account-btn, #logoacc, .nav_right a');
+    const continueSection = document.getElementById('continue-watching-section');
+    const continueText = document.getElementById('continue-text');
+    const continueBtn = document.getElementById('continue-btn');
+
+    // 1. Fetch Watch Progress
+    if (continueSection) {
+        fetch('/user/progress', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.continue) {
+                    const { season, episode } = data.continue;
+                    continueSection.style.display = "flex";
+                    continueText.textContent = `Pick up where you left off: Season ${season}, Episode ${episode}`;
+                    continueBtn.textContent = `Play S${season} E${episode}`;
+                    continueBtn.href = `stream.html?season=${season}&ep=${episode}`;
+                }
+            })
+            .catch(err => console.error("Error fetching progress:", err));
+    }
+
+    // 2. Check Login Status
+    try {
+        const res = await fetch('/auth/me', { credentials: 'include' });
+        const data = await res.json();
+
+        if (data.loggedIn) {
+            const user = data.user;
+            const initials = user.username.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
+            accountBtns.forEach(btn => {
+                const anchor = btn.tagName === 'A' ? btn : btn.closest('a');
+                if (anchor) {
+                    anchor.href = user.role === 'admin' ? 'admin.html' : 'user.html';
+                    anchor.innerHTML = `<div class="initials-avatar">${initials}</div>`;
+                    anchor.classList.remove('user-icon');
+                }
+            });
+        }
+    } catch (err) {
+        console.error("Session check failed:", err);
+    }
+});
+
+// 3. Logout Function
+async function logout() {
+    try {
+        await fetch('/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        window.location.href = 'auth.html';
+    } catch (err) {
+        console.error("Logout failed", err);
+    }
+}

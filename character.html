@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Characters - The Apothecary Diaries</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="icon" type="image/jpg" href="image/logo.jpeg" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <img src="image/16211.jpg" alt="" class="bg-image" />
+    <img src="image/23106.webp" alt="" class="bg-mb-image" />
+
+    <header>
+        <nav class="nav glass">
+            <div class="nav_bar">
+                <div class="nav_left">
+                    <div class="nav_logo">
+                        <a href="index.html">
+                            <img src="image/logo1.png" alt="Logo" />
+                        </a>
+                    </div>
+                    <ul>
+                        <li class="item"><a href="Anime.html">Anime</a></li>
+                        <li class="item"><a href="manga.html">Manga</a></li>
+                        <li class="item"><a href="character.html">Characters</a></li>
+                        <li class="item"><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="nav_right">
+                    <a href="auth.html" class="user-icon">
+                        <img src="image/accicon.png" alt="Account" />
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="nav_mob">
+            <button onclick="menu.hidden^=1">≡</button>
+            <ul id="menu" hidden>
+                <a class="logo1" href="index.html">
+                    <img src="image/logo1.png" alt="The Apothecary Diaries">
+                </a>
+                <a href="Anime.html"><li>Anime</li></a>
+                <a href="manga.html"><li>Manga</li></a>
+                <a href="character.html"><li>Characters</li></a>
+                <a href="about.html"><li>About</li></a>
+            </ul>
+            <a id="logoacc" href="auth.html">
+                <img src="image/accicon.png" alt="User Icon" class="user-icon">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="character-gallery glass">
+            <div class="character-list">
+                <div class="character-item" data-id="maomao">
+                    <img src="image/maomao.jpg" alt="Maomao" />
+                </div>
+                <div class="character-item" data-id="jinshi">
+                    <img src="image/jinshi.jpg" alt="Jinshi" />
+                </div>
+                <div class="character-item" data-id="gyokuyou">
+                    <img src="image/gyokuyou.jpg" alt="Gyokuyou" />
+                </div>
+                <div class="character-item" data-id="lihua">
+                    <img src="image/lihua.jpg" alt="Lihua" />
+                </div>
+                <div class="character-item" data-id="gaoshun">
+                    <img src="image/gaoshun.jpg" alt="Gaoshun" />
+                </div>
+            </div>
+
+            <div class="character-info-panel glass">
+                <h2 id="info-name">Hover a character</h2>
+                <p id="info-role"></p>
+                <p id="info-description"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+        <p>&copy; 2026 The Apothecary Diaries Project.</p>
+        <p style="margin-top: 5px;">
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
+            We do not own the rights to the anime, characters, or media content.
+            All rights belong to their respective owners.
+        </p>
+    </footer>
+
+    <script src="character.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
