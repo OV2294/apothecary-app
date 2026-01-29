@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 // ==============================================
 // 1. MIDDLEWARE & CONFIGURATION
@@ -27,13 +27,13 @@ app.use(express.static(path.join(__dirname, '/')));
 
 // Session Configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'fallback_secret_key_dev', // Use Env Var in Prod
+    secret: process.env.SESSION_SECRET || 'fallback_secret_key_dev',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // True on Render (HTTPS), False on Localhost
+        secure: process.env.NODE_ENV === 'production', 
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000 
     }
 }));
 
