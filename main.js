@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             .catch(err => console.error("Error fetching progress:", err));
     }
 
-    // 2. Check Login Status & Update Profile Icon
+    // 2. Check Login Session
     try {
         const res = await fetch('/auth/me', {
             credentials: 'include'
@@ -49,15 +49,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Logout Function
+// Logout Function 
 async function logout() {
     try {
         await fetch('/auth/logout', {
             method: 'POST',
             credentials: 'include'
         });
-
-        // Redirect to auth page
         window.location.href = 'auth.html';
     } catch (err) {
         console.error("Logout failed", err);
