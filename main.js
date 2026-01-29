@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const accountBtns = document.querySelectorAll('.user-icon, .account-btn, #logoacc, .nav_right a');
+
     const continueSection = document.getElementById('continue-watching-section');
     const continueText = document.getElementById('continue-text');
     const continueBtn = document.getElementById('continue-btn');
@@ -20,9 +21,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             .catch(err => console.error("Error fetching progress:", err));
     }
 
-    // 2. Check Login Status
+    // 2. Check Login Status & Update Profile Icon
     try {
-        const res = await fetch('/auth/me', { credentials: 'include' });
+        const res = await fetch('/auth/me', {
+            credentials: 'include'
+        });
+
         const data = await res.json();
 
         if (data.loggedIn) {
@@ -31,25 +35,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             accountBtns.forEach(btn => {
                 const anchor = btn.tagName === 'A' ? btn : btn.closest('a');
+
                 if (anchor) {
                     anchor.href = user.role === 'admin' ? 'admin.html' : 'user.html';
+
                     anchor.innerHTML = `<div class="initials-avatar">${initials}</div>`;
                     anchor.classList.remove('user-icon');
                 }
             });
         }
     } catch (err) {
-        console.error("Session check failed:", err);
+        console.error("Session check failed.", err);
     }
 });
 
-// 3. Logout Function
+// Logout Function
 async function logout() {
     try {
         await fetch('/auth/logout', {
             method: 'POST',
             credentials: 'include'
         });
+
+        // Redirect to auth page
         window.location.href = 'auth.html';
     } catch (err) {
         console.error("Logout failed", err);
