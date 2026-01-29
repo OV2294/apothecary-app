@@ -137,3 +137,31 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# --- Dependencies ---
+node_modules/
+/pids
+/logs
+*.log
+npm-debug.log*
+
+# --- Security (CRITICAL) ---
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# --- Windows System Junk ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- IDE/Editor Settings ---
+.vscode/
+.idea/
+
+# --- Build Outputs (If you have them later) ---
+dist/
+build/
