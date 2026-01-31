@@ -10,16 +10,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     //     if (data.loggedIn && navImages.length > 0) {
     //         const user = data.user;
-    //         const hasValidAvatar = user.avatar_id && 
-    //                                user.avatar_id !== 'default' && 
-    //                                user.avatar_id.startsWith('data:image');
-    //         const newSrc = (user.avatar_id && user.avatar_id !== 'default') 
-    //             ? user.avatar_id 
-    //             : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
-
     //         navImages.forEach(img => {
-    //             img.src = newSrc;
-
+    //             if (user.avatar_id && user.avatar_id !== 'default') {
+    //                 img.src = user.avatar_id;
+    //             } else {
+    //                 const name = user.username || "User";
+    //                 img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&bold=true`;
+    //             }
     //             img.style.width = "40px";
     //             img.style.height = "40px";
     //             img.style.borderRadius = "50%";
@@ -27,21 +24,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     //         });
     //     }
     // } catch (err) {
-    //     console.error("Error loading navbar avatar:", err);
+    //     console.error("Navbar Error:", err);
     // }
     try {
-        const res = await fetch('/auth/me', { credentials: 'include' });
+        const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
         const data = await res.json();
+
+        console.log("Navbar Data Received:", data);
 
         if (data.loggedIn && navImages.length > 0) {
             const user = data.user;
+            let finalSrc;
+            
+            if (user.avatar_id && user.avatar_id !== 'default') {
+                console.log("✅ Using Custom Avatar Image");
+                finalSrc = user.avatar_id;
+            } else {
+                console.log("⚠️ Using Initials Fallback");
+                const name = user.username || "User";
+                finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&bold=true`;
+            }
+
             navImages.forEach(img => {
-                if (user.avatar_id && user.avatar_id !== 'default') {
-                    img.src = user.avatar_id;
-                } else {
-                    const name = user.username || "User";
-                    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&bold=true`;
-                }
+                img.src = finalSrc;
+                
                 img.style.width = "40px";
                 img.style.height = "40px";
                 img.style.borderRadius = "50%";
