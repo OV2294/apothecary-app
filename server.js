@@ -226,6 +226,11 @@ app.get('/user/progress', (req, res) => {
 // ==============================================
 
 app.get('/episodes', (req, res) => {
+    // 🔒 SECURITY CHECK
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     const season = req.query.season || 1;
     db.query('SELECT * FROM anime_episodes WHERE season = ? ORDER BY episode ASC', [season], (err, results) => {
         if (err) return res.status(500).json({ message: 'Error fetching episodes' });
@@ -234,6 +239,11 @@ app.get('/episodes', (req, res) => {
 });
 
 app.get('/manga', (req, res) => {
+    // 🔒 SECURITY CHECK
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     db.query('SELECT * FROM manga_chapters ORDER BY chapter_number ASC', (err, results) => {
         if (err) return res.status(500).json({ message: 'Error fetching manga' });
         res.json(results);

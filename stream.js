@@ -1,19 +1,24 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // === TOAST HELPER ===
+    // === 🔒 GATEKEEPER ===
+    try {
+        const authRes = await fetch('/auth/me', { credentials: 'include' });
+        const authData = await authRes.json();
+        if (!authData.loggedIn) {
+            window.location.href = 'auth.html';
+            return; 
+        }
+    } catch (err) {
+        console.error("Auth check failed", err);
+    }
+    // ================================================
+
     const showToast = (text, type = 'info') => {
-        let bg = "#333"; 
+        let bg = "#333";
         if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
         if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
         if (type === 'favorite') bg = "linear-gradient(to right, #ff9a3c, #ff4b2b)";
-
-        Toastify({
-            text: text,
-            duration: 3000,
-            style: { background: bg },
-            gravity: "top",
-            position: "right"
-        }).showToast();
+        Toastify({ text: text, duration: 3000, style: { background: bg }, gravity: "top", position: "right" }).showToast();
     };
 
     const seasonButtons = document.querySelectorAll(".season-btn");
@@ -21,47 +26,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     const episodesTitle = document.getElementById("episodes-title");
     const iframe = document.getElementById("video-frame");
     const placeholder = document.getElementById("video-placeholder");
-
     const favBtn = document.getElementById("fav-btn");
     const favIcon = document.getElementById("fav-icon");
     const favText = document.querySelector(".fav-text");
-
     const commentForm = document.getElementById("commentForm");
     const commentsList = document.getElementById("commentsList");
 
     const params = new URLSearchParams(window.location.search);
     let currentSeason = parseInt(params.get("season") || "1", 10);
     let currentEpisode = parseInt(params.get("ep") || "1", 10);
-
     let userFavoriteString = null;
 
-    // --- INITIALIZATION ---
-    await fetchUserFavorite();
+    // Load Data
+    fetchUserFavorite();
     setActiveSeasonButton();
     loadEpisodes(currentSeason);
     loadComments(currentSeason, currentEpisode);
-    updateFavoriteUI();
 
-    // --- FETCH USER FAVORITE ---
     async function fetchUserFavorite() {
         try {
             const res = await fetch('/auth/me', { credentials: 'include' });
             const data = await res.json();
-            if (data.loggedIn) {
-                userFavoriteString = data.user.favorite_episode;
-            }
-        } catch (err) {
-            console.error("Auth check failed", err);
-        }
+            if (data.loggedIn) userFavoriteString = data.user.favorite_episode;
+            updateFavoriteUI();
+        } catch (err) { console.error(err); }
     }
 
-    // --- UI UPDATES ---
     function updateFavoriteUI() {
         if (!favBtn) return;
         const currentEpString = `Season ${currentSeason} Ep ${currentEpisode}`;
-        const isMatch = userFavoriteString === currentEpString;
-
-        if (isMatch) {
+        if (userFavoriteString === currentEpString) {
             favBtn.classList.add("is-favorite");
             favIcon.textContent = "♥";
             if (favText) favText.textContent = "Saved as Favorite";
@@ -72,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // --- SEASON TABS ---
     seasonButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             currentSeason = parseInt(btn.dataset.season, 10);
@@ -80,7 +73,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             setActiveSeasonButton();
             loadEpisodes(currentSeason);
             loadComments(currentSeason, currentEpisode);
-            updateFavoriteUI();
         });
     });
 
@@ -91,10 +83,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (episodesTitle) episodesTitle.textContent = `Season ${currentSeason} Episodes`;
     }
 
-    // --- LOAD EPISODES ---
     async function loadEpisodes(season) {
         try {
-            const res = await fetch(`/episodes?season=${season}`); 
+            const res = await fetch(`/episodes?season=${season}`);
+            if (res.status === 401) { window.location.href = 'auth.html'; return; } // Double check
+            
             const episodes = await res.json();
             episodesContainer.innerHTML = "";
 
@@ -107,16 +100,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const btn = document.createElement("button");
                 btn.className = "episode-btn";
                 btn.textContent = `EP ${ep.episode}`;
-
                 if (ep.episode === currentEpisode) {
                     btn.classList.add("active");
                     playVideo(ep.drive_link);
                 }
-                
                 btn.addEventListener("click", () => {
                     document.querySelectorAll(".episode-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
-
                     currentEpisode = ep.episode;
                     playVideo(ep.drive_link);
                     loadComments(currentSeason, currentEpisode);
@@ -125,9 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
                 episodesContainer.appendChild(btn);
             });
-        } catch (err) {
-            showToast("Could not load episodes", "error");
-        }
+        } catch (err) { showToast("Could not load episodes", "error"); }
     }
 
     function playVideo(link) {
@@ -142,12 +130,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         placeholder.style.display = "none";
     }
 
-    // --- FAVORITE BUTTON CLICK ---
     if (favBtn) {
         favBtn.addEventListener("click", async () => {
             const currentEpString = `Season ${currentSeason} Ep ${currentEpisode}`;
-            const isCurrentlyFavorite = (userFavoriteString === currentEpString);
-            const payload = isCurrentlyFavorite ? null : currentEpString;
+            const payload = (userFavoriteString === currentEpString) ? null : currentEpString;
 
             try {
                 const res = await fetch('/auth/set-favorite', {
@@ -157,43 +143,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                     body: JSON.stringify({ favoriteString: payload })
                 });
                 const data = await res.json();
-
                 if (res.ok) {
                     userFavoriteString = data.favorite;
                     updateFavoriteUI();
-
-                    if (payload) {
-                        showToast(`Saved: ${payload}`, "favorite");
-                    } else {
-                        showToast("Removed from favorites", "info");
-                    }
-                } else {
-                    showToast(data.message || "Please log in first.", "error");
+                    showToast(payload ? "Saved to favorites!" : "Removed from favorites", "favorite");
                 }
-            } catch (err) {
-                showToast("Connection error", "error");
-            }
+            } catch (err) { showToast("Error updating favorite", "error"); }
         });
     }
 
-    // --- COMMENTS SYSTEM ---
     async function loadComments(season, episode) {
         try {
-            const res = await fetch(`/comments?season=${season}&episode=${episode}`); 
+            const res = await fetch(`/comments?season=${season}&episode=${episode}`);
             const comments = await res.json();
             commentsList.innerHTML = "";
             comments.forEach(c => {
                 const li = document.createElement("li");
                 li.className = "comment-item";
-                li.innerHTML = `
-                    <div class="comment-meta">${c.username} • ${new Date(c.created_at).toLocaleDateString()}</div>
-                    <div>${c.comment_text}</div>
-                `;
+                li.innerHTML = `<div class="comment-meta">${c.username} • ${new Date(c.created_at).toLocaleDateString()}</div><div>${c.comment_text}</div>`;
                 commentsList.appendChild(li);
             });
-        } catch (err) {
-            console.error("Comments error", err);
-        }
+        } catch (err) { console.error("Comments error", err); }
     }
 
     if (commentForm) {
@@ -201,27 +171,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             e.preventDefault();
             const name = document.getElementById("comment-name").value || "Anonymous";
             const text = document.getElementById("comment-text").value;
-
             if (!text) return;
 
             try {
-                await fetch('/comments', { 
+                await fetch('/comments', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: name,
-                        comment: text,
-                        season: currentSeason,
-                        episode: currentEpisode
-                    })
+                    body: JSON.stringify({ username: name, comment: text, season: currentSeason, episode: currentEpisode })
                 });
-
                 document.getElementById("comment-text").value = "";
                 showToast("Comment posted!", "success");
                 loadComments(currentSeason, currentEpisode);
-            } catch (err) {
-                showToast("Failed to post comment", "error");
-            }
+            } catch (err) { showToast("Failed to post comment", "error"); }
         });
     }
 });
@@ -234,7 +195,5 @@ async function saveProgress(season, episode) {
             credentials: 'include',
             body: JSON.stringify({ season, episode })
         });
-    } catch (err) {
-        console.error("Failed to save progress", err);
-    }
+    } catch (err) { console.error("Failed to save progress", err); }
 }
