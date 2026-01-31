@@ -4,14 +4,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const authRes = await fetch('/auth/me', { credentials: 'include' });
         const authData = await authRes.json();
+        
         if (!authData.loggedIn) {
-            window.location.href = 'auth.html';
+            
+            const mainSection = document.querySelector('.stream-page');
+            if (mainSection) {
+                mainSection.innerHTML = `
+                    <div class="login-lock-msg">
+                        <h3>⚠️ Login Required</h3>
+                        <p>You need to be logged in to watch full episodes and comment.</p>
+                        <a href="auth.html" class="login-lock-btn">Login to Watch</a>
+                    </div>
+                `;
+            }
             return; 
         }
     } catch (err) {
         console.error("Auth check failed", err);
     }
-    // ================================================
 
     const showToast = (text, type = 'info') => {
         let bg = "#333";
@@ -37,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentEpisode = parseInt(params.get("ep") || "1", 10);
     let userFavoriteString = null;
 
-    // Load Data
     fetchUserFavorite();
     setActiveSeasonButton();
     loadEpisodes(currentSeason);
@@ -86,16 +95,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function loadEpisodes(season) {
         try {
             const res = await fetch(`/episodes?season=${season}`);
-            if (res.status === 401) { window.location.href = 'auth.html'; return; } // Double check
-            
             const episodes = await res.json();
             episodesContainer.innerHTML = "";
-
-            if (episodes.length === 0) {
-                episodesContainer.innerHTML = "<p style='font-size:14px; padding:5px;'>No episodes found.</p>";
-                return;
-            }
-
             episodes.forEach((ep) => {
                 const btn = document.createElement("button");
                 btn.className = "episode-btn";
@@ -134,7 +135,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         favBtn.addEventListener("click", async () => {
             const currentEpString = `Season ${currentSeason} Ep ${currentEpisode}`;
             const payload = (userFavoriteString === currentEpString) ? null : currentEpString;
-
             try {
                 const res = await fetch('/auth/set-favorite', {
                     method: 'POST',
@@ -172,7 +172,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const name = document.getElementById("comment-name").value || "Anonymous";
             const text = document.getElementById("comment-text").value;
             if (!text) return;
-
             try {
                 await fetch('/comments', {
                     method: 'POST',

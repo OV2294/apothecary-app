@@ -1,11 +1,21 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    
+
     // === 🔒 GATEKEEPER ===
     try {
         const authRes = await fetch('/auth/me', { credentials: 'include' });
         const authData = await authRes.json();
+
         if (!authData.loggedIn) {
-            window.location.href = 'auth.html';
+            const mangaCard = document.querySelector('.manga-chapters-section');
+            if (mangaCard) {
+                mangaCard.innerHTML = `
+                    <div class="login-lock-msg">
+                        <h3>🔒 Manga Library Locked</h3>
+                        <p>Please log in to access the chapter list.</p>
+                        <a href="auth.html" class="login-lock-btn">Login to Read</a>
+                    </div>
+                `;
+            }
             return;
         }
     } catch (err) { console.error(err); }
@@ -13,27 +23,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const chaptersGrid = document.getElementById("chaptersGrid");
     if (!chaptersGrid) return;
-
     loadChapters();
 
     async function loadChapters() {
         try {
-            const response = await fetch('/manga'); 
-            
-            if (response.status === 401) {
-                window.location.href = 'auth.html';
-                return;
-            }
-            if (!response.ok) throw new Error('Failed to connect to server');
-
+            const response = await fetch('/manga');
             const chapters = await response.json();
             chaptersGrid.innerHTML = '';
-
-            if (chapters.length === 0) {
-                chaptersGrid.innerHTML = '<p style="color:white; padding:10px;">No chapters found.</p>';
-                return;
-            }
-
             chapters.forEach(chapter => {
                 const tile = document.createElement("div");
                 tile.className = "chapter-tile";
@@ -47,9 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
                 chaptersGrid.appendChild(tile);
             });
-
         } catch (error) {
-            console.error("Error loading manga:", error);
             chaptersGrid.innerHTML = '<p style="color:#ff4b2b; padding:10px;">Server error.</p>';
         }
     }

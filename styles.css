@@ -1429,7 +1429,45 @@ main {
 }
 
 /* =========================================
-   10. MOBILE MEDIA QUERY (UNCHANGED LOGIC)
+   10. GATEKEEPER
+   ========================================= */
+.login-lock-msg {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 600px;
+    color: white;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-lock-msg h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffb26b;
+}
+
+.login-lock-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #ffb26b;
+    color: #1a1a1a;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.login-lock-btn:hover {
+    background: #fff;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   11. MOBILE MEDIA
    ========================================= */
 @media (max-width:768px) {
     body {
