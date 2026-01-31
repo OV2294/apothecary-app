@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const authRes = await fetch('/auth/me', { credentials: 'include' });
         const authData = await authRes.json();
-        
+
         if (!authData.loggedIn) {
-            
+
             const mainSection = document.querySelector('.stream-page');
             if (mainSection) {
                 mainSection.innerHTML = `
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 `;
             }
-            return; 
+            return;
         }
     } catch (err) {
         console.error("Auth check failed", err);
@@ -97,18 +97,75 @@ document.addEventListener("DOMContentLoaded", async () => {
             const res = await fetch(`/episodes?season=${season}`);
             const episodes = await res.json();
             episodesContainer.innerHTML = "";
+
+            if (episodes.length === 0) {
+                episodesContainer.innerHTML = "<p>No episodes found.</p>";
+                return;
+            }
+
+            // === 🆕 NAVIGATION BUTTON LOGIC ===
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+
+            const prevEpNum = currentEpisode - 1;
+            const nextEpNum = currentEpisode + 1;
+
+            // Check if Prev/Next exist in the list
+            const hasPrev = episodes.some(ep => ep.episode === prevEpNum);
+            const hasNext = episodes.some(ep => ep.episode === nextEpNum);
+
+            // Update PREV Button
+            if (prevBtn) {
+                if (hasPrev) {
+                    prevBtn.style.display = "inline-flex";
+                    prevBtn.href = `stream.html?season=${season}&ep=${prevEpNum}`;
+                } else {
+                    prevBtn.style.display = "none";
+                }
+            }
+
+            // Update NEXT Button
+            if (nextBtn) {
+                if (hasNext) {
+                    nextBtn.style.display = "inline-flex";
+                    nextBtn.href = `stream.html?season=${season}&ep=${nextEpNum}`;
+                } else {
+                    nextBtn.style.display = "none";
+                }
+            }
+            // ===================================
+
             episodes.forEach((ep) => {
                 const btn = document.createElement("button");
                 btn.className = "episode-btn";
                 btn.textContent = `EP ${ep.episode}`;
+                
                 if (ep.episode === currentEpisode) {
                     btn.classList.add("active");
                     playVideo(ep.drive_link);
                 }
+
                 btn.addEventListener("click", () => {
+                    // Update URL silently
+                    const newUrl = `stream.html?season=${season}&ep=${ep.episode}`;
+                    window.history.pushState({path: newUrl}, '', newUrl);
+
                     document.querySelectorAll(".episode-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     currentEpisode = ep.episode;
+
+                    // Re-run Nav Logic immediately on click
+                    if (prevBtn) {
+                        const newPrev = currentEpisode - 1;
+                        prevBtn.style.display = (episodes.some(e => e.episode === newPrev)) ? "inline-flex" : "none";
+                        prevBtn.href = `stream.html?season=${season}&ep=${newPrev}`;
+                    }
+                    if (nextBtn) {
+                        const newNext = currentEpisode + 1;
+                        nextBtn.style.display = (episodes.some(e => e.episode === newNext)) ? "inline-flex" : "none";
+                        nextBtn.href = `stream.html?season=${season}&ep=${newNext}`;
+                    }
+
                     playVideo(ep.drive_link);
                     loadComments(currentSeason, currentEpisode);
                     updateFavoriteUI();
@@ -116,9 +173,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
                 episodesContainer.appendChild(btn);
             });
-        } catch (err) { showToast("Could not load episodes", "error"); }
-    }
 
+        } catch (err) { 
+            console.error(err);
+        }
+    }
+    
     function playVideo(link) {
         if (!link) {
             iframe.style.display = "none";

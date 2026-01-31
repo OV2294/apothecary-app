@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
 </head>
+
 <body>
     <img src="image/16211.JPG" alt="" class="bg-image" />
     <img src="image/16210.jpg" alt="" class="bg-mb-image" />
@@ -42,10 +44,18 @@
                 <a class="logo1" href="index.html">
                     <img src="image/logo1.png" alt="The Apothecary Diaries">
                 </a>
-                <a href="Anime.html"><li>Anime</li></a>
-                <a href="manga.html"><li>Manga</li></a>
-                <a href="character.html"><li>Characters</li></a>
-                <a href="about.html"><li>About</li></a>
+                <a href="Anime.html">
+                    <li>Anime</li>
+                </a>
+                <a href="manga.html">
+                    <li>Manga</li>
+                </a>
+                <a href="character.html">
+                    <li>Characters</li>
+                </a>
+                <a href="about.html">
+                    <li>About</li>
+                </a>
             </ul>
             <a id="logoacc" href="auth.html">
                 <img src="image/accicon.png" alt="User Icon" class="user-icon">
@@ -63,16 +73,26 @@
                         </a>
                     </div>
                     <div class="player-box">
-                        <iframe id="video-frame" class="video-frame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                        <iframe id="video-frame" class="video-frame" src="" allow="autoplay; fullscreen"
+                            allowfullscreen></iframe>
                         <div id="video-placeholder" style="display:none; color:#333;">
                             Select an episode to start watching
                         </div>
                     </div>
 
-                    <div class="video-actions">
-                        <button id="fav-btn" class="favorite-btn" title="Set as Favorite Episode">
-                            <span id="fav-icon">♡</span> <span class="fav-text">Mark as Favorite</span>
+                    <div class="video-action-bar">
+                        <a id="prev-btn" class="nav-btn" href="#" style="display: none;">
+                            <i class="fa-solid fa-backward"></i> Prev
+                        </a>
+
+                        <button id="fav-btn" class="action-btn">
+                            <span id="fav-icon">♡</span>
+                            <span class="fav-text">Mark as Favorite</span>
                         </button>
+
+                        <a id="next-btn" class="nav-btn" href="#" style="display: none;">
+                            Next <i class="fa-solid fa-forward"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -103,7 +123,8 @@
                 </div>
                 <div class="field-group">
                     <label for="comment-text">Comment</label>
-                    <textarea id="comment-text" name="comment" rows="3" placeholder="Write a comment about this episode..." required></textarea>
+                    <textarea id="comment-text" name="comment" rows="3"
+                        placeholder="Write a comment about this episode..." required></textarea>
                 </div>
                 <button type="submit" class="watch-btn">Post comment</button>
             </form>
@@ -112,7 +133,8 @@
         </section>
     </main>
 
-    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+    <footer
+        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
         <p>&copy; 2026 The Apothecary Diaries Project.</p>
         <p style="margin-top: 5px;">
             <strong>Disclaimer:</strong> This website is developed strictly for
@@ -126,4 +148,5 @@
     <script src="stream.js"></script>
     <script src="main.js"></script>
 </body>
+
 </html>
