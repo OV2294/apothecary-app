@@ -1,5 +1,6 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
 </head>
+
 <body>
     <img src="image/16211.JPG" alt="" class="bg-image" />
     <img src="image/16210.jpg" alt="" class="bg-mb-image" />
@@ -42,10 +44,18 @@
                 <a class="logo1" href="index.html">
                     <img src="image/logo1.png" alt="Logo">
                 </a>
-                <a href="Anime.html"><li>Anime</li></a>
-                <a href="manga.html"><li>Manga</li></a>
-                <a href="character.html"><li>Characters</li></a>
-                <a href="about.html"><li>About</li></a>
+                <a href="Anime.html">
+                    <li>Anime</li>
+                </a>
+                <a href="manga.html">
+                    <li>Manga</li>
+                </a>
+                <a href="character.html">
+                    <li>Characters</li>
+                </a>
+                <a href="about.html">
+                    <li>About</li>
+                </a>
             </ul>
             <a id="logoacc" href="auth.html">
                 <img src="image/accicon.png" alt="User Icon" class="user-icon">
@@ -57,7 +67,15 @@
         <section class="profile-page">
             <div class="profile-card">
                 <div class="profile-header">
-                    <div class="avatar-circle" id="profile-initials">--</div>
+                    <!-- <div class="avatar-circle" id="profile-initials">--</div> -->
+                    <div class="profile-avatar-container">
+                        <img id="current-avatar" src="images/avatars/default.png" alt="Profile"
+                            onerror="this.src='https://ui-avatars.com/api/?name=User&background=random'">
+
+                        <button class="edit-avatar-btn" onclick="openAvatarModal()">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
                     <div class="profile-details">
                         <h2 id="display-name">Loading...</h2>
                         <p>Email: <span id="display-email">...</span></p>
@@ -67,7 +85,8 @@
 
                 <div class="profile-section">
                     <h3>FAVORITE EPISODE</h3>
-                    <div class="fav-episode-card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="fav-episode-card"
+                        style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="fav-episode-info">
                             <p class="fav-episode-title" id="display-fav-ep">None set</p>
                         </div>
@@ -103,7 +122,8 @@
         </section>
     </main>
 
-    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+    <footer
+        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
         <p>&copy; 2026 The Apothecary Diaries Project.</p>
         <p style="margin-top: 5px;">
             <strong>Disclaimer:</strong> This website is developed strictly for
@@ -112,107 +132,43 @@
             All rights belong to their respective owners.
         </p>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="user.js"></script>
-    <script src="main.js"></script>
-</body>
-</html> -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Apothecary Diaries</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-    <nav class="navbar">
-        <div class="logo">
-            <a href="index.html">草薬屋 (Kusuriya)</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="Anime.html">Anime</a></li>
-            <li><a href="manga.html">Manga</a></li>
-            <li><a href="user.html" class="active">Profile</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-    </nav>
-
-    <div class="container" style="margin-top: 100px;">
-        <div class="auth-box">
-            
-            <div class="profile-header">
-                <div class="profile-avatar-container">
-                    <img id="current-avatar" src="images/avatars/default.png" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=User&background=random'">
-                    
-                    <button class="edit-avatar-btn" onclick="openAvatarModal()">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                </div>
-                <h1 id="profile-name">Loading...</h1>
-                <p id="profile-email">...</p>
-            </div>
-
-            <div class="auth-field" style="text-align: center; margin-bottom: 20px;">
-                <label style="color: #ffb26b;">Current Favorite</label>
-                <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 5px; color: white;">
-                    <span id="fav-episode-display">None set yet</span>
-                </div>
-            </div>
-
-            <form id="profile-form">
-                <div class="auth-field">
-                    <label>Username</label>
-                    <input type="text" id="edit-username" required>
-                </div>
-
-                <div class="auth-field">
-                    <label>Email</label>
-                    <input type="email" id="edit-email" required>
-                </div>
-
-                <div class="auth-field">
-                    <label>Phone Number</label>
-                    <input type="text" id="edit-phone">
-                </div>
-
-                <button type="submit" class="submit-btn">Save Changes</button>
-            </form>
-        </div>
-    </div>
-
     <div id="avatar-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h3>Choose your Avatar</h3>
-            
-            <div class="upload-section" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #444;">
+
+            <div class="upload-section"
+                style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #444;">
                 <p style="color: #aaa; font-size: 14px; margin-bottom: 10px;">Upload Custom Image (Max 500KB)</p>
-                <input type="file" id="custom-file-input" accept="image/*" style="display: none;" onchange="handleFileUpload(this)">
-                
-                <button onclick="document.getElementById('custom-file-input').click()" class="submit-btn" style="padding: 8px 20px; font-size: 14px; width: auto;">
+                <input type="file" id="custom-file-input" accept="image/*" style="display: none;"
+                    onchange="handleFileUpload(this)">
+
+                <button onclick="document.getElementById('custom-file-input').click()" class="submit-btn"
+                    style="padding: 8px 20px; font-size: 14px; width: auto;">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Upload from Gallery
                 </button>
             </div>
 
             <p style="color: #aaa; font-size: 14px;">Or choose a character:</p>
             <div class="avatar-grid">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao')">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi')">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun')">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao" class="avatar-option"
+                    onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi" class="avatar-option"
+                    onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun" class="avatar-option"
+                    onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou" class="avatar-option"
+                    onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou')">
             </div>
 
-            <button class="close-btn" onclick="closeAvatarModal()" style="margin-top: 15px; background: transparent; border: 1px solid #666; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">
+            <button class="close-btn" onclick="closeAvatarModal()"
+                style="margin-top: 15px; background: transparent; border: 1px solid #666; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">
                 Cancel
             </button>
         </div>
     </div>
-
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="user.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>
