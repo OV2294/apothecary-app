@@ -27,27 +27,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     //     console.error("Navbar Error:", err);
     // }
     try {
-        const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+        const res = await fetch('/auth/me?t=' + Date.now());
         const data = await res.json();
-
-        console.log("Navbar Data Received:", data);
-
-        if (data.loggedIn && navImages.length > 0) {
+        
+        if (data.loggedIn && data.user) {
             const user = data.user;
+
             let finalSrc;
-            
             if (user.avatar_id && user.avatar_id !== 'default') {
-                console.log("✅ Using Custom Avatar Image");
                 finalSrc = user.avatar_id;
             } else {
-                console.log("⚠️ Using Initials Fallback");
                 const name = user.username || "User";
                 finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&bold=true`;
             }
 
             navImages.forEach(img => {
-                img.src = finalSrc;
+                img.onerror = null; 
                 
+                img.src = finalSrc;
                 img.style.width = "40px";
                 img.style.height = "40px";
                 img.style.borderRadius = "50%";
