@@ -138,166 +138,57 @@
 //     }
 // });
 document.addEventListener("DOMContentLoaded", async () => {
-
-    // === TOAST HELPER ===
     const showToast = (text, type = 'info') => {
-        let bg = "#333";
-        if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
-        if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
         if (typeof Toastify !== 'undefined') {
+            let bg = type === 'error' ? "linear-gradient(to right, #ff5f6d, #ffc371)" : "linear-gradient(to right, #00b09b, #96c93d)";
             Toastify({ text: text, duration: 3000, style: { background: bg }, gravity: "top", position: "right" }).showToast();
-        } else {
-            console.log(text); 
         }
     };
 
-    let currentUserData = {}; 
+    let currentUserData = {};
 
-    // === 1. LOAD USER DATA ===
+    // 1. LOAD DATA
     try {
         const res = await fetch('/auth/me', { credentials: 'include' });
         const data = await res.json();
-
-        if (!data.loggedIn) {
-            window.location.href = 'auth.html';
-            return;
-        }
-
+        if (!data.loggedIn) { window.location.href = 'auth.html'; return; }
+        
         currentUserData = data.user;
         updateUI(currentUserData);
+    } catch (err) { console.error(err); }
 
-    } catch (err) {
-        console.error("Error loading profile:", err);
-    }
-
-    // === UPDATE UI ===
+    // === UI UPDATER  ===
     function updateUI(user) {
-        const nameDisplay = document.getElementById('display-name');
-        if (nameDisplay) nameDisplay.textContent = user.username;
+        if(document.getElementById('display-name')) document.getElementById('display-name').textContent = user.username;
+        if(document.getElementById('display-email')) document.getElementById('display-email').textContent = user.email;
+        if(document.getElementById('display-phone')) document.getElementById('display-phone').textContent = user.phone || '...';
         
-        const emailDisplay = document.getElementById('display-email');
-        if (emailDisplay) emailDisplay.textContent = user.email;
+        if(document.getElementById('edit-username')) document.getElementById('edit-username').value = user.username;
+        if(document.getElementById('edit-email')) document.getElementById('edit-email').value = user.email;
+        if(document.getElementById('edit-phone')) document.getElementById('edit-phone').value = user.phone || '';
 
-        const phoneDisplay = document.getElementById('display-phone');
-        if (phoneDisplay) phoneDisplay.textContent = user.phone || 'Not set';
-
-        // 2. Edit Form
-        const nameInput = document.getElementById('edit-username');
-        if (nameInput) nameInput.value = user.username;
-
-        const emailInput = document.getElementById('edit-email');
-        if (emailInput) emailInput.value = user.email;
-
-        const phoneInput = document.getElementById('edit-phone');
-        if (phoneInput) phoneInput.value = user.phone || '';
-
-        // 3. Avatar
+        // === AVATAR ===
         const avatarImg = document.getElementById('current-avatar');
-        if (avatarImg && user.avatar_id && user.avatar_id !== 'default') {
-            avatarImg.src = user.avatar_id;
+        if (avatarImg) {
+            if (user.avatar_id && user.avatar_id !== 'default') {
+                avatarImg.src = user.avatar_id;
+            } else {
+                const name = user.username || "User";
+                avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&size=200&font-size=0.5&bold=true`;
+            }
         }
-
-        // 4. Favorite Episode
+        
         const favDisplay = document.getElementById('display-fav-ep');
         const removeBtn = document.getElementById('remove-fav-btn');
-        
         if (user.favorite_episode) {
-            if (favDisplay) favDisplay.textContent = user.favorite_episode;
-            if (removeBtn) removeBtn.style.display = 'inline-block';
+            if(favDisplay) favDisplay.textContent = user.favorite_episode;
+            if(removeBtn) removeBtn.style.display = 'inline-block';
         } else {
-            if (favDisplay) favDisplay.textContent = "No favorite episode set";
-            if (removeBtn) removeBtn.style.display = 'none';
+            if(favDisplay) favDisplay.textContent = "None set";
+            if(removeBtn) removeBtn.style.display = 'none';
         }
     }
 
-    // === 2. PROFILE EDIT===
-    const editForm = document.getElementById('edit-profile-form');
-    if (editForm) {
-        editForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = editForm.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = "Saving...";
-            btn.disabled = true;
-
-            const username = document.getElementById('edit-username').value;
-            const email = document.getElementById('edit-email').value;
-            const phone = document.getElementById('edit-phone').value;
-            
-            try {
-                const res = await fetch('/auth/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ 
-                        username, 
-                        email, 
-                        phone,
-                       
-                        favorite_episode: currentUserData.favorite_episode,
-                        avatar_id: currentUserData.avatar_id
-                    })
-                });
-
-                if (res.ok) {
-                    showToast("Profile Updated Successfully!", "success");
-                    
-                    currentUserData.username = username;
-                    currentUserData.email = email;
-                    currentUserData.phone = phone;
-                    updateUI(currentUserData);
-                } else {
-                    const errData = await res.json();
-                    showToast(errData.message || "Update failed.", "error");
-                }
-            } catch (err) {
-                console.error(err);
-                showToast("Server error.", "error");
-            } finally {
-                btn.textContent = originalText;
-                btn.disabled = false;
-            }
-        });
-    }
-
-    // === 3. REMOVE FAVORITE  ===
-    const removeFavBtn = document.getElementById('remove-fav-btn');
-    if (removeFavBtn) {
-        removeFavBtn.addEventListener('click', async (e) => {
-            e.preventDefault(); 
-            if(!confirm("Remove this from your favorites?")) return;
-
-            try {
-                const res = await fetch('/auth/set-favorite', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ favoriteString: null }) 
-                });
-
-                if (res.ok) {
-                    showToast("Favorite removed.", "success");
-                    currentUserData.favorite_episode = null;
-                    updateUI(currentUserData);
-                }
-            } catch (err) {
-                showToast("Failed to remove favorite.", "error");
-            }
-        });
-    }
-
-    // === 4. LOGOUT BUTTON ===
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
-                window.location.href = 'auth.html';
-            } catch (err) {
-                console.error("Logout failed", err);
-            }
-        });
-    }
 });
 
 
@@ -312,19 +203,26 @@ function closeAvatarModal() {
 function handleFileUpload(input) {
     const file = input.files[0];
     if (!file) return;
-    if (file.size > 500 * 1024) {
-        alert("File too big! Please keep it under 500KB.");
-        return;
-    }
+    if (file.size > 500 * 1024) { alert("File too big (Max 500KB)"); return; }
+    
     const reader = new FileReader();
     reader.onload = function(e) {
-        selectAvatar(e.target.result); 
+        saveAvatar(e.target.result);
     };
     reader.readAsDataURL(file);
 }
 
-async function selectAvatar(url) {
-    document.getElementById('current-avatar').src = url;
+function resetToInitials() {
+    saveAvatar('default'); 
+}
+
+async function saveAvatar(avatarData) {
+    if (avatarData === 'default') {
+        document.getElementById('current-avatar').src = "https://ui-avatars.com/api/?name=Loading&background=333&color=fff";
+    } else {
+        document.getElementById('current-avatar').src = avatarData;
+    }
+    
     closeAvatarModal();
 
     try {
@@ -340,10 +238,12 @@ async function selectAvatar(url) {
                 email: user.email,
                 phone: user.phone,
                 favorite_episode: user.favorite_episode,
-                avatar_id: url 
+                avatar_id: avatarData
             })
         });
-        
+
+        if (avatarData === 'default') location.reload(); 
+
     } catch (err) {
         console.error("Failed to save avatar", err);
     }
