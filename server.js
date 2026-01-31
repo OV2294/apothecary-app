@@ -160,21 +160,45 @@ app.post('/auth/reset-with-phone', async (req, res) => {
 // ==============================================
 
 // Update Profile
+// app.post('/auth/update', (req, res) => {
+//     if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
+
+//     const { username, email, phone, favorite_episode } = req.body;
+//     const sql = 'UPDATE users SET username = ?, email = ?, phone = ?, favorite_episode = ? WHERE id = ?';
+
+//     db.query(sql, [username, email, phone, favorite_episode, req.session.user.id], (err, result) => {
+//         if (err) return res.status(500).json({ message: 'Update failed' });
+
+//         req.session.user.username = username;
+//         req.session.user.email = email;
+//         req.session.user.phone = phone;
+//         req.session.user.favorite_episode = favorite_episode;
+
+//         req.session.save(() => res.json({ message: 'Profile updated' }));
+//     });
+// });
 app.post('/auth/update', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
 
-    const { username, email, phone, favorite_episode } = req.body;
-    const sql = 'UPDATE users SET username = ?, email = ?, phone = ?, favorite_episode = ? WHERE id = ?';
+    const { username, email, phone, favorite_episode, avatar_id } = req.body;
+    
+    const sql = 'UPDATE users SET username = ?, email = ?, phone = ?, favorite_episode = ?, avatar_id = ? WHERE id = ?';
 
-    db.query(sql, [username, email, phone, favorite_episode, req.session.user.id], (err, result) => {
-        if (err) return res.status(500).json({ message: 'Update failed' });
+    const newAvatar = avatar_id || req.session.user.avatar_id || 'default';
+
+    db.query(sql, [username, email, phone, favorite_episode, newAvatar, req.session.user.id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Update failed' });
+        }
 
         req.session.user.username = username;
         req.session.user.email = email;
         req.session.user.phone = phone;
         req.session.user.favorite_episode = favorite_episode;
+        req.session.user.avatar_id = newAvatar; 
 
-        req.session.save(() => res.json({ message: 'Profile updated' }));
+        req.session.save(() => res.json({ message: 'Profile updated', avatar: newAvatar }));
     });
 });
 

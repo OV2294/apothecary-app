@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -116,5 +116,98 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="user.js"></script>
     <script src="main.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Apothecary Diaries</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">草薬屋 (Kusuriya)</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="Anime.html">Anime</a></li>
+            <li><a href="manga.html">Manga</a></li>
+            <li><a href="user.html" class="active">Profile</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" style="margin-top: 100px; max-width: 600px;">
+        <div class="auth-box">
+            
+            <div class="profile-header">
+                <div class="profile-avatar-container">
+                    <img id="current-avatar" src="images/avatars/default.png" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=User&background=random'">
+                    
+                    <button class="edit-avatar-btn" onclick="openAvatarModal()">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                </div>
+                <h1 id="profile-name">Loading...</h1>
+                <p id="profile-email">...</p>
+            </div>
+
+            <div class="favorite-section" style="text-align: center; margin-bottom: 30px; padding: 15px; background: rgba(255, 178, 107, 0.1); border-radius: 10px;">
+                <h3 style="color: #ffb26b; font-size: 16px; margin-bottom: 5px;">Current Favorite</h3>
+                <p id="fav-episode-display" style="color: white; font-weight: bold;">None set yet</p>
+            </div>
+
+            <form id="profile-form">
+                <div class="auth-field">
+                    <label>Username</label>
+                    <input type="text" id="edit-username" required>
+                </div>
+
+                <div class="auth-field">
+                    <label>Email</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+
+                <div class="auth-field">
+                    <label>Phone Number</label>
+                    <input type="text" id="edit-phone">
+                </div>
+
+                <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="avatar-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Choose your Avatar</h3>
+            
+            <div class="upload-section" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444;">
+                <p style="font-size: 14px; color: #aaa; margin-bottom: 10px;">Upload your own (Max 500KB)</p>
+                <input type="file" id="custom-file-input" accept="image/*" style="display: none;" onchange="handleFileUpload(this)">
+                <button onclick="document.getElementById('custom-file-input').click()" class="login-lock-btn" style="font-size: 12px; padding: 8px 15px; cursor: pointer;">
+                    <i class="fa-solid fa-folder-open"></i> Select from Gallery
+                </button>
+            </div>
+
+            <p style="font-size: 14px; color: #aaa;">Or choose a character:</p>
+            <div class="avatar-grid">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gaoshun')">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou')">
+            </div>
+
+            <button class="close-btn" onclick="closeAvatarModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="user.js"></script>
 </body>
 </html>
