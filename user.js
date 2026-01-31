@@ -217,23 +217,25 @@ function resetToInitials() {
 }
 
 async function saveAvatar(avatarData) {
-    if (avatarData === 'default') {
-        document.getElementById('current-avatar').src = "https://ui-avatars.com/api/?name=User&background=ffb26b&color=000";
-    } else {
-        document.getElementById('current-avatar').src = avatarData;
+    const bigProfileImg = document.getElementById('current-avatar');
+    if (bigProfileImg) {
+        bigProfileImg.src = (avatarData === 'default') 
+            ? "https://ui-avatars.com/api/?name=User&background=ffb26b&color=000"
+            : avatarData;
     }
 
-    const navImg = document.querySelector('.user-icon img'); 
+    const navImages = document.querySelectorAll('.user-icon img, img.user-icon');
     
-    if (navImg) {
-        if (avatarData === 'default') {
-            navImg.src = "image/accicon.png"; 
-        } else {
-            navImg.src = avatarData;
-            navImg.style.borderRadius = "50%";
-            navImg.style.objectFit = "cover";
-        }
-    }
+
+    const newNavSrc = (avatarData === 'default') ? "image/accicon.png" : avatarData;
+
+    navImages.forEach(img => {
+        img.src = newNavSrc;
+        img.style.width = "40px";
+        img.style.height = "40px";
+        img.style.borderRadius = "50%";
+        img.style.objectFit = "cover";
+    });
 
     closeAvatarModal();
 
@@ -254,7 +256,7 @@ async function saveAvatar(avatarData) {
             })
         });
 
-        if (avatarData === 'default') location.reload();
+        if (avatarData === 'default') location.reload(); 
 
     } catch (err) {
         console.error("Failed to save avatar", err);
