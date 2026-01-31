@@ -123,12 +123,28 @@ app.post('/auth/logout', (req, res) => {
 
 // Check Current User 
 app.get('/auth/me', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ loggedIn: false });
+    if (!req.session.user) {
+        return res.json({ loggedIn: false });
+    }
 
-    const sql = 'SELECT id, username, email, phone, role, favorite_episode, created_at FROM users WHERE id = ?';
+    const sql = 'SELECT id, username, email, phone, favorite_episode, avatar_id FROM users WHERE id = ?';
+    
     db.query(sql, [req.session.user.id], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Error' });
-        res.json({ loggedIn: true, user: results[0] });
+        if (err) {
+            console.error("Auth Me DB Error:", err);
+            return res.json({ loggedIn: false });
+        }
+
+        if (results.length === 0) {
+            return res.json({ loggedIn: false });
+        }
+        
+        const freshUser = results[0];
+
+        res.json({ 
+            loggedIn: true, 
+            user: freshUser 
+        });
     });
 });
 
