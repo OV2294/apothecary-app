@@ -33,21 +33,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         const res = await fetch('/auth/me', { credentials: 'include' });
         const data = await res.json();
 
+        console.log("LOGIN STATUS:", data.loggedIn);
+        
         if (data.loggedIn && navImages.length > 0) {
             const user = data.user;
+            console.log("AVATAR DATA LENGTH:", user.avatar_id ? user.avatar_id.length : 0);
 
-            console.log("Navbar Avatar Data Length:", user.avatar_id ? user.avatar_id.length : "0");
+            let finalSrc;
 
-            const isRealPhoto = user.avatar_id && user.avatar_id.startsWith('data:image');
-
-            const finalSrc = isRealPhoto
-                ? user.avatar_id
-                : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+            if (user.avatar_id && user.avatar_id.startsWith('data:image')) {
+                console.log("✅ Found a real photo in database. Using it.");
+                finalSrc = user.avatar_id;
+            } 
+            else {
+                console.log("⚠️ No custom photo found. Using Initials.");
+                finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+            }
 
             navImages.forEach(img => {
                 img.src = finalSrc;
-
-                // Force Styling
+                
                 img.style.width = "40px";
                 img.style.height = "40px";
                 img.style.borderRadius = "50%";
@@ -57,6 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
         console.error("Navbar Error:", err);
     }
+});
 // Watch Progress
 if (continueSection) {
     fetch('/user/progress', { credentials: 'include' })
