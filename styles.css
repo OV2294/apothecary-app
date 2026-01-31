@@ -1128,6 +1128,21 @@ main {
     animation: fadeIn 0.3s ease;
 }
 
+.toggle-pass {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: #888;
+    z-index: 2;
+}
+
+.toggle-pass:hover {
+    color: #333;
+}
+
 @keyframes slideUpFade {
     from {
         opacity: 0;

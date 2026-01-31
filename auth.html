@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Authentication - The Apothecary Diaries</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
 </head>
+
 <body>
     <img src="image/16211.JPG" alt="" class="bg-image" />
     <img src="image/16210.jpg" alt="" class="bg-mb-image" />
@@ -42,10 +45,18 @@
                 <a class="logo1" href="index.html">
                     <img src="image/logo1.png" alt="The Apothecary Diaries">
                 </a>
-                <a href="Anime.html"><li>Anime</li></a>
-                <a href="manga.html"><li>Manga</li></a>
-                <a href="character.html"><li>Characters</li></a>
-                <a href="about.html"><li>About</li></a>
+                <a href="Anime.html">
+                    <li>Anime</li>
+                </a>
+                <a href="manga.html">
+                    <li>Manga</li>
+                </a>
+                <a href="character.html">
+                    <li>Characters</li>
+                </a>
+                <a href="about.html">
+                    <li>About</li>
+                </a>
             </ul>
             <a id="logoacc" href="auth.html">
                 <img src="image/accicon.png" alt="User Icon" class="user-icon">
@@ -69,10 +80,14 @@
                     </div>
                     <div class="auth-field">
                         <label>Password</label>
-                        <input type="password" name="password" placeholder="••••••••" required>
+                        <div class="password-container">
+                            <input type="password" name="password" placeholder="Enter password" required>
+                            <i class="fa-solid fa-eye toggle-pass"></i>
+                        </div>
                     </div>
                     <div style="text-align: right; margin-top: 5px; margin-bottom: 10px;">
-                        <a href="forgot.html" style="color: black; font-size: 13px; text-decoration: none;">Forgot Password?</a>
+                        <a href="forgot.html" style="color: black; font-size: 13px; text-decoration: none;">Forgot
+                            Password?</a>
                     </div>
                     <button type="submit" class="auth-btn">Login</button>
                 </form>
@@ -96,13 +111,18 @@
                     </div>
                     <div class="auth-field">
                         <label>Password</label>
-                        <input type="password" name="password" placeholder="Create a password" required>
-                        <span class="error-msg">Password must be at least 6 characters</span>
+                        <div class="password-container">
+                            <input type="password" name="password" placeholder="Min 6 characters" required>
+                            <i class="fa-solid fa-eye toggle-pass"></i>
+                        </div>
                     </div>
+
                     <div class="auth-field">
-                        <label>Re-Enter Password</label>
-                        <input type="password" name="confirmPassword" placeholder="Re-enter password" required>
-                        <span class="error-msg">Passwords do not match</span>
+                        <label>Confirm Password</label>
+                        <div class="password-container">
+                            <input type="password" name="confirmPassword" placeholder="Re-enter password" required>
+                            <i class="fa-solid fa-eye toggle-pass"></i>
+                        </div>
                     </div>
                     <button type="submit" class="auth-btn">Sign up</button>
                 </form>
@@ -110,7 +130,8 @@
         </section>
     </main>
 
-    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
+    <footer
+        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
         <p>&copy; 2026 The Apothecary Diaries Project.</p>
         <p style="margin-top: 5px;">
             <strong>Disclaimer:</strong> This website is developed strictly for
@@ -124,4 +145,5 @@
     <script src="auth.js"></script>
     <script src="main.js"></script>
 </body>
+
 </html>
