@@ -1128,19 +1128,36 @@ main {
     animation: fadeIn 0.3s ease;
 }
 
+.password-container {
+    position: relative; 
+    width: 100%;
+    display: flex;      
+    align-items: center;
+}
+
+
+.password-container input {
+    width: 100%;
+    padding-right: 45px !important; 
+}
+
+
 .toggle-pass {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 15px;        
+    top: 50%;           
+    transform: translateY(-50%); 
     cursor: pointer;
-    font-size: 16px;
-    color: #888;
-    z-index: 2;
+    font-size: 18px;    
+    color: #ffffff;    
+    z-index: 10;        
+    opacity: 0.8;       
+    transition: opacity 0.2s, transform 0.2s;
 }
 
 .toggle-pass:hover {
-    color: #333;
+    opacity: 1;       
+    transform: translateY(-50%) scale(1.1); 
 }
 
 @keyframes slideUpFade {

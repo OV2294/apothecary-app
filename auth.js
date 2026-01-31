@@ -187,20 +187,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// === SHOW / HIDE PASSWORD ===
 const toggles = document.querySelectorAll('.toggle-pass');
 
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const input = toggle.previousElementSibling;
+toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const input = toggle.previousElementSibling;
 
-            if (input.type === 'password') {
-                input.type = 'text';
-                toggle.classList.remove('fa-eye');
-                toggle.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                toggle.classList.remove('fa-eye-slash');
-                toggle.classList.add('fa-eye');
-            }
-        });
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggle.classList.remove('fa-eye');
+            toggle.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            toggle.classList.remove('fa-eye-slash');
+            toggle.classList.add('fa-eye');
+        }
     });
+});
