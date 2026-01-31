@@ -766,7 +766,6 @@ main {
     padding: 0 5px;
 } */
 
-
 .video-action-bar {
     display: flex;
     justify-content: center;
@@ -777,36 +776,42 @@ main {
 }
 
 
-.nav-btn {
-    background-color: rgba(255, 255, 255, 0.1);
+.nav-btn, #fav-btn {
+    background-color: rgba(255, 255, 255, 0.1); 
     color: white;
     padding: 10px 20px;
     border-radius: 25px;
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2); 
     transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.nav-btn:hover {
-    background-color: #ffb26b; 
-    color: #1a1a1a;
-    transform: scale(1.05);
-    border-color: #ffb26b;
-}
-
-
-#fav-btn {
-    padding: 10px 20px;
-    height: 42px; 
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    height: 42px; 
+    cursor: pointer;
+}
+
+
+.nav-btn:hover, #fav-btn:hover {
+    background-color: #ffb26b;
+    color: #1a1a1a;
+    border-color: #ffb26b;
+    transform: scale(1.05);
+}
+
+
+#fav-btn.is-favorite {
+    background-color: #ff4b2b; 
+    border-color: #ff4b2b;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 75, 43, 0.5); 
+}
+
+#fav-btn.is-favorite:hover {
+    background-color: #d43f25;
 }
 
 #player-placeholder {
