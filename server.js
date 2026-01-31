@@ -130,20 +130,11 @@ app.get('/auth/me', (req, res) => {
     const sql = 'SELECT id, username, email, phone, favorite_episode, avatar_id FROM users WHERE id = ?';
     
     db.query(sql, [req.session.user.id], (err, results) => {
-        if (err) {
-            console.error("Auth Me DB Error:", err);
-            return res.json({ loggedIn: false });
-        }
-
-        if (results.length === 0) {
-            return res.json({ loggedIn: false });
-        }
-        
-        const freshUser = results[0];
-
+        if (err) return res.json({ loggedIn: false });
+        if (results.length === 0) return res.json({ loggedIn: false });
         res.json({ 
             loggedIn: true, 
-            user: freshUser 
+            user: results[0] 
         });
     });
 });
