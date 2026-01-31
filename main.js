@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (data.loggedIn && navImages.length > 0) {
             const user = data.user;
+            const hasValidAvatar = user.avatar_id && 
+                                   user.avatar_id !== 'default' && 
+                                   user.avatar_id.startsWith('data:image');
             const newSrc = (user.avatar_id && user.avatar_id !== 'default') 
                 ? user.avatar_id 
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
