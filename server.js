@@ -10,7 +10,7 @@ const session = require('express-session');
 const app = express();
 app.set('trust proxy', 1);
 
-const port = process.env.PORT || 10000;
+const port = process.env.DB_PORT || 10000;
 
 // ==============================================
 // 1. MIDDLEWARE & CONFIGURATION
