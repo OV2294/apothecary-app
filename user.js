@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         Toastify({ text: text, duration: 3000, style: { background: bg }, gravity: "top", position: "right" }).showToast();
     };
 
-    // === 1. LOAD USER DATA ===
+    // 1. LOAD USER DATA
     try {
         const res = await fetch('/auth/me', { credentials: 'include' });
         const data = await res.json();
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error loading profile:", err);
     }
 
-    // === 2. UPDATE PROFILE FORM ===
+    // 2. UPDATE PROFILE 
     const profileForm = document.getElementById('profile-form');
     if (profileForm) {
         profileForm.addEventListener('submit', async (e) => {
@@ -188,7 +188,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const phone = document.getElementById('edit-phone').value;
             const favText = document.getElementById('fav-episode-display').textContent;
             
-
             try {
                 const res = await fetch('/auth/update', {
                     method: 'POST',
@@ -220,7 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// === 3. AVATAR MODAL FUNCTIONS ===
+// 3. AVATAR 
 function openAvatarModal() {
     document.getElementById('avatar-modal').style.display = 'flex';
 }
@@ -229,10 +228,11 @@ function closeAvatarModal() {
     document.getElementById('avatar-modal').style.display = 'none';
 }
 
-// === 4. HANDLE FILE UPLOAD (CUSTOM IMAGE) ===
+// 4. FILE UPLOAD
 function handleFileUpload(input) {
     const file = input.files[0];
     if (!file) return;
+
 
     if (file.size > 500 * 1024) {
         alert("File too big! Please keep it under 500KB.");
@@ -241,13 +241,13 @@ function handleFileUpload(input) {
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const base64Image = e.target.result;
+        const base64Image = e.target.result; 
         selectAvatar(base64Image); 
     };
     reader.readAsDataURL(file);
 }
 
-// === 5. SAVE AVATAR TO SERVER ===
+// 5. SAVE AVATAR
 async function selectAvatar(url) {
     document.getElementById('current-avatar').src = url;
     closeAvatarModal();
@@ -271,11 +271,11 @@ async function selectAvatar(url) {
 
     } catch (err) {
         console.error("Failed to save avatar", err);
-        alert("Failed to save avatar. Please try again.");
+        alert("Failed to save avatar.");
     }
 }
 
-// === 6. LOGOUT FUNCTION ===
+// 6. LOGOUT FUNCTION
 async function logout() {
     try {
         await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
