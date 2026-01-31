@@ -35,19 +35,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (data.loggedIn && navImages.length > 0) {
             const user = data.user;
-
-            console.log("Navbar Avatar Data Length:", user.avatar_id ? user.avatar_id.length : "0");
-
-            const isRealPhoto = user.avatar_id && user.avatar_id.startsWith('data:image');
-
-            const finalSrc = isRealPhoto
-                ? user.avatar_id
-                : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
-
             navImages.forEach(img => {
-                img.src = finalSrc;
-
-                // Force Styling
+                if (user.avatar_id && user.avatar_id !== 'default') {
+                    img.src = user.avatar_id;
+                } else {
+                    const name = user.username || "User";
+                    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&bold=true`;
+                }
                 img.style.width = "40px";
                 img.style.height = "40px";
                 img.style.borderRadius = "50%";
