@@ -142,7 +142,7 @@
         </ul>
     </nav>
 
-    <div class="container" style="margin-top: 100px; max-width: 600px;">
+    <div class="container" style="margin-top: 100px;">
         <div class="auth-box">
             
             <div class="profile-header">
@@ -157,9 +157,11 @@
                 <p id="profile-email">...</p>
             </div>
 
-            <div class="favorite-section" style="text-align: center; margin-bottom: 30px; padding: 15px; background: rgba(255, 178, 107, 0.1); border-radius: 10px;">
-                <h3 style="color: #ffb26b; font-size: 16px; margin-bottom: 5px;">Current Favorite</h3>
-                <p id="fav-episode-display" style="color: white; font-weight: bold;">None set yet</p>
+            <div class="auth-field" style="text-align: center; margin-bottom: 20px;">
+                <label style="color: #ffb26b;">Current Favorite</label>
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 5px; color: white;">
+                    <span id="fav-episode-display">None set yet</span>
+                </div>
             </div>
 
             <form id="profile-form">
@@ -187,15 +189,16 @@
         <div class="modal-content">
             <h3>Choose your Avatar</h3>
             
-            <div class="upload-section" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #444;">
-                <p style="font-size: 14px; color: #aaa; margin-bottom: 10px;">Upload your own (Max 500KB)</p>
+            <div class="upload-section" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #444;">
+                <p style="color: #aaa; font-size: 14px; margin-bottom: 10px;">Upload Custom Image (Max 500KB)</p>
                 <input type="file" id="custom-file-input" accept="image/*" style="display: none;" onchange="handleFileUpload(this)">
-                <button onclick="document.getElementById('custom-file-input').click()" class="login-lock-btn" style="font-size: 12px; padding: 8px 15px; cursor: pointer;">
-                    <i class="fa-solid fa-folder-open"></i> Select from Gallery
+                
+                <button onclick="document.getElementById('custom-file-input').click()" class="submit-btn" style="padding: 8px 20px; font-size: 14px; width: auto;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload from Gallery
                 </button>
             </div>
 
-            <p style="font-size: 14px; color: #aaa;">Or choose a character:</p>
+            <p style="color: #aaa; font-size: 14px;">Or choose a character:</p>
             <div class="avatar-grid">
                 <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Maomao')">
                 <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Jinshi')">
@@ -203,7 +206,9 @@
                 <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/adventurer/svg?seed=Gyokuyou')">
             </div>
 
-            <button class="close-btn" onclick="closeAvatarModal()">Cancel</button>
+            <button class="close-btn" onclick="closeAvatarModal()" style="margin-top: 15px; background: transparent; border: 1px solid #666; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">
+                Cancel
+            </button>
         </div>
     </div>
 
