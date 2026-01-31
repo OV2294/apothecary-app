@@ -1,11 +1,33 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const accountBtns = document.querySelectorAll('.user-icon, .account-btn, #logoacc, .nav_right a');
-
+    const navUserImg = document.querySelector('.user-icon img');
     const continueSection = document.getElementById('continue-watching-section');
     const continueText = document.getElementById('continue-text');
     const continueBtn = document.getElementById('continue-btn');
+    try {
+        const res = await fetch('/auth/me', { credentials: 'include' });
+        const data = await res.json();
 
-    // 1. Fetch Watch Progress
+        if (data.loggedIn && navUserImg) {
+            const user = data.user;
+
+            if (user.avatar_id && user.avatar_id !== 'default') {
+                navUserImg.src = user.avatar_id;
+
+                navUserImg.style.borderRadius = "50%";
+                navUserImg.style.objectFit = "cover";
+                navUserImg.style.width = "40px"; 
+                navUserImg.style.height = "40px";
+            } else {
+                const name = user.username || "User";
+                navUserImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffb26b&color=000&size=64&bold=true`;
+                navUserImg.style.borderRadius = "50%";
+            }
+        }
+    } catch (err) {
+        console.error("Error loading navbar avatar:", err);
+    }
+    // Watch Progress
     if (continueSection) {
         fetch('/user/progress', { credentials: 'include' })
             .then(res => res.json())
@@ -21,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             .catch(err => console.error("Error fetching progress:", err));
     }
 
-    // 2. Check Login Session
+    // Check Login 
     try {
         const res = await fetch('/auth/me', {
             credentials: 'include'
