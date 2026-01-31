@@ -126,7 +126,7 @@ app.get('/auth/me', (req, res) => {
     if (!req.session.user) {
         return res.json({ loggedIn: false });
     }
-
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const sql = 'SELECT id, username, email, phone, favorite_episode, avatar_id FROM users WHERE id = ?';
     
     db.query(sql, [req.session.user.id], (err, results) => {
@@ -168,23 +168,6 @@ app.post('/auth/reset-with-phone', async (req, res) => {
 // ==============================================
 
 // Update Profile
-// app.post('/auth/update', (req, res) => {
-//     if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
-
-//     const { username, email, phone, favorite_episode } = req.body;
-//     const sql = 'UPDATE users SET username = ?, email = ?, phone = ?, favorite_episode = ? WHERE id = ?';
-
-//     db.query(sql, [username, email, phone, favorite_episode, req.session.user.id], (err, result) => {
-//         if (err) return res.status(500).json({ message: 'Update failed' });
-
-//         req.session.user.username = username;
-//         req.session.user.email = email;
-//         req.session.user.phone = phone;
-//         req.session.user.favorite_episode = favorite_episode;
-
-//         req.session.save(() => res.json({ message: 'Profile updated' }));
-//     });
-// });
 app.post('/auth/update', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
 
