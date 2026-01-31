@@ -1214,7 +1214,7 @@ main {
     margin-bottom: 25px;
 }
 
-/* .avatar-circle {
+.avatar-circle {
     width: 90px;
     height: 90px;
     border-radius: 50%;
@@ -1227,7 +1227,7 @@ main {
     font-weight: 700;
     box-shadow: 0 10px 20px rgba(255, 75, 43, 0.4);
     border: 3px solid rgba(255, 255, 255, 0.2);
-} */
+} 
 .profile-avatar-container {
     position: relative;
     width: 110px;       

@@ -218,17 +218,21 @@ function resetToInitials() {
 
 async function saveAvatar(avatarData) {
     if (avatarData === 'default') {
-        document.getElementById('current-avatar').src = "https://ui-avatars.com/api/?name=Loading&background=333&color=fff";
+        document.getElementById('current-avatar').src = "https://ui-avatars.com/api/?name=User&background=ffb26b&color=000";
     } else {
         document.getElementById('current-avatar').src = avatarData;
     }
 
-    const navImg = document.querySelector('.user-icon img');
+    const navImg = document.querySelector('.user-icon img'); 
+    
     if (navImg) {
-        navImg.src = (avatarData === 'default')
-            ? "image/accicon.png"
-            : avatarData;
-        navImg.style.borderRadius = "50%";
+        if (avatarData === 'default') {
+            navImg.src = "image/accicon.png"; 
+        } else {
+            navImg.src = avatarData;
+            navImg.style.borderRadius = "50%";
+            navImg.style.objectFit = "cover";
+        }
     }
 
     closeAvatarModal();
