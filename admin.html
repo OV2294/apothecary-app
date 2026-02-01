@@ -61,7 +61,7 @@
             <div class="admin-card">
                 <div class="admin-header-row">
                     <div
-                        style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,178,107,0.2); display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+                        style="background: rgba(0,0,0,0.3); padding: 25px; width: 100%;border-radius: 15px; border: 1px solid rgba(255,178,107,0.2); display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
 
                         <div style="position: relative; width: 100px; height: 100px;">
                             <img id="admin-settings-avatar"
@@ -197,129 +197,6 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                const res = await fetch('/auth/me?t=' + Date.now());
-                const data = await res.json();
-
-                if (data.loggedIn && data.user) {
-                    const user = data.user;
-
-                    document.getElementById('admin-username-input').value = user.username;
-                    document.getElementById('admin-email-input').value = user.email;
-                    document.getElementById('admin-phone-input').value = user.phone || "";
-                    document.getElementById('admin-name').textContent = user.username;
-
-                    let avatarSrc;
-                    if (user.avatar_id && user.avatar_id !== 'default') {
-                        avatarSrc = user.avatar_id;
-
-                        const headerCircle = document.getElementById('admin-initials');
-                        headerCircle.innerHTML = `<img src="${avatarSrc}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                        headerCircle.style.background = "transparent";
-                        headerCircle.style.border = "none";
-                    } else {
-                        avatarSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
-                    }
-
-                    document.getElementById('admin-settings-avatar').src = avatarSrc;
-                }
-            } catch (err) {
-                console.error("Error loading admin data:", err);
-            }
-        });
-
-        function openAvatarModal() {
-            document.getElementById('avatar-modal').style.display = "block";
-        }
-        function closeAvatarModal() {
-            document.getElementById('avatar-modal').style.display = "none";
-        }
-
-        function handleAdminAvatarUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    if (e.total > 50 * 1024 * 1024) { 
-                        alert("File too large! Keep it under 50MB.");
-                        return;
-                    }
-                    saveAdminAvatar(e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function saveAdminAvatar(avatarData) {
-            const settingsImg = document.getElementById('admin-settings-avatar');
-            const headerCircle = document.getElementById('admin-initials');
-
-            if (avatarData === 'default') {
-                const username = document.getElementById('admin-username-input').value;
-                const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=ffb26b&color=000&bold=true`;
-                settingsImg.src = fallback;
-                headerCircle.innerHTML = "AD";
-            } else {
-                settingsImg.src = avatarData;
-                headerCircle.innerHTML = `<img src="${avatarData}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-            }
-
-            closeAvatarModal();
-
-            await updateAdminProfile(avatarData);
-        }
-
-        async function updateAdminProfile(newAvatar = null) {
-            const username = document.getElementById('admin-username-input').value;
-            const email = document.getElementById('admin-email-input').value;
-            const phone = document.getElementById('admin-phone-input').value;
-
-            let avatarToSend = newAvatar;
-            if (!avatarToSend) {
-                const currentSrc = document.getElementById('admin-settings-avatar').src;
-                if (currentSrc.startsWith('data:image')) {
-                    avatarToSend = currentSrc;
-                } else {
-                    avatarToSend = "default";
-                }
-            }
-
-            try {
-                const res = await fetch('/auth/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: username,
-                        email: email,
-                        phone: phone,
-                        favorite_episode: null,
-                        avatar_id: avatarToSend
-                    })
-                });
-
-                if (res.ok) {
-                    Toastify({
-                        text: "Profile Updated Successfully!",
-                        duration: 3000,
-                        gravity: "top",
-                        position: "center",
-                        style: { background: "#28a745" }
-                    }).showToast();
-
-                    setTimeout(() => location.reload(), 1000);
-                } else {
-                    Toastify({
-                        text: "Update Failed",
-                        duration: 3000,
-                        style: { background: "#dc3545" }
-                    }).showToast();
-                }
-            } catch (err) {
-                console.error("Update error:", err);
-            }
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="admin.js"></script>
     <script src="main.js"></script>

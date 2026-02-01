@@ -198,72 +198,72 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 function openAvatarModal() {
-    document.getElementById('avatar-modal').style.display = 'flex';
+    const modal = document.getElementById('avatar-modal');
+    const preview = document.getElementById('modal-avatar-preview');
+    if(preview) preview.style.display = 'none';
+    
+    if (modal) modal.style.display = "block";
 }
 
 function closeAvatarModal() {
-    document.getElementById('avatar-modal').style.display = 'none';
+    const modal = document.getElementById('avatar-modal');
+    if (modal) modal.style.display = "none";
 }
 
-function handleFileUpload(input) {
-    const file = input.files[0];
-    if (!file) return;
-    if (file.size > 500 * 1024) { alert("File too big (Max 500KB)"); return; }
+function handleUserAvatarUpload(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 50 * 1024 * 1024) {
+            alert("File too large! Please keep it under 50MB.");
+            return;
+        }
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        saveAvatar(e.target.result);
-    };
-    reader.readAsDataURL(file);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('modal-avatar-preview');
+            if (preview) {
+                preview.src = e.target.result;
+                preview.style.display = 'inline-block';
+            }
+
+            saveUserAvatar(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
 }
 
-function resetToInitials() {
-    saveAvatar('default');
-}
-
-async function saveAvatar(avatarData) {
-    const bigProfileImg = document.getElementById('current-avatar');
-    if (bigProfileImg) {
-        bigProfileImg.src = (avatarData === 'default') 
-            ? "https://ui-avatars.com/api/?name=User&background=ffb26b&color=000"
-            : avatarData;
+async function saveUserAvatar(avatarData) {
+    const avatarImg = document.getElementById('current-avatar');
+    
+    let finalSrc;
+    if (avatarData === 'default') {
+        const username = document.getElementById('display-username').innerText || "User";
+        finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=ffb26b&color=000&bold=true`;
+    } else {
+        finalSrc = avatarData;
     }
 
-    const navImages = document.querySelectorAll('.user-icon img, img.user-icon');
-    
-
-    const newNavSrc = (avatarData === 'default') ? "image/accicon.png" : avatarData;
-
-    navImages.forEach(img => {
-        img.src = newNavSrc;
-        img.style.width = "40px";
-        img.style.height = "40px";
-        img.style.borderRadius = "50%";
-        img.style.objectFit = "cover";
-    });
-
+    if (avatarImg) avatarImg.src = finalSrc;
     closeAvatarModal();
 
-    try {
-        const meRes = await fetch('/auth/me');
-        const meData = await meRes.json();
-        const user = meData.user;
-
-        await fetch('/auth/update', {
+    try {const res = await fetch('/auth/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                username: user.username,
-                email: user.email,
-                phone: user.phone,
-                favorite_episode: user.favorite_episode,
-                avatar_id: avatarData
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                avatar_id: avatarData 
             })
         });
-
-        if (avatarData === 'default') location.reload(); 
+        
+        if (res.ok) {
+            setTimeout(() => location.reload(), 500);
+        } else {
+            console.error("Failed to save avatar to server");
+        }
 
     } catch (err) {
-        console.error("Failed to save avatar", err);
+        console.error("Avatar save error:", err);
     }
 }
