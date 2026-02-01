@@ -127,7 +127,7 @@ app.get('/auth/me', (req, res) => {
         return res.json({ loggedIn: false });
     }
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    const sql = 'SELECT id, username, email, phone, favorite_episode, avatar_id FROM users WHERE id = ?';
+    const sql = 'SELECT id, username, email, phone, role, favorite_episode, avatar_id FROM users WHERE id = ?';
     
     db.query(sql, [req.session.user.id], (err, results) => {
         if (err) return res.json({ loggedIn: false });
