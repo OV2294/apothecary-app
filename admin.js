@@ -177,7 +177,6 @@ async function updateAdminProfile(newAvatar = null) {
     const username = document.getElementById('admin-username-input').value;
     const email = document.getElementById('admin-email-input').value;
     const phone = document.getElementById('admin-phone-input').value;
-    
     let avatarToSend = newAvatar;
     if (!avatarToSend) {
         const currentSrc = document.getElementById('admin-settings-avatar').src;
@@ -204,6 +203,20 @@ async function updateAdminProfile(newAvatar = null) {
         const result = await res.json();
 
         if (res.ok) {
+            const navImages = document.querySelectorAll('.user-icon img, img.user-icon, #logoacc img');
+            let finalSrc;
+
+            if (avatarToSend && avatarToSend !== 'default') {
+                finalSrc = avatarToSend;
+            } else {
+                finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=ffb26b&color=000&bold=true`;
+            }
+
+            navImages.forEach(img => {
+                img.src = finalSrc;
+            });
+
+
             if (typeof Toastify !== 'undefined') {
                 Toastify({
                     text: "Profile Updated Successfully!",
@@ -213,6 +226,9 @@ async function updateAdminProfile(newAvatar = null) {
             } else {
                 alert("Profile Updated Successfully!");
             }
+            
+            setTimeout(() => location.reload(), 1000); 
+
         } else {
             if (typeof Toastify !== 'undefined') {
                 Toastify({

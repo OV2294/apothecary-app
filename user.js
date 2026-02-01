@@ -237,8 +237,8 @@ async function saveUserAvatar(avatarData) {
     
     let finalSrc;
     if (avatarData === 'default') {
-        const username = document.getElementById('display-username').innerText || "User";
-        finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=ffb26b&color=000&bold=true`;
+        const usernameText = document.getElementById('display-name').textContent || "User";
+        finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(usernameText)}&background=ffb26b&color=000&bold=true`;
     } else {
         finalSrc = avatarData;
     }
@@ -246,19 +246,33 @@ async function saveUserAvatar(avatarData) {
     if (avatarImg) avatarImg.src = finalSrc;
     closeAvatarModal();
 
-    try {const res = await fetch('/auth/update', {
+    try {
+        const usernameVal = document.getElementById('edit-username').value;
+        const emailVal = document.getElementById('edit-email').value;
+        const phoneVal = document.getElementById('edit-phone').value;
+
+        const res = await fetch('/auth/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
+                username: usernameVal,
+                email: emailVal,
+                phone: phoneVal,
                 avatar_id: avatarData 
             })
         });
         
         if (res.ok) {
-            setTimeout(() => location.reload(), 500);
+            const navImages = document.querySelectorAll('.user-icon img, img.user-icon, #logoacc img');
+            navImages.forEach(img => {
+                img.src = finalSrc;
+            });
+
+            if (typeof showToast === 'function') {
+                showToast("Avatar updated successfully!", "success");
+            }
+            
+            setTimeout(() => location.reload(), 1000);
         } else {
             console.error("Failed to save avatar to server");
         }
