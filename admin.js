@@ -20,18 +20,26 @@ async function loadDashboardTables() {
 
         const data = await res.json();
 
-        const initials = data.adminName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-        const adminInitialsEl = document.getElementById('admin-initials');
-        if (adminInitialsEl) adminInitialsEl.textContent = initials;
-        
-        document.getElementById('admin-name').textContent = data.adminName;
-        document.getElementById('total-users').textContent = data.totalUsers;
+        // Stats & Initial
+        if (data.adminName) {
+            const initials = data.adminName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            const adminInitialsEl = document.getElementById('admin-initials');
+            if (adminInitialsEl) adminInitialsEl.textContent = initials;
+            
+            const adminNameEl = document.getElementById('admin-name');
+            if (adminNameEl) adminNameEl.textContent = data.adminName;
+        }
+
+        const totalUsersEl = document.getElementById('total-users');
+        if (totalUsersEl) totalUsersEl.textContent = data.totalUsers || 0;
 
         // Users Table
         const userTableBody = document.getElementById('users-table-body');
         if (userTableBody) {
             userTableBody.innerHTML = '';
-            data.users.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).forEach(u => {
+            const users = data.users || []; 
+
+            users.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).forEach(u => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${u.id}</td>
@@ -48,10 +56,13 @@ async function loadDashboardTables() {
         // Feedback Table
         const fbTableBody = document.getElementById('feedback-table-body');
         if (fbTableBody) {
-            fbTableBody.innerHTML = data.feedback.length === 0 
+            const feedback = data.feedback || []; 
+
+            fbTableBody.innerHTML = feedback.length === 0 
                 ? '<tr><td colspan="4" style="text-align:center;">No feedback found</td></tr>' 
                 : '';
-            data.feedback.forEach(f => {
+            
+            feedback.forEach(f => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${new Date(f.created_at).toLocaleDateString()}</td>
@@ -66,10 +77,13 @@ async function loadDashboardTables() {
         // Comments Table
         const commentsTableBody = document.getElementById('comments-table-body');
         if (commentsTableBody) {
-            commentsTableBody.innerHTML = data.comments.length === 0 
+            const comments = data.comments || [];
+
+            commentsTableBody.innerHTML = comments.length === 0 
                 ? '<tr><td colspan="4" style="text-align:center;">No comments found</td></tr>' 
                 : '';
-            data.comments.forEach(c => {
+            
+            comments.forEach(c => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${new Date(c.created_at).toLocaleDateString()}</td>
