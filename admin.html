@@ -60,17 +60,55 @@
         <section class="admin-page">
             <div class="admin-card">
                 <div class="admin-header-row">
-                    <div style="display:flex; align-items:center; gap:20px;">
-                        <div class="avatar-circle" id="admin-initials" style="width:70px; height:70px; font-size:28px;">
-                            AD</div>
-                        <div class="admin-info">
-                            <h2 id="admin-name">Admin</h2>
-                            <p>Managing users and activity.</p>
+                    <h3 style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        Profile Settings
+                    </h3>
+
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,178,107,0.2); display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+
+                        <div style="position: relative; width: 100px; height: 100px;">
+                            <img id="admin-settings-avatar"
+                                src="https://ui-avatars.com/api/?name=Admin&background=333&color=fff" alt="Admin"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #ffb26b;">
+
+                            <button onclick="openAvatarModal()"
+                                style="position: absolute; bottom: 0; right: 0; background: #ffb26b; color: #000; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+                                ✎
+                            </button>
                         </div>
-                    </div>
-                    <div class="admin-stat-box">
-                        <p class="admin-stat-label">Total Users</p>
-                        <p class="admin-stat-value" id="total-users">0</p>
+
+                        <div
+                            style="flex: 1; min-width: 250px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+
+                            <div>
+                                <label
+                                    style="display: block; color: #ddd; margin-bottom: 5px; font-size: 14px;">Username</label>
+                                <input type="text" id="admin-username-input" placeholder="Username"
+                                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; outline: none;">
+                            </div>
+
+                            <div>
+                                <label
+                                    style="display: block; color: #ddd; margin-bottom: 5px; font-size: 14px;">Email</label>
+                                <input type="email" id="admin-email-input" placeholder="Email"
+                                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; outline: none;">
+                            </div>
+
+                            <div>
+                                <label
+                                    style="display: block; color: #ddd; margin-bottom: 5px; font-size: 14px;">Phone</label>
+                                <input type="text" id="admin-phone-input" placeholder="Phone"
+                                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; outline: none;">
+                            </div>
+
+                            <div style="display: flex; align-items: flex-end;">
+                                <button onclick="updateAdminProfile()"
+                                    style="width: 100%; padding: 10px; background: #ffb26b; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -138,7 +176,154 @@
             All rights belong to their respective owners.
         </p>
     </footer>
+    <div id="avatar-modal"
+        style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
+        <div
+            style="background-color: #1a1a1a; margin: 15vh auto; padding: 30px; border: 1px solid #ffb26b; width: 90%; max-width: 400px; text-align: center; border-radius: 15px; position: relative; box-shadow: 0 0 20px rgba(255,178,107,0.2);">
+            <span onclick="closeAvatarModal()"
+                style="position: absolute; top: 10px; right: 20px; color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer;">&times;</span>
 
+            <h2 style="color: #ffb26b; margin-bottom: 20px;">Change Profile Photo</h2>
+
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <label
+                    style="background: #ffb26b; color: black; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                    Upload New Photo
+                    <input type="file" id="avatar-upload" accept="image/*" hidden
+                        onchange="handleAdminAvatarUpload(this)">
+                </label>
+
+                <button onclick="saveAdminAvatar('default')"
+                    style="background: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                    Remove Photo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const res = await fetch('/auth/me?t=' + Date.now());
+                const data = await res.json();
+
+                if (data.loggedIn && data.user) {
+                    const user = data.user;
+
+                    document.getElementById('admin-username-input').value = user.username;
+                    document.getElementById('admin-email-input').value = user.email;
+                    document.getElementById('admin-phone-input').value = user.phone || "";
+                    document.getElementById('admin-name').textContent = user.username;
+
+                    let avatarSrc;
+                    if (user.avatar_id && user.avatar_id !== 'default') {
+                        avatarSrc = user.avatar_id;
+
+                        const headerCircle = document.getElementById('admin-initials');
+                        headerCircle.innerHTML = `<img src="${avatarSrc}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+                        headerCircle.style.background = "transparent";
+                        headerCircle.style.border = "none";
+                    } else {
+                        avatarSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+                    }
+
+                    document.getElementById('admin-settings-avatar').src = avatarSrc;
+                }
+            } catch (err) {
+                console.error("Error loading admin data:", err);
+            }
+        });
+
+        function openAvatarModal() {
+            document.getElementById('avatar-modal').style.display = "block";
+        }
+        function closeAvatarModal() {
+            document.getElementById('avatar-modal').style.display = "none";
+        }
+
+        function handleAdminAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    if (e.total > 50 * 1024 * 1024) { 
+                        alert("File too large! Keep it under 50MB.");
+                        return;
+                    }
+                    saveAdminAvatar(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function saveAdminAvatar(avatarData) {
+            const settingsImg = document.getElementById('admin-settings-avatar');
+            const headerCircle = document.getElementById('admin-initials');
+
+            if (avatarData === 'default') {
+                const username = document.getElementById('admin-username-input').value;
+                const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=ffb26b&color=000&bold=true`;
+                settingsImg.src = fallback;
+                headerCircle.innerHTML = "AD";
+            } else {
+                settingsImg.src = avatarData;
+                headerCircle.innerHTML = `<img src="${avatarData}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+            }
+
+            closeAvatarModal();
+
+            await updateAdminProfile(avatarData);
+        }
+
+        async function updateAdminProfile(newAvatar = null) {
+            const username = document.getElementById('admin-username-input').value;
+            const email = document.getElementById('admin-email-input').value;
+            const phone = document.getElementById('admin-phone-input').value;
+
+            let avatarToSend = newAvatar;
+            if (!avatarToSend) {
+                const currentSrc = document.getElementById('admin-settings-avatar').src;
+                if (currentSrc.startsWith('data:image')) {
+                    avatarToSend = currentSrc;
+                } else {
+                    avatarToSend = "default";
+                }
+            }
+
+            try {
+                const res = await fetch('/auth/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        phone: phone,
+                        favorite_episode: null,
+                        avatar_id: avatarToSend
+                    })
+                });
+
+                if (res.ok) {
+                    Toastify({
+                        text: "Profile Updated Successfully!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        style: { background: "#28a745" }
+                    }).showToast();
+
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    Toastify({
+                        text: "Update Failed",
+                        duration: 3000,
+                        style: { background: "#dc3545" }
+                    }).showToast();
+                }
+            } catch (err) {
+                console.error("Update error:", err);
+            }
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="admin.js"></script>
     <script src="main.js"></script>

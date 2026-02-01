@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let currentUserData = {};
 
-    // 1. LOAD DATA
+    // LOAD DATA
     try {
         const res = await fetch('/auth/me', { credentials: 'include' });
         const data = await res.json();
@@ -187,6 +187,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (favDisplay) favDisplay.textContent = "None set";
             if (removeBtn) removeBtn.style.display = 'none';
         }
+    }
+    // --- 5. Logout ---
+    const logoutBtn = document.getElementById('logout-btn');
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', () => logout());
     }
 
 });
