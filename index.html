@@ -4,20 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Apothecary Diaries</title>
-    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass-border': 'rgba(255, 255, 255, 0.2)',
+                        'glass-bg': 'rgba(255, 255, 255, 0.1)',
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)', // Matching the theme accent
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="bframe">
-        <a href="Anime.html" class="exbutton glass-liquid">
-            <div class="innerexbutton glass">
+<body class="h-screen w-screen overflow-hidden relative bg-black font-sans">
+
+    <img src="image/16209.jpg" alt="Background" class="absolute inset-0 w-full h-full z-0 hidden md:block opacity-90">
+    <img src="image/23106.webp" alt="Background" class="absolute inset-0 w-full h-full z-0 block md:hidden opacity-90">
+
+    <div class="relative z-10 w-full h-full flex items-center justify-center">
+
+        <a href="Anime.html" class="group transition-transform duration-300 hover:scale-110 focus:scale-110 outline-none">
+            
+            <div class="px-10 py-4 
+                        backdrop-blur-md bg-white/10 border border-white/30 
+                        rounded-full shadow-glass shadow-glow
+                        text-white text-2xl font-bold tracking-widest uppercase
+                        transition-all duration-300 
+                        group-hover:bg-white/20 group-hover:border-white/50 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
                 Explore
             </div>
         </a>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="main.js"></script>
 </body>
 </html>
