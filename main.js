@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const navImages = document.querySelectorAll('.user-icon img, img.user-icon');
+    const navImages = document.querySelectorAll('.user-icon img, img.user-icon, #logoacc');
     const accountLinks = document.querySelectorAll('a.user-icon, #logoacc, .nav_right a[href="auth.html"]');
     const continueSection = document.getElementById('continue-watching-section');
     const continueText = document.getElementById('continue-text');
