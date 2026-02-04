@@ -6,7 +6,6 @@
     <title>User Profile - The Apothecary Diaries</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -20,13 +19,7 @@
                         'glass-bg': 'rgba(255, 255, 255, 0.2)',
                         'theme-orange': '#ffb26b',
                     },
-                    boxShadow: {
-                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
-                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
-                    },
-                    fontFamily: {
-                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
+                    boxShadow: { 'glass': '0 4px 30px rgba(0, 0, 0, 0.1)' }
                 }
             }
         }
@@ -34,42 +27,23 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
-            .glass {
-                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
-            }
-            .nav-link {
-                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
-            }
-            .form-input {
-                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
-            }
-            .action-btn {
-                @apply px-4 py-2 rounded-lg font-bold transition-all duration-300 cursor-pointer shadow-md text-sm border-none;
-            }
-            .btn-primary {
-                @apply bg-theme-orange text-white hover:text-theme-orange hover:bg-white hover:scale-105;
-            }
-            .btn-danger {
-                @apply bg-red-500/80 text-white hover:bg-red-600 hover:scale-105;
-            }
-            .btn-secondary {
-                @apply bg-white/20 text-white hover:bg-white/30;
-            }
+            .glass { @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl; }
+            .nav-link { @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300; }
+            .profile-input { @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-theme-orange; }
+         
+            .fav-item { @apply flex justify-between items-center bg-white/5 border border-white/10 p-3 rounded-lg mb-2 hover:bg-white/10 transition-colors; }
         }
     </style>
 </head>
 
 <body class="bg-black font-sans min-h-screen text-white relative">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+    <img src="image/16211.JPG" class="fixed inset-0 w-full h-full -z-10 object-cover opacity-60">
 
     <header class="fixed top-0 w-full z-50 px-4 py-3">
         <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
             <div class="flex items-center gap-8">
-                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
-                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
-                </a>
+                <a href="index.html"><img src="image/logo1.png" class="h-12 hover:scale-105 transition-transform"></a>
                 <ul class="hidden md:flex gap-8">
                     <li><a href="Anime.html" class="nav-link">Anime</a></li>
                     <li><a href="manga.html" class="nav-link">Manga</a></li>
@@ -77,358 +51,219 @@
                     <li><a href="about.html" class="nav-link">About</a></li>
                 </ul>
             </div>
-
             <div class="flex items-center gap-4">
-                <a id="user-icon-link" href="#" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
-                    <img id="nav-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
-                </a>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
+                <button onclick="logout()" class="text-red-400 hover:text-white font-bold">Logout</button>
             </div>
         </nav>
-
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
-            <a href="Anime.html" class="nav-link text-base">Anime</a>
-            <a href="manga.html" class="nav-link text-base">Manga</a>
-            <a href="character.html" class="nav-link text-base">Characters</a>
-            <a href="about.html" class="nav-link text-base">About</a>
-            <button onclick="logout()" class="text-red-400 font-bold mt-2">Logout</button>
-        </div>
     </header>
 
-    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto flex flex-col gap-8">
+    <main class="pt-32 pb-20 px-4 max-w-4xl mx-auto space-y-8">
 
-        <section class="glass p-8 flex flex-col md:flex-row items-center gap-8 relative">
+        <section class="glass p-8 flex flex-col md:flex-row gap-8 items-center md:items-start">
             
-            <div class="relative group">
-                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 shadow-lg">
-                    <img id="profile-avatar" src="image/accicon.png" alt="Profile" class="w-full h-full object-cover">
+            <div class="flex flex-col items-center gap-4">
+                <div class="relative group w-32 h-32">
+                    <img id="profile-avatar" src="image/accicon.png" class="w-full h-full rounded-full object-cover border-4 border-theme-orange shadow-lg">
+                    <label for="avatar-input" class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity text-white font-bold">
+                        Change
+                    </label>
+                    <input type="file" id="avatar-input" class="hidden" accept="image/*" onchange="handleAvatarUpload(this)">
                 </div>
-                <div onclick="openAvatarModal()" class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                    <i class="fa-solid fa-camera text-2xl text-white"></i>
-                </div>
+                <h2 class="text-2xl font-bold" id="display-name">User</h2>
             </div>
 
-            <div class="flex-1 text-center md:text-left">
-                <h1 id="display-name" class="text-3xl font-bold text-theme-orange mb-1">Loading...</h1>
-                <p id="display-email" class="text-white/70 text-sm mb-4">user@example.com</p>
-                <div class="flex gap-4 justify-center md:justify-start">
-                    <button onclick="toggleEditMode()" class="action-btn btn-secondary">
-                        <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Profile
-                    </button>
-                    <button onclick="logout()" class="action-btn btn-danger">
-                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
-                    </button>
+            <div class="flex-1 w-full space-y-4">
+                <h3 class="text-xl font-bold text-theme-orange border-b border-white/20 pb-2">Profile Settings</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm text-white/60 block mb-1">Username</label>
+                        <input type="text" id="inp-username" class="profile-input">
+                    </div>
+                    <div>
+                        <label class="text-sm text-white/60 block mb-1">Phone</label>
+                        <input type="text" id="inp-phone" class="profile-input" placeholder="+123...">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-sm text-white/60 block mb-1">Email</label>
+                        <input type="email" id="inp-email" class="profile-input opacity-50 cursor-not-allowed" readonly>
+                    </div>
                 </div>
+                <button onclick="updateProfile()" class="px-6 py-2 bg-theme-orange text-black font-bold rounded hover:bg-white transition-colors">
+                    Save Changes
+                </button>
             </div>
-
         </section>
 
-        <section id="edit-section" class="hidden glass p-8 animate-fade-in">
-            <h2 class="text-xl font-bold mb-6 text-theme-orange border-b border-white/10 pb-2">Update Information</h2>
-            <form id="profile-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section class="glass p-8">
+            <h3 class="text-xl font-bold text-theme-orange mb-4 border-b border-white/20 pb-2">Continue Watching</h3>
+            <div id="continue-watching-box" class="p-4 bg-white/5 rounded-lg border border-white/10 flex justify-between items-center">
                 <div>
-                    <label class="block text-sm font-bold text-white/70 mb-1">Username</label>
-                    <input type="text" id="edit-username" class="form-input">
+                    <p class="font-bold text-lg" id="last-watched-title">No history found</p>
+                    <p class="text-sm text-white/50" id="last-watched-sub">Start watching anime to see progress here.</p>
                 </div>
-                <div>
-                    <label class="block text-sm font-bold text-white/70 mb-1">Email</label>
-                    <input type="email" id="edit-email" class="form-input" disabled title="Email cannot be changed">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-white/70 mb-1">Phone</label>
-                    <input type="tel" id="edit-phone" class="form-input">
-                </div>
-                
-                <div class="md:col-span-2 flex justify-end gap-4 mt-2">
-                    <button type="button" onclick="toggleEditMode()" class="action-btn btn-secondary">Cancel</button>
-                    <button type="submit" class="action-btn btn-primary">Save Changes</button>
-                </div>
-            </form>
+                <a href="Anime.html" id="resume-btn" class="hidden px-4 py-2 bg-white text-theme-orange rounded font-bold hover:bg-theme-orange hover:text-white transition-colors">
+                    Resume
+                </a>
+            </div>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <section class="glass p-6 flex flex-col h-full md:col-span-2">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-theme-orange"><i class="fa-solid fa-heart mr-2"></i>Favorite Episodes</h2>
-                    <a href="Anime.html" class="text-xs text-white/60 hover:text-white underline">+ Add New</a>
-                </div>
-                
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-white/10 text-white/60 text-sm uppercase tracking-wider">
-                                <th class="py-3 px-4">Details</th>
-                                <th class="py-3 px-4 hidden sm:table-cell">Watch</th>
-                                <th class="py-3 px-4 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fav-table-body" class="text-white/90">
-                            </tbody>
-                    </table>
-                    <div id="no-fav-msg" class="text-center text-white/50 py-8 hidden">
-                        <p>No favorites added yet.</p>
-                        <a href="Anime.html" class="text-theme-orange text-sm hover:underline">Browse Anime</a>
-                    </div>
-                </div>
-            </section>
-
-            <section class="glass p-6 flex flex-col h-full md:col-span-2">
-                <h2 class="text-xl font-bold mb-4 text-theme-orange"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Continue Watching</h2>
-                <div class="flex-1 flex flex-col justify-center items-center text-center p-6 bg-black/10 rounded-xl">
-                    <div id="history-content">
-                        <p class="text-white/60 italic">No watch history found.</p>
-                    </div>
-                </div>
-            </section>
-
-        </div>
+        <section class="glass p-8">
+            <h3 class="text-xl font-bold text-theme-orange mb-4 border-b border-white/20 pb-2">Favorites</h3>
+            <div id="favorites-list" class="flex flex-col">
+                <p class="text-white/50 italic">No favorites yet.</p>
+            </div>
+        </section>
 
     </main>
 
-    <div id="avatar-modal" class="fixed inset-0 z-[100] hidden bg-black/80 flex items-center justify-center p-4">
-        <div class="glass max-w-sm w-full p-6 relative animate-scale-up">
-            <button onclick="closeAvatarModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-2xl">&times;</button>
-            <h2 class="text-2xl font-bold text-theme-orange mb-6 text-center">Change Avatar</h2>
-            
-            <div class="flex flex-col gap-4">
-                <label class="block w-full text-center py-4 bg-white/10 border-2 border-dashed border-white/30 rounded-xl cursor-pointer hover:bg-white/20 hover:border-theme-orange transition-all">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl mb-2 text-white/80"></i>
-                    <p class="text-sm">Click to Upload Image</p>
-                    <input type="file" id="avatar-upload" accept="image/*" hidden onchange="handleAvatarUpload(this)">
-                </label>
-                
-                <div class="text-center text-sm text-white/50">- OR -</div>
-
-                <button onclick="saveAvatar('default')" class="action-btn btn-danger w-full">
-                    Remove Current Photo
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
-        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
-        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-black">educational and portfolio purposes only</span>. 
-            We do not own the rights to the anime, characters, or media content.
-        </p>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
         let currentUser = null;
 
-        function toggleEditMode() {
-            const section = document.getElementById('edit-section');
-            section.classList.toggle('hidden');
-        }
-
-        function openAvatarModal() {
-            document.getElementById('avatar-modal').classList.remove('hidden');
-        }
-
-        function closeAvatarModal() {
-            document.getElementById('avatar-modal').classList.add('hidden');
-        }
-
-        async function logout() {
-            try {
-                await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
-                Toastify({ text: "Logged out!", style: { background: "#333" } }).showToast();
-                setTimeout(() => window.location.href = 'index.html', 1000);
-            } catch (err) { console.error(err); }
-        }
-
         document.addEventListener("DOMContentLoaded", async () => {
-            
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navAvatar = document.getElementById('nav-avatar');
-            const profileAvatar = document.getElementById('profile-avatar');
-            
-            // --- MOBILE MENU ---
-            if (mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    mobileMenu.classList.toggle('flex');
-                });
-            }
+            await loadUserProfile();
+        });
 
-            // --- FETCH USER DATA ---
+        async function loadUserProfile() {
             try {
                 const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
                 const data = await res.json();
 
-                if (!data.loggedIn || !data.user) {
+                if (!data.loggedIn) {
                     window.location.href = 'auth.html';
                     return;
                 }
 
                 currentUser = data.user;
-                populateUI(currentUser);
 
-            } catch (err) {
-                console.error("Auth Error:", err);
-                Toastify({ text: "Error loading profile", style: { background: "#ff5f6d" } }).showToast();
-            }
+                
+                document.getElementById('display-name').textContent = currentUser.username;
+                document.getElementById('inp-username').value = currentUser.username;
+                document.getElementById('inp-email').value = currentUser.email;
+                document.getElementById('inp-phone').value = currentUser.phone || '';
 
-            // --- UPDATE PROFILE ---
-            const form = document.getElementById('profile-form');
-            if (form) {
-                form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    
-                    const username = document.getElementById('edit-username').value;
-                    const email = document.getElementById('edit-email').value;
-                    const phone = document.getElementById('edit-phone').value;
-                    const btn = form.querySelector('button[type="submit"]');
-                    const originalText = btn.textContent;
+                const avatarImg = document.getElementById('profile-avatar');
+                if (currentUser.avatar_id && currentUser.avatar_id !== 'default') {
+                    avatarImg.src = currentUser.avatar_id;
+                }
 
-                    btn.textContent = "Saving...";
-                    btn.disabled = true;
+                loadWatchHistory();
 
-                    try {
-                        const res = await fetch('/auth/update', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ 
-                                username, email, phone, 
-                                avatar_id: currentUser.avatar_id 
-                            })
-                        });
+                renderFavoritesList();
 
-                        if (res.ok) {
-                            Toastify({ text: "Profile Updated!", style: { background: "#00b09b" } }).showToast();
-                            setTimeout(() => location.reload(), 1000);
-                        } else {
-                            Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
-                        }
-                    } catch (err) { console.error(err); }
-                    finally {
-                        btn.textContent = originalText;
-                        btn.disabled = false;
-                    }
-                });
-            }
-        });
-
-        // ---  UI ---
-        function populateUI(user) {
-            document.getElementById('display-name').textContent = user.username;
-            document.getElementById('display-email').textContent = user.email;
-            
-            document.getElementById('edit-username').value = user.username;
-            document.getElementById('edit-email').value = user.email;
-            document.getElementById('edit-phone').value = user.phone || '';
-
-            // Avatar
-            let avatarSrc;
-            if (user.avatar_id && user.avatar_id !== 'default') {
-                avatarSrc = user.avatar_id;
-            } else {
-                avatarSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
-            }
-            document.getElementById('profile-avatar').src = avatarSrc;
-            document.getElementById('nav-avatar').src = avatarSrc;
-
-            const tbody = document.getElementById('fav-table-body');
-            const noFavMsg = document.getElementById('no-fav-msg');
-            tbody.innerHTML = '';
-
-            let favorites = [];
-            if (user.favorite_episode && user.favorite_episode !== 'None') {
-                favorites.push(user.favorite_episode);
-            }
-
-            if (favorites.length === 0) {
-                noFavMsg.classList.remove('hidden');
-            } else {
-                noFavMsg.classList.add('hidden');
-                favorites.forEach(fav => {
-                    const tr = document.createElement('tr');
-                    tr.className = "border-b border-white/5 hover:bg-white/5 transition-colors";
-                    
-                    let displayDetails = `<span class="font-bold text-theme-orange">${fav}</span>`;
-                    let link = '#';
-
-                    const match = fav.match(/(\d+)/g);
-                    if(match && match.length >= 2) {
-                        const s = match[0];
-                        const e = match[1];
-                        link = `stream.html?season=${s}&ep=${e}`;
-                    }
-
-                    tr.innerHTML = `
-                        <td class="py-3 px-4">${displayDetails}</td>
-                        <td class="py-3 px-4 hidden sm:table-cell">
-                            <a href="${link}" class="text-xs bg-white/10 hover:bg-theme-orange hover:text-black px-3 py-1 rounded transition-colors">Play Now</a>
-                        </td>
-                        <td class="py-3 px-4 text-right">
-                            <button onclick="removeFavorite('${fav}')" class="text-red-400 hover:text-red-300 transition-colors p-2" title="Remove">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            // Watch History
-            fetch('/user/progress', { credentials: 'include' })
-                .then(r => r.json())
-                .then(d => {
-                    if (d.continue) {
-                        document.getElementById('history-content').innerHTML = `
-                            <div class="flex flex-col gap-2">
-                                <p class="text-2xl font-bold text-white">Season ${d.continue.season}</p>
-                                <p class="text-xl text-theme-orange">Episode ${d.continue.episode}</p>
-                                <a href="stream.html?season=${d.continue.season}&ep=${d.continue.episode}" class="action-btn btn-primary mt-4 inline-block mx-auto no-underline">
-                                    <i class="fa-solid fa-play mr-2"></i>Resume
-                                </a>
-                            </div>
-                        `;
-                    }
-                })
-                .catch(err => console.error(err));
+            } catch (e) { console.error(e); }
         }
 
-        // --- AVATAR ---
-        window.handleAvatarUpload = (input) => {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) { saveAvatar(e.target.result); };
-            reader.readAsDataURL(file);
-        };
+        async function loadWatchHistory() {
+            try {
+                const res = await fetch('/user/progress');
+                const data = await res.json();
+                if (data.continue) {
+                    document.getElementById('last-watched-title').textContent = `Season ${data.continue.season} | Episode ${data.continue.episode}`;
+                    document.getElementById('last-watched-sub').textContent = "Pick up where you left off";
+                    
+                    const btn = document.getElementById('resume-btn');
+                    btn.classList.remove('hidden');
+                    btn.href = `stream.html?season=${data.continue.season}&ep=${data.continue.episode}`;
+                }
+            } catch(e) {}
+        }
 
-        window.saveAvatar = async (avatarData) => {
+        function renderFavoritesList() {
+            const listContainer = document.getElementById('favorites-list');
+            
+            if (!currentUser.favorite_episode || currentUser.favorite_episode === 'None' || currentUser.favorite_episode.trim() === '') {
+                listContainer.innerHTML = '<p class="text-white/50 italic">No favorites added yet.</p>';
+                return;
+            }
+
+            const favs = currentUser.favorite_episode.split(',').map(s => s.trim()).filter(s => s);
+            
+            listContainer.innerHTML = '';
+            favs.forEach(fav => {
+                const div = document.createElement('div');
+                div.className = 'fav-item';
+                div.innerHTML = `
+                    <span class="font-bold text-sm">
+                        <i class="fa-solid fa-heart text-red-500 mr-2"></i> ${fav}
+                    </span>
+                    <button onclick="removeFavorite('${fav}')" class="text-white/50 hover:text-red-400 transition-colors" title="Remove">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                listContainer.appendChild(div);
+            });
+        }
+
+        window.removeFavorite = async (itemToRemove) => {
+            if (!currentUser.favorite_episode) return;
+
+            let favs = currentUser.favorite_episode.split(',').map(s => s.trim()).filter(s => s);
+            favs = favs.filter(f => f !== itemToRemove);
+            
+            const newFavString = favs.join(', ');
+
             try {
                 const res = await fetch('/auth/update', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        username: currentUser.username,
-                        email: currentUser.email,
-                        phone: currentUser.phone,
-                        avatar_id: avatarData
+                        username: currentUser.username, 
+                        favorite_episode: newFavString
                     })
                 });
 
                 if (res.ok) {
-                    Toastify({ text: "Avatar Updated!", style: { background: "#00b09b" } }).showToast();
-                    setTimeout(() => location.reload(), 1000);
+                    currentUser.favorite_episode = newFavString;
+                    renderFavoritesList(); 
+                    Toastify({ text: "Removed from favorites", style: { background: "#333" } }).showToast();
                 } else {
-                    Toastify({ text: "Failed to update avatar", style: { background: "#ff5f6d" } }).showToast();
+                    Toastify({ text: "Failed to remove", style: { background: "#ff5f6d" } }).showToast();
                 }
             } catch (err) { console.error(err); }
         };
 
-        window.removeFavorite = async (favItem) => {
-            if(!confirm(`Remove "${favItem}" from favorites?`)) return;
-             alert("Feature requires backend update to support removing favorites."); 
+        window.updateProfile = async () => {
+            const username = document.getElementById('inp-username').value;
+            const phone = document.getElementById('inp-phone').value;
+
+            try {
+                const res = await fetch('/auth/update', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username, phone })
+                });
+                if (res.ok) {
+                    Toastify({ text: "Profile Updated", style: { background: "#00b09b" } }).showToast();
+                    document.getElementById('display-name').textContent = username;
+                }
+            } catch(e) { console.error(e); }
+        };
+
+        window.handleAvatarUpload = (input) => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const res = await fetch('/auth/update', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ username: currentUser.username, avatar_id: e.target.result })
+                    });
+                    if(res.ok) {
+                        document.getElementById('profile-avatar').src = e.target.result;
+                        Toastify({ text: "Avatar Updated", style: { background: "#00b09b" } }).showToast();
+                    }
+                } catch(err) {}
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.logout = async () => {
+            await fetch('/auth/logout', { method: 'POST' });
+            window.location.href = 'index.html';
         };
 
     </script>

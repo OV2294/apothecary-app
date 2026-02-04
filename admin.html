@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,9 +20,7 @@
                         'glass-bg': 'rgba(255, 255, 255, 0.2)',
                         'theme-orange': '#ffb26b',
                     },
-                    boxShadow: {
-                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
-                    }
+                    boxShadow: { 'glass': '0 4px 30px rgba(0, 0, 0, 0.1)' }
                 }
             }
         }
@@ -29,24 +28,14 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
-            .glass {
-                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
-            }
-            .sidebar-link {
-                @apply flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/10 hover:text-theme-orange transition-all rounded-lg cursor-pointer;
-            }
-            .sidebar-link.active {
-                @apply bg-theme-orange text-black font-bold;
-            }
-            .stat-card {
-                @apply glass p-6 flex flex-col gap-2;
-            }
-            .modal-overlay {
-                @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden;
-            }
-            .modal-content {
-                @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl;
-            }
+            .glass { @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl; }
+            .sidebar-link { @apply flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/10 hover:text-theme-orange transition-all rounded-lg cursor-pointer; }
+            .sidebar-link.active { @apply bg-theme-orange text-black font-bold; }
+            .stat-card { @apply glass p-6 flex flex-col gap-2; }
+            .modal-overlay { @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden; }
+            .modal-content { @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl; }
+            
+            .content-card { @apply bg-white/5 p-4 rounded-lg border border-white/10 flex flex-col gap-2 hover:bg-white/10 transition-colors; }
         }
     </style>
 </head>
@@ -82,15 +71,16 @@
     </aside>
 
     <main class="ml-64 w-full p-8">
-        
+
         <header class="flex justify-between items-center mb-8 glass p-6">
             <div>
-                <h2 class="text-2xl font-bold">Welcome, <span id="admin-name" class="text-theme-orange">Admin</span></h2>
+                <h2 class="text-2xl font-bold">Welcome, <span id="admin-name" class="text-theme-orange">...</span></h2>
                 <p class="text-white/50 text-sm">Here is what’s happening today.</p>
             </div>
-            
+
             <div class="relative cursor-pointer group" onclick="openProfileModal()">
-                <img id="admin-avatar" src="image/accicon.png" class="w-12 h-12 rounded-full border-2 border-theme-orange object-cover shadow-lg group-hover:scale-105 transition-transform">
+                <img id="admin-avatar" src="image/accicon.png"
+                    class="w-12 h-12 rounded-full border-2 border-theme-orange object-cover shadow-lg group-hover:scale-105 transition-transform">
                 <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-black"></div>
             </div>
         </header>
@@ -103,11 +93,11 @@
                 </div>
                 <div class="stat-card">
                     <div class="text-blue-400 text-3xl font-bold" id="total-comments">0</div>
-                    <div class="text-white/60">Comments Posted</div>
+                    <div class="text-white/60">Comments</div>
                 </div>
                 <div class="stat-card">
                     <div class="text-green-400 text-3xl font-bold" id="total-feedback">0</div>
-                    <div class="text-white/60">Feedback Received</div>
+                    <div class="text-white/60">Feedback</div>
                 </div>
             </div>
         </div>
@@ -126,8 +116,7 @@
                                 <th class="p-3 rounded-r-lg">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="users-table-body">
-                            </tbody>
+                        <tbody id="users-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -136,43 +125,46 @@
         <div id="feedback-section" class="hidden animate-fade-in">
             <div class="glass p-6">
                 <h3 class="text-xl font-bold mb-4 text-theme-orange">User Feedback</h3>
-                <div id="feedback-list" class="flex flex-col gap-4"></div>
+                <div id="feedback-list" class="grid grid-cols-1 gap-4"></div>
             </div>
         </div>
 
         <div id="comments-section" class="hidden animate-fade-in">
             <div class="glass p-6">
                 <h3 class="text-xl font-bold mb-4 text-theme-orange">Recent Comments</h3>
-                <div id="all-comments-list" class="flex flex-col gap-4"></div>
+                <div id="all-comments-list" class="grid grid-cols-1 gap-4"></div>
             </div>
         </div>
 
     </main>
-
+    <footer
+        class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-theme-orange">educational and portfolio purposes only</span>.
+            We do not own the rights to the anime, characters, or media content.
+        </p>
+    </footer>
     <div id="profile-modal" class="modal-overlay">
         <div class="modal-content text-center">
-            
             <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-white/50 hover:text-white">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
-
             <h3 class="text-2xl font-bold text-theme-orange mb-6">Edit Avatar</h3>
-
             <div class="relative w-24 h-24 mx-auto mb-6">
-                <img id="modal-avatar-preview" src="image/accicon.png" class="w-full h-full rounded-full object-cover border-2 border-white/20">
-                
-                <label for="avatar-upload" class="absolute bottom-0 right-0 bg-theme-orange text-black p-2 rounded-full cursor-pointer hover:bg-white transition-colors shadow-lg">
+                <img id="modal-avatar-preview" src="image/accicon.png"
+                    class="w-full h-full rounded-full object-cover border-2 border-white/20">
+                <label for="avatar-upload"
+                    class="absolute bottom-0 right-0 bg-theme-orange text-black p-2 rounded-full cursor-pointer hover:bg-white transition-colors shadow-lg">
                     <i class="fa-solid fa-camera"></i>
                 </label>
                 <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleFileSelect(this)">
             </div>
-
-            <p class="text-white/60 text-sm mb-6">Click the camera icon to upload a new profile picture.</p>
-
-            <button onclick="saveAdminAvatar()" class="w-full py-3 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:scale-105 transition-all">
+            <button onclick="saveAdminAvatar()"
+                class="w-full py-3 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:scale-105 transition-all">
                 Save Changes
             </button>
-
         </div>
     </div>
 
@@ -198,35 +190,29 @@
                 }
 
                 currentAdmin = data.user;
-                
                 document.getElementById('admin-name').textContent = currentAdmin.username;
 
                 const avatarImg = document.getElementById('admin-avatar');
                 const modalImg = document.getElementById('modal-avatar-preview');
-                
+
                 let finalSrc;
                 if (currentAdmin.avatar_id && currentAdmin.avatar_id !== 'default') {
                     finalSrc = currentAdmin.avatar_id;
                 } else {
-                    
                     finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAdmin.username)}&background=ffb26b&color=000&bold=true`;
                 }
 
                 avatarImg.src = finalSrc;
-                modalImg.src = finalSrc; 
+                modalImg.src = finalSrc;
 
-            } catch (err) {
-                console.error("Auth Error", err);
-            }
+            } catch (err) { console.error("Auth Error", err); }
         }
 
         async function loadDashboardData() {
             try {
                 const res = await fetch('/admin/data');
-                if(!res.ok) throw new Error("Failed to load");
-                
                 const data = await res.json();
-                
+
                 document.getElementById('total-users').textContent = data.totalUsers;
                 document.getElementById('total-comments').textContent = data.comments.length;
                 document.getElementById('total-feedback').textContent = data.feedback.length;
@@ -234,73 +220,8 @@
                 renderUsers(data.users);
                 renderFeedback(data.feedback);
                 renderComments(data.comments);
-
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
-
-        function openProfileModal() {
-            document.getElementById('profile-modal').classList.remove('hidden');
-            document.getElementById('profile-modal').classList.add('flex');
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profile-modal').classList.add('hidden');
-            document.getElementById('profile-modal').classList.remove('flex');
-            tempAvatarBase64 = null; 
-        }
-
-        function handleFileSelect(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                tempAvatarBase64 = e.target.result;
-                document.getElementById('modal-avatar-preview').src = tempAvatarBase64;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function saveAdminAvatar() {
-            if (!tempAvatarBase64) {
-                closeProfileModal();
-                return;
-            }
-
-            try {
-                const res = await fetch('/auth/update', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        username: currentAdmin.username, 
-                        avatar_id: tempAvatarBase64
-                    })
-                });
-
-                if (res.ok) {
-                    Toastify({ text: "Avatar Updated!", style: { background: "#00b09b" } }).showToast();
-                    
-                    document.getElementById('admin-avatar').src = tempAvatarBase64;
-                    currentAdmin.avatar_id = tempAvatarBase64;
-                    closeProfileModal();
-                } else {
-                    Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
-                }
-            } catch (err) {
-                console.error(err);
-                Toastify({ text: "Server Error", style: { background: "#ff5f6d" } }).showToast();
-            }
-        }
-
-        window.showSection = (sectionId) => {
-            ['dashboard', 'users', 'feedback', 'comments'].forEach(id => {
-                document.getElementById(`${id}-section`).classList.add('hidden');
-            });
-            document.getElementById(`${sectionId}-section`).classList.remove('hidden');
-            
-            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        };
 
         function renderUsers(users) {
             const tbody = document.getElementById('users-table-body');
@@ -320,54 +241,82 @@
         function renderFeedback(feedback) {
             const container = document.getElementById('feedback-list');
             container.innerHTML = feedback.length ? feedback.map(f => `
-                <div class="bg-white/5 p-4 rounded-lg border border-white/10">
-                    <div class="flex justify-between mb-2">
+                <div class="content-card">
+                    <div class="flex justify-between items-center">
                         <span class="font-bold text-theme-orange">${f.name || 'Anonymous'}</span>
                         <span class="text-xs text-white/40">${new Date(f.created_at).toLocaleDateString()}</span>
                     </div>
-                    <p class="text-sm text-white/80">${f.message}</p>
-                    <p class="text-xs text-white/40 mt-2">${f.email || 'No email'}</p>
+                    <p class="text-sm text-white/90">${f.message}</p>
+                    <p class="text-xs text-white/40">${f.email}</p>
                 </div>
-            `).join('') : '<p class="text-white/50">No feedback yet.</p>';
+            `).join('') : '<p class="text-white/50">No feedback found.</p>';
         }
 
         function renderComments(comments) {
             const container = document.getElementById('all-comments-list');
             container.innerHTML = comments.length ? comments.map(c => `
-                <div class="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-3">
+                <div class="content-card flex-row gap-3 items-start">
                     <div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs shrink-0">
-                        ${c.username ? c.username[0].toUpperCase() : 'A'}
+                        ${c.username ? c.username[0].toUpperCase() : 'U'}
                     </div>
-                    <div>
-                        <div class="flex gap-2 items-center">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center">
                             <span class="font-bold text-sm">${c.username}</span>
-                            <span class="text-xs text-white/40">Season ${c.season} Ep ${c.episode}</span>
+                            <span class="text-xs text-white/40">S${c.season} E${c.episode}</span>
                         </div>
                         <p class="text-sm text-white/80 mt-1">${c.comment_text}</p>
                     </div>
                 </div>
-            `).join('') : '<p class="text-white/50">No comments yet.</p>';
+            `).join('') : '<p class="text-white/50">No comments found.</p>';
+        }
+
+        function openProfileModal() {
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.getElementById('profile-modal').classList.add('flex');
+        }
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+            document.getElementById('profile-modal').classList.remove('flex');
+            tempAvatarBase64 = null;
+        }
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                tempAvatarBase64 = e.target.result;
+                document.getElementById('modal-avatar-preview').src = tempAvatarBase64;
+            };
+            reader.readAsDataURL(file);
+        }
+        async function saveAdminAvatar() {
+            if (!tempAvatarBase64) { closeProfileModal(); return; }
+            try {
+                const res = await fetch('/auth/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentAdmin.username, avatar_id: tempAvatarBase64 })
+                });
+                if (res.ok) {
+                    Toastify({ text: "Updated!", style: { background: "#00b09b" } }).showToast();
+                    document.getElementById('admin-avatar').src = tempAvatarBase64;
+                    currentAdmin.avatar_id = tempAvatarBase64;
+                    closeProfileModal();
+                }
+            } catch (err) { console.error(err); }
         }
 
         window.deleteUser = async (id) => {
-            if(!confirm("Are you sure you want to delete this user?")) return;
-            try {
-                const res = await fetch(`/admin/delete-user/${id}`, { method: 'DELETE' });
-                if(res.ok) { 
-                    Toastify({ text: "User deleted", style: { background: "#333" } }).showToast();
-                    loadDashboardData(); 
-                } else {
-                    const d = await res.json();
-                    Toastify({ text: d.message, style: { background: "#ff5f6d" } }).showToast();
-                }
-            } catch(e) { console.error(e); }
+            if (!confirm("Delete user?")) return;
+            await fetch(`/admin/delete-user/${id}`, { method: 'DELETE' });
+            loadDashboardData();
         };
 
         window.logout = async () => {
             await fetch('/auth/logout', { method: 'POST' });
             window.location.href = 'index.html';
         };
-
     </script>
 </body>
+
 </html>
