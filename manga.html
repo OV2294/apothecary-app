@@ -38,12 +38,9 @@
             .nav-link {
                 @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
             }
-            .chapter-list-item {
-                @apply w-full bg-white/10 border-b border-white/10 px-4 py-3 text-white font-bold text-sm cursor-pointer transition-all duration-300 hover:bg-theme-orange hover:text-black hover:pl-6 flex justify-between items-center;
+            .chapter-tile {
+                @apply bg-white/10 border border-white/20 flex items-center justify-center h-12 text-white font-bold text-sm rounded-lg cursor-pointer transition-all duration-300 hover:bg-theme-orange hover:text-black hover:scale-105 active:scale-95 shadow-sm;
             }
-            .chapter-list-item:first-child { @apply rounded-t-lg; }
-            .chapter-list-item:last-child { @apply border-none rounded-b-lg; }
-            
             .login-lock-btn {
                 @apply inline-block px-6 py-2 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:text-theme-orange hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 no-underline;
             }
@@ -90,36 +87,43 @@
         </div>
     </header>
 
-    <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto flex flex-col gap-12">
+    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto flex flex-col gap-8">
 
-        <section class="glass p-8 flex flex-col md:flex-row items-start gap-8 h-auto lg:h-[600px]">
+        <section class="glass p-8 flex flex-col md:flex-row items-start gap-8">
+            <div class="w-full md:w-1/3 max-w-xs shrink-0 rounded-xl overflow-hidden shadow-lg border border-white/10 mx-auto md:mx-0">
+                <img src="image/S1Lgo.jpg" onerror="this.src='https://placehold.co/300x450/222/FFF?text=Manga+Cover'" alt="Cover" class="w-full h-full object-cover">
+            </div>
             
-            <div class="w-full md:w-1/3 flex flex-col gap-4 h-full">
-                <div class="w-full max-w-xs mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg border border-white/10 shrink-0">
-                    <img src="image/S1Lgo.jpg" onerror="this.src='https://placehold.co/300x450/222/FFF?text=Manga+Cover'" alt="The Apothecary Diaries Manga" class="w-full h-auto object-cover">
-                </div>
+            <div class="flex flex-col gap-4 text-center md:text-left flex-1 w-full">
+                <h2 class="text-4xl font-bold text-black drop-shadow-sm font-serif">The Apothecary Diaries</h2>
                 
-                <div class="text-center md:text-left">
-                    <h2 class="text-3xl font-bold text-black drop-shadow-sm font-serif mb-2">The Apothecary Diaries</h2>
-                    <div class="text-black/80 font-semibold text-sm space-y-1">
-                        <p>Author: <span class="text-black">Natsu Hyuuga</span></p>
-                        <p>Artist: <span class="text-black">Nekokurage</span></p>
-                        <p>Status: <span class="text-black">Ongoing</span></p>
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-black font-semibold text-sm">
+                    <p>Author: <span class="text-black">Natsu Hyuuga</span></p>
+                    <p>Artist: <span class="text-black">Nekokurage</span></p>
+                    <p>Status: <span class="text-black">Ongoing</span></p>
+                    <p>Genres: <span class="text-black">Mystery, Drama</span></p>
+                </div>
+
+                <hr class="border-black my-2">
+
+                <div class="text-black leading-relaxed text-base">
+                    <p>
+                        Maomao’s story begins in the pleasure district and winds its way into the
+                        imperial court, adapted faithfully in this manga with rich detail and
+                        expressive art.
+                    </p>
                 </div>
             </div>
+        </section>
 
-            <div class="flex-1 w-full h-full flex flex-col">
-                <div class="mb-4 border-b border-black/20 pb-2">
-                    <h3 class="text-2xl font-bold text-theme-orange">Chapters</h3>
-                    <p class="text-black/60 text-xs">Select a chapter to start reading.</p>
-                </div>
-
-                <div id="chapters-list" class="flex-1 overflow-y-auto custom-scroll bg-black/20 rounded-lg p-1">
-                    <div class="text-center text-black/50 py-10 animate-pulse">Loading library...</div>
+        <section class="glass p-6">
+            <h3 class="text-2xl font-bold mb-4 border-b border-white/20 pb-2 text-theme-orange">Chapters</h3>
+            
+            <div class="max-h-[500px] overflow-y-auto custom-scroll pr-2">
+                <div id="chapters-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    <div class="col-span-full text-center text-white/50 animate-pulse py-10">Loading library...</div>
                 </div>
             </div>
-
         </section>
 
     </main>
@@ -137,11 +141,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
+            
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const userIconLink = document.getElementById('user-icon-link');
             const userAvatar = document.getElementById('user-avatar');
-            const chaptersList = document.getElementById('chapters-list');
+            const chaptersGrid = document.getElementById('chapters-grid');
 
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
@@ -158,6 +163,7 @@
                 if (isLoggedIn) {
                     const user = authData.user;
                     if (userIconLink) userIconLink.href = (user.role === 'admin') ? 'admin.html' : 'user.html';
+                    
                     if (userAvatar) {
                         let finalSrc = (user.avatar_id && user.avatar_id !== 'default') 
                             ? user.avatar_id 
@@ -168,10 +174,10 @@
                     if (userIconLink) userIconLink.href = 'auth.html';
                 }
 
-                if (chaptersList) {
+                if (chaptersGrid) {
                     if (!isLoggedIn) {
-                        chaptersList.className = "flex-1 flex flex-col items-center justify-center p-6 text-center gap-4 bg-black/20 rounded-lg";
-                        chaptersList.innerHTML = `
+                        chaptersGrid.className = "col-span-full flex flex-col items-center justify-center p-6 text-center gap-4 border border-white/10 rounded-xl bg-black/20";
+                        chaptersGrid.innerHTML = `
                             <div class="text-4xl">🔒</div>
                             <h3 class="text-xl font-bold text-white">Library Locked</h3>
                             <p class="text-white/80 text-sm">Please log in to access chapters.</p>
@@ -181,45 +187,53 @@
                         loadChapters();
                     }
                 }
-            } catch (err) { console.error("Init Error:", err); }
+
+            } catch (err) {
+                console.error("Auth/Init Error:", err);
+                if(chaptersGrid) chaptersGrid.innerHTML = '<p class="text-red-600 font-bold col-span-full text-center">Connection Error.</p>';
+            }
 
             async function loadChapters() {
                 try {
                     const response = await fetch('/manga');
-                    if (response.status === 401) { window.location.href = 'auth.html'; return; }
+                    
+                    if (response.status === 401) {
+                        window.location.href = 'auth.html';
+                        return;
+                    }
 
                     const chapters = await response.json();
-                    chaptersList.innerHTML = ''; 
+                    chaptersGrid.innerHTML = ''; 
 
                     if(chapters.length === 0) {
-                        chaptersList.innerHTML = '<p class="text-white text-center py-10">No chapters available yet.</p>';
+                        chaptersGrid.innerHTML = '<p class="text-white col-span-full text-center">No chapters available yet.</p>';
                         return;
                     }
 
                     chapters.sort((a,b) => a.chapter_number - b.chapter_number);
 
                     chapters.forEach(chapter => {
-                        const item = document.createElement("div");
-                        item.className = "chapter-list-item";
-                        item.innerHTML = `
-                            <span>Chapter ${chapter.chapter_number}</span>
-                            <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                        `;
+                        const tile = document.createElement("div");
+                        tile.className = "chapter-tile";
+                        tile.innerHTML = `<span>Chapter ${chapter.chapter_number}</span>`;
                         
-                        item.addEventListener("click", () => {
+                        tile.addEventListener("click", () => {
                             if (chapter.drive_link) {
                                 window.location.href = `read.html?chapter=${chapter.chapter_number}`;
                             } else {
-                                Toastify({ text: "Link not available yet.", style: { background: "#333" } }).showToast();
+                                Toastify({ 
+                                    text: "Link not available yet.", 
+                                    style: { background: "#333" } 
+                                }).showToast();
                             }
                         });
 
-                        chaptersList.appendChild(item);
+                        chaptersGrid.appendChild(tile);
                     });
 
                 } catch (error) {
                     console.error("Manga fetch error:", error);
-                    chaptersList.innerHTML = '<p class="text-red-500 text-center py-10">Error loading chapters.</p>';
+                    chaptersGrid.innerHTML = '<p class="text-red-500 col-span-full text-center">Error loading chapters.</p>';
                 }
             }
         });

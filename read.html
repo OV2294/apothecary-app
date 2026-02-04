@@ -91,7 +91,7 @@
 
         <div class="glass p-4 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-24 z-40 bg-black/40 backdrop-blur-xl border-none">
             
-            <h1 class="text-xl font-bold text-black" id="chapter-title">Loading...</h1>
+            <h1 class="text-xl font-bold text-white md:text-theme-orange" id="chapter-title">Loading...</h1>
             
             <div class="flex items-center gap-3">
                 <button id="prev-chapter-top" class="nav-btn"><i class="fa-solid fa-chevron-left"></i> Prev</button>
@@ -135,6 +135,7 @@
         let currentUser = null;
 
         document.addEventListener("DOMContentLoaded", async () => {
+            
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileBtn) {
@@ -203,12 +204,15 @@
                 } else {
                     document.getElementById('chapter-title').textContent = "No Chapters Found";
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error("Error loading manga list", e);
+            }
         }
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
             select.innerHTML = '';
+            
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
                 opt.value = ch.chapter_number;
@@ -221,6 +225,7 @@
         function loadChapterContent(chapterNum) {
             const titleEl = document.getElementById('chapter-title');
             const iframeEl = document.getElementById('manga-frame');
+            
             const chapterData = allChapters.find(c => c.chapter_number == chapterNum);
 
             if (chapterData) {
@@ -230,10 +235,12 @@
                 if(link.includes('/view')) {
                     link = link.replace('/view', '/preview');
                 }
+                
                 iframeEl.src = link;
                 
                 const newUrl = `${window.location.pathname}?chapter=${chapterNum}`;
                 window.history.pushState({path: newUrl}, '', newUrl);
+                
                 document.getElementById('chapter-select').value = chapterNum;
             } else {
                 titleEl.textContent = `Chapter ${chapterNum} Not Found`;
@@ -247,19 +254,23 @@
         function changeChapter(newChap) {
             const exists = allChapters.some(c => c.chapter_number == newChap);
             if (!exists) return;
+            
             currentChapterNum = newChap;
             loadChapterContent(currentChapterNum);
         }
 
         function updateControls() {
             const currentIndex = allChapters.findIndex(c => c.chapter_number == currentChapterNum);
+            
             const hasPrev = currentIndex > 0;
             const hasNext = currentIndex < allChapters.length - 1;
+
             ['top', 'btm'].forEach(pos => {
                 document.getElementById(`prev-chapter-${pos}`).disabled = !hasPrev;
                 document.getElementById(`next-chapter-${pos}`).disabled = !hasNext;
             });
         }
+
     </script>
 </body>
 </html>
