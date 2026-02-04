@@ -6,7 +6,6 @@
     <title>About - The Apothecary Diaries</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
 
@@ -40,11 +39,8 @@
             .nav-link {
                 @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
             }
-            .form-input {
-                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
-            }
-            .submit-btn {
-                @apply inline-block w-full px-8 py-3 bg-theme-orange text-white font-bold rounded-lg hover:bg-white hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 uppercase tracking-wide;
+            .login-lock-btn {
+                @apply inline-block px-6 py-2 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:text-theme-orange hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 no-underline;
             }
         }
     </style>
@@ -85,64 +81,37 @@
         </div>
     </header>
 
-    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto">
-        
+    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto flex flex-col gap-12">
+
         <section class="glass p-8 md:p-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-center text-theme-orange mb-8 font-serif drop-shadow-md">About the Series</h1>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                
-                <div class="flex flex-col gap-8">
-                    <div>
-                        <h1 class="text-4xl font-bold text-theme-orange mb-4 font-serif">About Anime</h1>
-                        <p class="text-lg leading-relaxed text-white/90">
-                            Anime is a diverse form of Japanese animation known for compelling storytelling and unique art styles.
-                            It covers a wide range of genres, from slice-of-life to psychological thrillers, captivating audiences worldwide.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h1 class="text-4xl font-bold text-theme-orange mb-4 font-serif">About Website</h1>
-                        <p class="text-lg leading-relaxed text-white/90">
-                            “The Apothecary Diaries” is an educational platform for discovering web development components
-                            through an anime theme. This project demonstrates full-stack capabilities including authentication, 
-                            database management, and responsive UI design.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2 inline-block">What you can do here</h2>
-                        <ul class="list-disc list-inside space-y-2 text-white/80 ml-2">
-                            <li>Explore anime seasons and watch episodes.</li>
-                            <li>View character profiles and series details.</li>
-                            <li>Read manga chapters.</li>
-                        </ul>
-                    </div>
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-full md:w-1/2 text-white/90 text-lg leading-relaxed space-y-4">
+                    <p>
+                        <span class="font-bold text-theme-orange">The Apothecary Diaries</span> (Kusuriya no Hitorigoto) follows Maomao, a young girl trained in the art of herbal medicine, who is forced to work as a lowly servant in the inner palace.
+                    </p>
+                    <p>
+                        Though she yearns for an ordinary life, her eccentricity and knowledge of poisons soon draw the attention of Jinshi, a handsome and calculating eunuch.
+                    </p>
+                    <p>
+                        This fan project is dedicated to providing a clean, accessible way to enjoy both the anime and manga adaptations of this masterpiece.
+                    </p>
                 </div>
-
-                <div class="w-full lg:border-l lg:border-white/10 lg:pl-12">
-                    <h2 class="text-3xl font-bold text-black mb-6">Share your feedback</h2>
-                    <p class="text-white/70 mb-8 text-sm">We value your thoughts! Let us know what you think about the project.</p>
-                    
-                    <form id="feedbackForm" class="flex flex-col gap-5">
-                        <div class="flex flex-col gap-2">
-                            <label for="fb-name" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Name</label>
-                            <input type="text" id="fb-name" name="name" placeholder="Your name" class="form-input" />
-                        </div>
-                        
-                        <div class="flex flex-col gap-2">
-                            <label for="fb-email" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Email</label>
-                            <input type="email" id="fb-email" name="email" placeholder="you@example.com" class="form-input" />
-                        </div>
-                        
-                        <div class="flex flex-col gap-2">
-                            <label for="fb-message" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Feedback</label>
-                            <textarea id="fb-message" name="message" rows="5" placeholder="Write thoughts here..." class="form-input" required></textarea>
-                        </div>
-
-                        <button type="submit" class="submit-btn text-center shadow-lg hover:text-theme-orange hover:shadow-glow">Send Feedback</button>
-                    </form>
+                <div class="w-full md:w-1/2 rounded-xl overflow-hidden shadow-2xl border border-white/20">
+                    <img src="image/16209.jpg" alt="About Image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
+            </div>
+        </section>
 
+        <section class="glass p-8 md:p-12 max-w-3xl mx-auto w-full">
+            <h2 class="text-3xl font-bold text-center text-white mb-6">Send Feedback</h2>
+            
+            <div id="feedback-container">
+                <div class="flex flex-col items-center justify-center py-8">
+                    <div class="w-8 h-8 border-4 border-theme-orange border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-4 text-white/50">Checking access...</p>
+                </div>
             </div>
 
         </section>
@@ -153,13 +122,13 @@
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
             <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-black">educational and portfolio purposes only</span>. 
+            <span class="text-theme-orange">educational and portfolio purposes only</span>. 
             We do not own the rights to the anime, characters, or media content.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             
@@ -167,21 +136,8 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const userIconLink = document.getElementById('user-icon-link');
             const userAvatar = document.getElementById('user-avatar');
-            const feedbackForm = document.getElementById('feedbackForm');
+            const feedbackContainer = document.getElementById('feedback-container');
 
-            // --- TOAST HELPER ---
-            const showToast = (text, type = 'info') => {
-                let bg = "#333";
-                if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
-                if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
-                
-                Toastify({
-                    text: text, duration: 3000, style: { background: bg },
-                    gravity: "top", position: "right"
-                }).showToast();
-            };
-
-            // --- MOBILE MENU ---
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
@@ -189,7 +145,7 @@
                 });
             }
 
-            // --- AUTH CHECK ---
+            // --- AUTH ---
             try {
                 const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
                 const data = await res.json();
@@ -204,54 +160,97 @@
                             : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
                         userAvatar.src = finalSrc;
                     }
+
+                    renderFeedbackForm(user);
+
                 } else {
                     if (userIconLink) userIconLink.href = 'auth.html';
+                    renderLockScreen();
                 }
             } catch (err) {
                 console.error("Auth Check Error:", err);
+                renderLockScreen(); 
             }
 
-            // --- FEEDBACK ---
-            if (feedbackForm) {
-                feedbackForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
+            function renderLockScreen() {
+                feedbackContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-center gap-4 py-6 border border-white/10 rounded-xl bg-black/20">
+                        <div class="text-5xl mb-2">🔒</div>
+                        <h3 class="text-xl font-bold text-white">Feedback Locked</h3>
+                        <p class="text-white/80 text-sm max-w-xs mx-auto">Please log in to send us your feedback or report issues.</p>
+                        <a href="auth.html" class="login-lock-btn">Login Now</a>
+                    </div>
+                `;
+            }
 
-                    const name = document.getElementById('fb-name').value;
-                    const email = document.getElementById('fb-email').value;
-                    const message = document.getElementById('fb-message').value;
-                    const btn = feedbackForm.querySelector('button');
-                    const originalText = btn.textContent;
+            function renderFeedbackForm(user) {
+                feedbackContainer.innerHTML = `
+                    <form id="feedback-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-white/70 text-sm font-bold mb-2">Name</label>
+                                <input type="text" id="name" value="${user.username}" readonly
+                                    class="w-full bg-black/40 border border-white/20 rounded-lg px-4 py-3 text-white/50 cursor-not-allowed focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-white/70 text-sm font-bold mb-2">Email</label>
+                                <input type="email" id="email" value="${user.email}" readonly
+                                    class="w-full bg-black/40 border border-white/20 rounded-lg px-4 py-3 text-white/50 cursor-not-allowed focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-white/70 text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" rows="4" placeholder="Your thoughts, suggestions, or bug reports..."
+                                class="w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-theme-orange transition-colors resize-none"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="px-8 py-3 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg shadow-orange-500/20">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                `;
 
-                    if (!message) {
-                        showToast('Please enter a message.', 'error');
-                        return;
+                document.getElementById('feedback-form').addEventListener('submit', handleFeedbackSubmit);
+            }
+
+            async function handleFeedbackSubmit(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                const btn = e.target.querySelector('button');
+                const originalText = btn.textContent;
+
+                if (!message) {
+                    Toastify({ text: "Please enter a message.", style: { background: "#ff5f6d" } }).showToast();
+                    return;
+                }
+
+                btn.textContent = "Sending...";
+                btn.disabled = true;
+
+                try {
+                    const response = await fetch('/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, message })
+                    });
+
+                    if (response.ok) {
+                        Toastify({ text: "Feedback sent successfully!", style: { background: "#00b09b" } }).showToast();
+                        document.getElementById('message').value = '';
+                    } else {
+                        const result = await response.json();
+                        Toastify({ text: result.message || "Error sending feedback.", style: { background: "#ff5f6d" } }).showToast();
                     }
-
-                    btn.textContent = "Sending...";
-                    btn.disabled = true;
-
-                    try {
-                        const response = await fetch('/feedback', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ name, email, message })
-                        });
-
-                        if (response.ok) {
-                            showToast('Feedback sent successfully!', 'success');
-                            feedbackForm.reset();
-                        } else {
-                            const result = await response.json();
-                            showToast(result.message || 'Error sending feedback.', 'error');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        showToast('Server error. Please try again later.', 'error');
-                    } finally {
-                        btn.textContent = originalText;
-                        btn.disabled = false;
-                    }
-                });
+                } catch (error) {
+                    console.error('Error:', error);
+                    Toastify({ text: "Server error.", style: { background: "#ff5f6d" } }).showToast();
+                } finally {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
             }
         });
     </script>

@@ -40,15 +40,16 @@ db.connect((err) => {
     else console.log('✅ Connected to MySQL database');
 });
 
+// === AUTH  ===
 app.post('/auth/register', async (req, res) => {
     const { username, email, phone, password } = req.body;
     try {
         const hash = await bcrypt.hash(password, 10);
-        db.query('INSERT INTO users (username, email, phone, password_hash) VALUES (?, ?, ?, ?)',
-            [username, email, phone, hash], (err) => {
-                if (err) return res.status(500).json({ message: 'Error registering' });
-                res.json({ message: 'Success' });
-            });
+        db.query('INSERT INTO users (username, email, phone, password_hash) VALUES (?, ?, ?, ?)', 
+        [username, email, phone, hash], (err) => {
+            if (err) return res.status(500).json({ message: 'Error registering' });
+            res.json({ message: 'Success' });
+        });
     } catch (e) { res.status(500).json({ message: 'Server error' }); }
 });
 
@@ -91,10 +92,10 @@ app.post('/auth/update', (req, res) => {
     const { username, phone, favorite_episode, avatar_id } = req.body;
     const sql = `UPDATE users SET username=COALESCE(?, username), phone=COALESCE(?, phone), favorite_episode=COALESCE(?, favorite_episode), avatar_id=COALESCE(?, avatar_id) WHERE id=?`;
     db.query(sql, [username, phone, favorite_episode, avatar_id, req.session.user.id], (err) => {
-        if (err) return res.status(500).json({ message: 'Error' });
-        if (username) req.session.user.username = username;
-        if (avatar_id) req.session.user.avatar_id = avatar_id;
-        if (favorite_episode) req.session.user.favorite_episode = favorite_episode;
+        if(err) return res.status(500).json({message:'Error'});
+        if(username) req.session.user.username = username;
+        if(avatar_id) req.session.user.avatar_id = avatar_id;
+        if(favorite_episode) req.session.user.favorite_episode = favorite_episode;
         req.session.save(() => res.json({ message: 'Updated' }));
     });
 });
@@ -102,8 +103,8 @@ app.post('/auth/update', (req, res) => {
 app.post('/user/progress', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
     const { season, episode } = req.body;
-    db.query(`INSERT INTO watch_history (user_id, season, episode) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE season=VALUES(season), episode=VALUES(episode)`,
-        [req.session.user.id, season, episode], () => res.json({ success: true }));
+    db.query(`INSERT INTO watch_history (user_id, season, episode) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE season=VALUES(season), episode=VALUES(episode)`, 
+    [req.session.user.id, season, episode], () => res.json({ success: true }));
 });
 
 app.get('/user/progress', (req, res) => {
@@ -113,10 +114,9 @@ app.get('/user/progress', (req, res) => {
     });
 });
 
-// ANIME LOCK
+// === CONTENT ===
 app.get('/anime', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); // <--- LOCK ADDED
-
+    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); 
     db.query("SELECT * FROM anime_episodes ORDER BY season, episode", (err, results) => {
         if (err) return res.status(500).json({ message: "DB Error" });
         const data = results.map(row => ({
@@ -130,39 +130,39 @@ app.get('/anime', (req, res) => {
     });
 });
 
-// MANGA LOCK
 app.get('/manga', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); // <--- LOCK ADDED
+    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); 
     db.query('SELECT * FROM manga_chapters ORDER BY chapter_number ASC', (err, results) => {
         res.json(results || []);
     });
 });
 
-// COMMENTS & FEEDBACK
 app.get('/comments', (req, res) => {
     const { season, episode } = req.query;
     let sql = 'SELECT * FROM comments ORDER BY created_at DESC';
     let params = [];
-    if (season && episode) { sql += ' WHERE season=? AND episode=?'; params = [season, episode]; }
+    if(season && episode) { sql += ' WHERE season=? AND episode=?'; params=[season, episode]; }
     db.query(sql, params, (err, r) => res.json(r || []));
 });
 
 app.post('/comments', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Login required' });
     const { text, season, episode } = req.body;
-    db.query('INSERT INTO comments (username, comment_text, season, episode) VALUES (?, ?, ?, ?)',
-        [req.session.user.username, text, season, episode], () => res.json({ success: true }));
+    db.query('INSERT INTO comments (username, comment_text, season, episode) VALUES (?, ?, ?, ?)', 
+    [req.session.user.username, text, season, episode], () => res.json({ success: true }));
 });
 
+// === FEEDBACK  ===
 app.post('/feedback', (req, res) => {
+    if (!req.session.user) return res.status(401).json({ message: 'Login required to give feedback' });
+    
     const { name, email, message } = req.body;
     db.query('INSERT INTO feedback (name, email, message) VALUES (?, ?, ?)', [name, email, message], () => res.json({ success: true }));
 });
 
-// ADMIN
+// === ADMIN ===
 app.get('/admin/data', (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') return res.status(403).json({ message: 'Denied' });
-
     db.query('SELECT * FROM users', (e, users) => {
         db.query('SELECT * FROM feedback', (e, fb) => {
             db.query('SELECT * FROM comments', (e, cm) => {

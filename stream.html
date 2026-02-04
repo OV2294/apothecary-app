@@ -55,6 +55,9 @@
             .comment-input {
                 @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
             }
+            .login-lock-btn {
+                @apply inline-block px-6 py-2 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:text-theme-orange hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 no-underline;
+            }
         }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
@@ -98,7 +101,7 @@
         </div>
     </header>
 
-    <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main id="main-content" class="pt-32 pb-20 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         <div class="lg:col-span-2 flex flex-col gap-6">
             
@@ -165,7 +168,7 @@
 
     </main>
 
-    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
             <strong>Disclaimer:</strong> This website is developed strictly for 
@@ -193,30 +196,81 @@
                 });
             }
 
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('season')) currentSeason = parseInt(params.get('season'));
-            if (params.has('ep')) currentEp = parseInt(params.get('ep'));
+            try {
+                const authRes = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+                const authData = await authRes.json();
+                
+                if (authData.loggedIn && authData.user) {
+                    currentUser = authData.user;
+                    setupUserUI(currentUser);
+                    
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.has('season')) currentSeason = parseInt(params.get('season'));
+                    if (params.has('ep')) currentEp = parseInt(params.get('ep'));
 
-            await Promise.all([loadUserData(), loadSeriesData()]);
+                    await loadSeriesData();
+                    
+                    document.getElementById('season-select').value = currentSeason;
+                    updateSeasonDropdown();
+                    loadEpisode(currentSeason, currentEp);
+                    renderEpisodeList(currentSeason);
 
-            document.getElementById('season-select').value = currentSeason;
-            updateSeasonDropdown();
-            loadEpisode(currentSeason, currentEp);
-            renderEpisodeList(currentSeason);
+                    document.getElementById('season-select').addEventListener('change', (e) => {
+                        currentSeason = parseInt(e.target.value);
+                        renderEpisodeList(currentSeason);
+                    });
+                    document.getElementById('comment-form').addEventListener('submit', handlePostComment);
 
-            document.getElementById('season-select').addEventListener('change', (e) => {
-                currentSeason = parseInt(e.target.value);
-                renderEpisodeList(currentSeason);
-            });
-            document.getElementById('comment-form').addEventListener('submit', handlePostComment);
+                } else {
+                    showLockScreen();
+                }
+            } catch (err) {
+                console.error("Init Error:", err);
+                showLockScreen(); 
+            }
         });
+
+        function showLockScreen() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.classList.remove('grid', 'grid-cols-1', 'lg:grid-cols-3', 'gap-8');
+            mainContent.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'min-h-[50vh]');
+            
+            mainContent.innerHTML = `
+                <div class="glass p-10 text-center flex flex-col items-center gap-4 max-w-md w-full animate-fade-in">
+                    <div class="text-5xl mb-2">🔒</div>
+                    <h3 class="text-2xl font-bold text-theme-orange">Stream Locked</h3>
+                    <p class="text-white/80 text-base">You must be logged in to watch episodes and view comments.</p>
+                    <a href="auth.html" class="login-lock-btn">Login Now</a>
+                </div>
+            `;
+            
+            const userLink = document.getElementById('user-icon-link');
+            if(userLink) userLink.href = 'auth.html';
+        }
+
+        function setupUserUI(user) {
+            const navAvatar = document.getElementById('nav-avatar');
+            const commentAvatar = document.getElementById('comment-avatar');
+            const src = (user.avatar_id && user.avatar_id !== 'default') ? user.avatar_id : 'image/accicon.png';
+            
+            if(navAvatar) navAvatar.src = src;
+            if(commentAvatar) commentAvatar.src = src;
+            
+            document.getElementById('user-icon-link').href = (user.role === 'admin') ? 'admin.html' : 'user.html';
+            
+            if (user.favorite_episode) {
+                currentFavorites = user.favorite_episode.split(',').map(s => s.trim());
+            }
+        }
+
+        // --- DATA & LOGIC ---
 
         async function loadSeriesData() {
             try {
                 const res = await fetch('/anime');
                 
                 if (res.status === 401) {
-                    window.location.href = 'auth.html'; 
+                    showLockScreen();
                     return;
                 }
 
@@ -241,25 +295,6 @@
                      currentEp = 1;
                 }
                 updateSeasonDropdown();
-            } catch (err) { console.error(err); }
-        }
-
-        async function loadUserData() {
-            try {
-                const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
-                const data = await res.json();
-                if (data.loggedIn) {
-                    currentUser = data.user;
-                    const navAvatar = document.getElementById('nav-avatar');
-                    const commentAvatar = document.getElementById('comment-avatar');
-                    const src = (currentUser.avatar_id && currentUser.avatar_id !== 'default') ? currentUser.avatar_id : 'image/accicon.png';
-                    if(navAvatar) navAvatar.src = src;
-                    if(commentAvatar) commentAvatar.src = src;
-                    document.getElementById('user-icon-link').href = (currentUser.role === 'admin') ? 'admin.html' : 'user.html';
-                    if (currentUser.favorite_episode) currentFavorites = currentUser.favorite_episode.split(',').map(s => s.trim());
-                } else {
-                    window.location.href = 'auth.html'; 
-                }
             } catch (err) { console.error(err); }
         }
 
@@ -301,9 +336,8 @@
             const activeBtn = document.querySelector(`[data-ep="${e}"]`);
             if(activeBtn) activeBtn.classList.add('active');
             updateFavIconState();
-            if (currentUser) {
-                fetch('/user/progress', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ season: s, episode: e }) }).catch(e=>console.error(e));
-            }
+            
+            fetch('/user/progress', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ season: s, episode: e }) }).catch(e=>console.error(e));
         }
 
         function renderEpisodeList(season) {
@@ -355,7 +389,6 @@
         }
 
         async function toggleFavorite() {
-            if (!currentUser) { Toastify({ text: "Login required", style: { background: "#ff5f6d" } }).showToast(); return; }
             const epString = `Season ${currentSeason} Ep ${currentEp}`;
             if (currentFavorites.includes(epString)) currentFavorites = currentFavorites.filter(item => item !== epString);
             else currentFavorites.push(epString);
@@ -365,7 +398,6 @@
 
         async function handlePostComment(e) {
             e.preventDefault();
-            if(!currentUser) { Toastify({ text: "Login to comment", style: { background: "#ff5f6d" } }).showToast(); return; }
             const input = document.getElementById('comment-input');
             const text = input.value;
             const list = document.getElementById('comments-list');
