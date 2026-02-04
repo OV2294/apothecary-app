@@ -1,97 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manga - The Apothecary Diaries</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manga - The Apothecary Diaries</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass-border': 'rgba(255, 255, 255, 0.2)',
+                        'glass-bg': 'rgba(255, 255, 255, 0.2)',
+                        'theme-orange': '#ffb26b',
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
+            }
+            .nav-link {
+                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
+            }
+            .chapter-tile {
+                @apply bg-white/40 border border-white/30 flex items-center justify-center h-14 text-black font-bold text-sm rounded-lg cursor-pointer transition-all duration-300 hover:bg-theme-orange hover:text-white hover:scale-105 active:scale-95 shadow-sm;
+            }
+            .login-lock-btn {
+                @apply inline-block px-6 py-2 bg-theme-orange text-white font-bold rounded-lg hover:bg-white hover:text-theme-orange hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 no-underline;
+            }
+        }
+    </style>
 </head>
-<body>
-  <img src="image/16211.JPG" alt="" class="bg-image" />
-  <img src="image/16210.jpg" alt="" class="bg-mb-image" />
 
-  <header>
-    <nav class="nav glass">
-      <div class="nav_bar">
-        <div class="nav_left">
-          <div class="nav_logo">
-            <a href="index.html">
-              <img src="image/logo1.png" alt="Logo" />
-            </a>
-          </div>
-          <ul>
-            <li class="item"><a href="Anime.html">Anime</a></li>
-            <li class="item"><a href="manga.html">Manga</a></li>
-            <li class="item"><a href="character.html">Characters</a></li>
-            <li class="item"><a href="about.html">About</a></li>
-          </ul>
+<body class="bg-black font-sans min-h-screen text-white relative">
+
+    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+
+    <header class="fixed top-0 w-full z-50 px-4 py-3">
+        <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
+                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
+                </a>
+                <ul class="hidden md:flex gap-8">
+                    <li><a href="Anime.html" class="nav-link">Anime</a></li>
+                    <li><a href="manga.html" class="nav-link text-theme-orange">Manga</a></li>
+                    <li><a href="character.html" class="nav-link">Characters</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                </ul>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a id="user-icon-link" href="auth.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
+                    <img id="user-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+            <a href="Anime.html" class="nav-link text-base">Anime</a>
+            <a href="manga.html" class="nav-link text-base text-theme-orange">Manga</a>
+            <a href="character.html" class="nav-link text-base">Characters</a>
+            <a href="about.html" class="nav-link text-base">About</a>
         </div>
-        <div class="nav_right">
-          <a href="auth.html" class="user-icon">
-            <img src="image/accicon.png" alt="Account" />
-          </a>
-        </div>
-      </div>
-    </nav>
+    </header>
 
-    <div class="nav_mob">
-      <button onclick="menu.hidden^=1">≡</button>
-      <ul id="menu" hidden>
-        <a class="logo1" href="index.html">
-          <img src="image/logo1.png" alt="Logo">
-        </a>
-        <a href="Anime.html"><li>Anime</li></a>
-        <a href="manga.html"><li>Manga</li></a>
-        <a href="character.html"><li>Characters</li></a>
-        <a href="about.html"><li>About</li></a>
-      </ul>
-      <a id="logoacc" href="auth.html">
-        <img src="image/accicon.png" alt="User Icon" class="user-icon">
-      </a>
-    </div>
-  </header>
+    <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto flex flex-col gap-12">
 
-  <main>
-    <section class="manga-card glass">
-      <div class="manga-header">
-        <div class="manga-cover">
-          <img src="image/S1Lgo.jpg" alt="The Apothecary Diaries Manga" />
-        </div>
-        <div class="manga-info">
-          <h2>The Apothecary Diaries – Manga</h2>
-          <p>Author: Natsu Hyuuga</p>
-          <p>Artist: Nekokurage</p>
-          <p>Chapters: 80+ (ongoing)</p>
-          <p>Genres: Mystery, Historical, Drama</p>
-          <p>
-            Maomao’s story begins in the pleasure district and winds its way into the
-            imperial court, adapted faithfully in this manga with rich detail and
-            expressive art.
-          </p>
-        </div>
-      </div>
+        <section class="glass p-8 flex flex-col md:flex-row items-start gap-8">
+            
+            <div class="w-full md:w-1/3 max-w-xs shrink-0 rounded-xl overflow-hidden shadow-lg border border-white/10 mx-auto md:mx-0">
+                <img src="image/S1Lgo.jpg" onerror="this.src='https://placehold.co/300x450/222/FFF?text=Manga+Cover'" alt="The Apothecary Diaries Manga" class="w-full h-full object-cover">
+            </div>
+            
+            <div class="flex flex-col gap-4 text-center md:text-left flex-1 w-full">
+                <h2 class="text-4xl font-bold text-black drop-shadow-sm font-serif">The Apothecary Diaries – Manga</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-black/80 font-semibold text-sm">
+                    <p>Author: <span class="text-black">Natsu Hyuuga</span></p>
+                    <p>Artist: <span class="text-black">Nekokurage</span></p>
+                    <p>Chapters: <span class="text-black">80+ (ongoing)</span></p>
+                    <p>Genres: <span class="text-black">Mystery, Historical, Drama</span></p>
+                </div>
 
-      <div class="manga-chapters-section">
-        <h3>Chapters</h3>
-        <div class="chapters-grid" id="chaptersGrid"></div>
-      </div>
-    </section>
-  </main>
+                <hr class="border-black/50 my-2">
 
-  <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
-    <p>&copy; 2026 The Apothecary Diaries Project.</p>
-    <p style="margin-top: 5px;">
-      <strong>Disclaimer:</strong> This website is developed strictly for
-      <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
-      We do not own the rights to the anime, characters, or media content.
-      All rights belong to their respective owners.
-    </p>
-  </footer>
+                <div class="text-black leading-relaxed text-base">
+                    <p>
+                        Maomao’s story begins in the pleasure district and winds its way into the
+                        imperial court, adapted faithfully in this manga with rich detail and
+                        expressive art. Follow the original storyline with enhanced visuals and character depth.
+                    </p>
+                </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="manga.js"></script>
-  <script src="main.js"></script>
+                <div class="mt-4 pt-4 border-t border-black/50 w-full">
+                    <div class="flex items-center gap-2 mb-6 justify-center md:justify-start">
+                        <h3 class="text-2xl font-bold text-black">Chapters</h3>
+                    </div>
+
+                    <div id="chapters-grid" class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <div class="col-span-full text-center text-black/50 animate-pulse">Loading library...</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for 
+            <span class="text-black">educational and portfolio purposes only</span>. 
+            We do not own the rights to the anime, characters, or media content.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const userIconLink = document.getElementById('user-icon-link');
+            const userAvatar = document.getElementById('user-avatar');
+            const chaptersGrid = document.getElementById('chapters-grid');
+
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
+
+            try {
+                const authRes = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+                const authData = await authRes.json();
+                const isLoggedIn = authData.loggedIn && authData.user;
+
+                if (isLoggedIn) {
+                    const user = authData.user;
+                    if (userIconLink) userIconLink.href = (user.role === 'admin') ? 'admin.html' : 'user.html';
+                    
+                    if (userAvatar) {
+                        let finalSrc = (user.avatar_id && user.avatar_id !== 'default') 
+                            ? user.avatar_id 
+                            : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+                        userAvatar.src = finalSrc;
+                    }
+                } else {
+                    if (userIconLink) userIconLink.href = 'auth.html';
+                }
+
+                if (chaptersGrid) {
+                    if (!isLoggedIn) {
+                        chaptersGrid.className = "col-span-full flex flex-col items-center justify-center p-6 text-center gap-4 border border-black/10 rounded-xl bg-black/5";
+                        chaptersGrid.innerHTML = `
+                            <div class="text-4xl">🔒</div>
+                            <h3 class="text-xl font-bold text-black">Library Locked</h3>
+                            <p class="text-black/80 text-sm">Please log in to access chapters.</p>
+                            <a href="auth.html" class="login-lock-btn text-sm px-4 py-2 mt-2">Login</a>
+                        `;
+                    } else {
+                        loadChapters();
+                    }
+                }
+
+            } catch (err) {
+                console.error("Auth/Init Error:", err);
+                if(chaptersGrid) chaptersGrid.innerHTML = '<p class="text-red-600 font-bold col-span-full text-center">Connection Error.</p>';
+            }
+
+            async function loadChapters() {
+                try {
+                    const response = await fetch('/manga');
+                    
+                    if (response.status === 401) {
+                        window.location.href = 'auth.html';
+                        return;
+                    }
+
+                    const chapters = await response.json();
+                    chaptersGrid.innerHTML = ''; 
+
+                    if(chapters.length === 0) {
+                        chaptersGrid.innerHTML = '<p class="text-black col-span-full text-center">No chapters available yet.</p>';
+                        return;
+                    }
+
+                    chapters.sort((a,b) => a.chapter_number - b.chapter_number);
+
+                    chapters.forEach(chapter => {
+                        const tile = document.createElement("div");
+                        tile.className = "chapter-tile";
+                        tile.innerHTML = `<span>Chapter ${chapter.chapter_number}</span>`;
+                        
+                        tile.addEventListener("click", () => {
+                            if (chapter.drive_link) {
+                                window.location.href = `read.html?chapter=${chapter.chapter_number}`;
+                            } else {
+                                Toastify({ 
+                                    text: "Link not available yet.", 
+                                    style: { background: "#333" } 
+                                }).showToast();
+                            }
+                        });
+
+                        chaptersGrid.appendChild(tile);
+                    });
+
+                } catch (error) {
+                    console.error("Manga fetch error:", error);
+                    chaptersGrid.innerHTML = '<p class="text-red-500 col-span-full text-center">Error loading chapters.</p>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

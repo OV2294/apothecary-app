@@ -1,61 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reset Password - The Apothecary Diaries</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass-border': 'rgba(255, 255, 255, 0.2)',
+                        'glass-bg': 'rgba(255, 255, 255, 0.2)',
+                        'theme-orange': '#ffb26b',
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
+            }
+            .nav-link {
+                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
+            }
+            .form-input {
+                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
+            }
+            .auth-btn {
+                @apply w-full py-3 bg-theme-orange text-white font-bold rounded-lg hover:text-theme-orange hover:bg-white hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-6 uppercase tracking-wide shadow-lg;
+            }
+        }
+    </style>
 </head>
-<body>
-    <img src="image/16211.JPG" class="bg-image" alt="">
-    <img src="image/16210.jpg" class="bg-mb-image" alt="">
 
-    <main style="height: 100vh; justify-content: center;">
-        <section class="auth-page glass">
-            <h2 style="text-align: center;">Reset Password</h2>
+<body class="bg-black font-sans min-h-screen text-white relative">
 
-            <form id="phone-reset-form" class="auth-form active">
-                <p style="text-align: center; font-size: 14px; margin-bottom: 15px; opacity: 0.8;">
-                    Verify your identity to reset your password.
-                </p>
+    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
 
-                <div class="auth-field">
-                    <label>Email Address</label>
-                    <input type="email" id="reset-email" placeholder="you@example.com" required>
+    <header class="fixed top-0 w-full z-50 px-4 py-3">
+        <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
+                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
+                </a>
+                <ul class="hidden md:flex gap-8">
+                    <li><a href="Anime.html" class="nav-link">Anime</a></li>
+                    <li><a href="manga.html" class="nav-link">Manga</a></li>
+                    <li><a href="character.html" class="nav-link">Characters</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                </ul>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="auth.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors opacity-50 cursor-default">
+                    <img src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+            <a href="Anime.html" class="nav-link text-base">Anime</a>
+            <a href="manga.html" class="nav-link text-base">Manga</a>
+            <a href="character.html" class="nav-link text-base">Characters</a>
+            <a href="about.html" class="nav-link text-base">About</a>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-20 px-4 flex items-center justify-center min-h-screen">
+        
+        <div class="glass w-full max-w-md p-8 relative animate-fade-in">
+            
+            <h2 class="text-3xl font-bold text-center mb-2 text-black">Reset Password</h2>
+            <p class="text-center text-white/60 text-sm mb-8">Verify your identity to secure your account.</p>
+
+            <form id="reset-form" class="flex flex-col gap-5">
+                
+                <div>
+                    <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Email Address</label>
+                    <input type="email" id="reset-email" placeholder="you@example.com" class="form-input" required>
                 </div>
 
-                <div class="auth-field">
-                    <label>Phone Number</label>
-                    <input type="number" id="reset-phone" placeholder="Registered Phone Number" required>
+                <div>
+                    <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Phone Number</label>
+                    <input type="tel" id="reset-phone" placeholder="Registered phone number" class="form-input" required>
                 </div>
 
-                <div class="auth-field">
-                    <label>New Password</label>
-                    <input type="password" id="new-password" placeholder="Min 6 characters" required>
+                <div class="relative">
+                    <label class="block text-sm font-bold text-white/70 mb-1 ml-1">New Password</label>
+                    <input type="password" id="new-password" placeholder="Min 6 characters" class="form-input" required>
+                    <i id="toggle-pass" class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white transition-colors"></i>
                 </div>
 
                 <button type="submit" class="auth-btn">Reset Password</button>
 
-                <a href="auth.html" style="text-align: center; margin-top: 15px; color: black; text-decoration: none; font-size: 14px;">
-                    Back to Login
-                </a>
+                <div class="text-center mt-4">
+                    <a href="auth.html" class="text-white/60 hover:text-theme-orange text-sm transition-colors">
+                        &larr; Back to Login
+                    </a>
+                </div>
             </form>
-        </section>
+
+        </div>
+
     </main>
 
-    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
-        <p>&copy; 2026 The Apothecary Diaries Project.</p>
-        <p style="margin-top: 5px;">
-            <strong>Disclaimer:</strong> This website is developed strictly for
-            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
+    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for 
+            <span class="text-black">educational and portfolio purposes only</span>. 
             We do not own the rights to the anime, characters, or media content.
-            All rights belong to their respective owners.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="forgot.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const togglePassBtn = document.getElementById('toggle-pass');
+            const passwordInput = document.getElementById('new-password');
+            const form = document.getElementById('reset-form');
+
+            // --- TOAST HELPER ---
+            const showToast = (text, type = 'info') => {
+                let bg = "#333";
+                if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
+                if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
+                
+                Toastify({
+                    text: text, duration: 3000, style: { background: bg },
+                    gravity: "top", position: "right"
+                }).showToast();
+            };
+
+            // --- MOBILE MENU ---
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
+
+            if (togglePassBtn && passwordInput) {
+                togglePassBtn.addEventListener('click', () => {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        togglePassBtn.classList.remove('fa-eye');
+                        togglePassBtn.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        togglePassBtn.classList.remove('fa-eye-slash');
+                        togglePassBtn.classList.add('fa-eye');
+                    }
+                });
+            }
+
+            // --- RESET ---
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('reset-email').value;
+                    const phone = document.getElementById('reset-phone').value;
+                    const newPassword = document.getElementById('new-password').value;
+                    const btn = form.querySelector('button');
+                    const originalText = btn.textContent;
+
+                    // Validation
+                    if (newPassword.length < 6) {
+                        showToast("Password must be at least 6 characters", "error");
+                        return;
+                    }
+
+                    btn.textContent = "Verifying...";
+                    btn.disabled = true;
+
+                    try {
+                        const res = await fetch('/auth/reset-with-phone', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, phone, newPassword })
+                        });
+
+                        const data = await res.json();
+
+                        if (res.ok) {
+                            showToast("Password reset successful!", "success");
+                            setTimeout(() => {
+                                window.location.href = 'auth.html';
+                            }, 2000);
+                        } else {
+                            showToast(data.message || "Verification failed. Check credentials.", "error");
+                        }
+
+                    } catch (err) {
+                        console.error(err);
+                        showToast("Server connection error", "error");
+                    } finally {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

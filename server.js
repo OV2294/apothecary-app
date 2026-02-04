@@ -9,35 +9,20 @@ const session = require('express-session');
 
 const app = express();
 app.set('trust proxy', 1);
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
-const port = process.env.PORT;
 
-// ==============================================
-// 1. MIDDLEWARE & CONFIGURATION
-// ==============================================
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+const port = process.env.PORT || 3000;
 
-// Allow requests
-app.use(cors({
-    origin: true, 
-    credentials: true
-}));
-
-app.use(bodyParser.json());
-
-// Serve all static files 
+// === MIDDLEWARE ===
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.static(path.join(__dirname, '/')));
 
-// Session Configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'fallback_secret_key_dev',
+    secret: process.env.SESSION_SECRET || 'fallback_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', 
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 
-    }
+    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
 }));
 
 // === DATABASE ===
@@ -46,281 +31,151 @@ const db = mysql.createConnection({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT, 
-    ssl: {
-        rejectUnauthorized: false    
-    }
+    port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false }
 });
 
 db.connect((err) => {
-    if (err) {
-        console.error('❌ Database connection failed:', err.stack);
-        return;
-    }
-    console.log('✅ Connected to MySQL database');
+    if (err) console.error('❌ DB Connection Failed:', err.message);
+    else console.log('✅ Connected to MySQL database');
 });
 
-// ==============================================
-// 3. AUTHENTICATION ROUTES
-// ==============================================
-
-// Register
 app.post('/auth/register', async (req, res) => {
     const { username, email, phone, password } = req.body;
     try {
         const hash = await bcrypt.hash(password, 10);
-        const sql = 'INSERT INTO users (username, email, phone, password_hash) VALUES (?, ?, ?, ?)';
-
-        db.query(sql, [username, email, phone || null, hash], (err, result) => {
-            if (err) {
-                if (err.code === 'ER_DUP_ENTRY') return res.status(400).json({ message: 'Email already exists' });
-                console.error(err);
-                return res.status(500).json({ message: 'Database error' });
-            }
-            res.json({ message: 'Registration successful!' });
-        });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
+        db.query('INSERT INTO users (username, email, phone, password_hash) VALUES (?, ?, ?, ?)',
+            [username, email, phone, hash], (err) => {
+                if (err) return res.status(500).json({ message: 'Error registering' });
+                res.json({ message: 'Success' });
+            });
+    } catch (e) { res.status(500).json({ message: 'Server error' }); }
 });
 
-// Login
 app.post('/auth/login', (req, res) => {
     const { email, password } = req.body;
-    const sql = 'SELECT * FROM users WHERE email = ?';
-
-    db.query(sql, [email], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Database error' });
-        if (results.length === 0) return res.status(404).json({ message: 'Email not found' });
-
-        const user = results[0];
-
-        bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-            if (err) return res.status(500).json({ message: 'Server error' });
-            if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
-
-            req.session.user = {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                phone: user.phone,
-                role: user.role
-            };
-
-            req.session.save(err => {
-                if (err) return res.status(500).json({ message: 'Session Error' });
-                res.json({ message: 'Login successful', role: user.role });
-            });
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        if (err || results.length === 0) return res.status(401).json({ message: 'Invalid credentials' });
+        bcrypt.compare(password, results[0].password_hash, (err, isMatch) => {
+            if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+            req.session.user = results[0];
+            req.session.save(() => res.json({ message: 'Login successful', role: results[0].role }));
         });
     });
 });
 
-// Logout
 app.post('/auth/logout', (req, res) => {
     req.session.destroy();
     res.json({ message: 'Logged out' });
 });
 
-// Check Current User 
 app.get('/auth/me', (req, res) => {
-    if (!req.session.user) {
-        return res.json({ loggedIn: false });
-    }
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    const sql = 'SELECT id, username, email, phone, role, favorite_episode, avatar_id FROM users WHERE id = ?';
-    
-    db.query(sql, [req.session.user.id], (err, results) => {
-        if (err) return res.json({ loggedIn: false });
-        if (results.length === 0) return res.json({ loggedIn: false });
-        res.json({ 
-            loggedIn: true, 
-            user: results[0] 
-        });
-    });
+    if (!req.session.user) return res.json({ loggedIn: false });
+    res.json({ loggedIn: true, user: req.session.user });
 });
 
-// Password Reset 
 app.post('/auth/reset-with-phone', async (req, res) => {
     const { email, phone, newPassword } = req.body;
-    if (!email || !phone || !newPassword) return res.status(400).json({ message: 'All fields are required' });
-
-    try {
-        const checkSql = 'SELECT id FROM users WHERE email = ? AND phone = ?';
-        db.query(checkSql, [email, phone], async (err, results) => {
-            if (err) return res.status(500).json({ message: 'Database error' });
-            if (results.length === 0) return res.status(401).json({ message: 'Details do not match our records.' });
-
-            const hash = await bcrypt.hash(newPassword, 10);
-            const updateSql = 'UPDATE users SET password_hash = ? WHERE email = ?';
-            
-            db.query(updateSql, [hash, email], (err, result) => {
-                if (err) return res.status(500).json({ message: 'Update failed' });
-                res.json({ message: 'Password reset successful!' });
-            });
+    db.query('SELECT id FROM users WHERE email = ? AND phone = ?', [email, phone], async (err, results) => {
+        if (results.length === 0) return res.status(401).json({ message: 'Invalid details' });
+        const hash = await bcrypt.hash(newPassword, 10);
+        db.query('UPDATE users SET password_hash = ? WHERE email = ?', [hash, email], () => {
+            res.json({ message: 'Password reset successful' });
         });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
+    });
 });
 
-// ==============================================
-// 4. USER DATA & INTERACTION ROUTES
-// ==============================================
-
-// Update Profile
+// === USER & DATA ===
 app.post('/auth/update', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
-
-    const { username, email, phone, favorite_episode, avatar_id } = req.body;
-    
-    const sql = 'UPDATE users SET username = ?, email = ?, phone = ?, favorite_episode = ?, avatar_id = ? WHERE id = ?';
-
-    const newAvatar = avatar_id || req.session.user.avatar_id || 'default';
-
-    db.query(sql, [username, email, phone, favorite_episode, newAvatar, req.session.user.id], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ message: 'Update failed' });
-        }
-
-        req.session.user.username = username;
-        req.session.user.email = email;
-        req.session.user.phone = phone;
-        req.session.user.favorite_episode = favorite_episode;
-        req.session.user.avatar_id = newAvatar; 
-
-        req.session.save(() => res.json({ message: 'Profile updated', avatar: newAvatar }));
+    if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
+    const { username, phone, favorite_episode, avatar_id } = req.body;
+    const sql = `UPDATE users SET username=COALESCE(?, username), phone=COALESCE(?, phone), favorite_episode=COALESCE(?, favorite_episode), avatar_id=COALESCE(?, avatar_id) WHERE id=?`;
+    db.query(sql, [username, phone, favorite_episode, avatar_id, req.session.user.id], (err) => {
+        if (err) return res.status(500).json({ message: 'Error' });
+        if (username) req.session.user.username = username;
+        if (avatar_id) req.session.user.avatar_id = avatar_id;
+        if (favorite_episode) req.session.user.favorite_episode = favorite_episode;
+        req.session.save(() => res.json({ message: 'Updated' }));
     });
 });
 
-// Set Favorite Episode
-app.post('/auth/set-favorite', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
-
-    const { favoriteString } = req.body;
-    const finalFavorite = favoriteString || null;
-    const sql = 'UPDATE users SET favorite_episode = ? WHERE id = ?';
-
-    db.query(sql, [finalFavorite, req.session.user.id], (err, result) => {
-        if (err) return res.status(500).json({ message: 'Database error' });
-
-        req.session.user.favorite_episode = finalFavorite;
-        req.session.save(() => {
-            res.json({ message: finalFavorite ? 'Favorite updated!' : 'Favorite removed!', favorite: finalFavorite });
-        });
-    });
-});
-
-// Save Watch Progress
 app.post('/user/progress', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ message: 'Not logged in' });
-
+    if (!req.session.user) return res.status(401).json({ message: 'Unauthorized' });
     const { season, episode } = req.body;
-    const sql = `INSERT INTO watch_history (user_id, season, episode) VALUES (?, ?, ?) 
-                 ON DUPLICATE KEY UPDATE season = VALUES(season), episode = VALUES(episode)`;
-
-    db.query(sql, [req.session.user.id, season, episode], (err) => {
-        if (err) return res.status(500).json({ message: 'Error saving progress' });
-        res.json({ message: 'Progress saved' });
-    });
+    db.query(`INSERT INTO watch_history (user_id, season, episode) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE season=VALUES(season), episode=VALUES(episode)`,
+        [req.session.user.id, season, episode], () => res.json({ success: true }));
 });
 
-// Get Watch Progress
 app.get('/user/progress', (req, res) => {
     if (!req.session.user) return res.json({ continue: null });
-
-    const sql = 'SELECT season, episode FROM watch_history WHERE user_id = ?';
-    db.query(sql, [req.session.user.id], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Error' });
-        res.json({ continue: results.length > 0 ? results[0] : null });
+    db.query('SELECT season, episode FROM watch_history WHERE user_id = ?', [req.session.user.id], (err, r) => {
+        res.json({ continue: r.length ? r[0] : null });
     });
 });
 
-// ==============================================
-// 5. CONTENT ROUTES (Anime, Manga, Feedback)
-// ==============================================
+// ANIME LOCK
+app.get('/anime', (req, res) => {
+    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); // <--- LOCK ADDED
 
-app.get('/episodes', (req, res) => {
-    // 🔒 SECURITY CHECK
-    if (!req.session.user) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    const season = req.query.season || 1;
-    db.query('SELECT * FROM anime_episodes WHERE season = ? ORDER BY episode ASC', [season], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Error fetching episodes' });
-        res.json(results);
+    db.query("SELECT * FROM anime_episodes ORDER BY season, episode", (err, results) => {
+        if (err) return res.status(500).json({ message: "DB Error" });
+        const data = results.map(row => ({
+            season: row.season,
+            episode_number: row.episode,
+            title: `Season ${row.season} - Episode ${row.episode}`,
+            description: "",
+            video_link: row.drive_link
+        }));
+        res.json(data);
     });
 });
 
+// MANGA LOCK
 app.get('/manga', (req, res) => {
-    // 🔒 SECURITY CHECK
-    if (!req.session.user) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
+    if (!req.session.user) return res.status(401).json({ message: 'Please login' }); // <--- LOCK ADDED
     db.query('SELECT * FROM manga_chapters ORDER BY chapter_number ASC', (err, results) => {
-        if (err) return res.status(500).json({ message: 'Error fetching manga' });
-        res.json(results);
+        res.json(results || []);
     });
 });
 
+// COMMENTS & FEEDBACK
 app.get('/comments', (req, res) => {
     const { season, episode } = req.query;
-    db.query('SELECT * FROM comments WHERE season = ? AND episode = ? ORDER BY created_at DESC', [season, episode], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Error fetching comments' });
-        res.json(results);
-    });
+    let sql = 'SELECT * FROM comments ORDER BY created_at DESC';
+    let params = [];
+    if (season && episode) { sql += ' WHERE season=? AND episode=?'; params = [season, episode]; }
+    db.query(sql, params, (err, r) => res.json(r || []));
 });
 
 app.post('/comments', (req, res) => {
-    const { username, comment, season, episode } = req.body;
-    db.query('INSERT INTO comments (username, comment_text, season, episode) VALUES (?, ?, ?, ?)', 
-        [username, comment, season, episode], (err) => {
-        if (err) return res.status(500).json({ message: 'Error posting comment' });
-        res.json({ message: 'Posted!' });
-    });
+    if (!req.session.user) return res.status(401).json({ message: 'Login required' });
+    const { text, season, episode } = req.body;
+    db.query('INSERT INTO comments (username, comment_text, season, episode) VALUES (?, ?, ?, ?)',
+        [req.session.user.username, text, season, episode], () => res.json({ success: true }));
 });
 
 app.post('/feedback', (req, res) => {
     const { name, email, message } = req.body;
-    db.query('INSERT INTO feedback (name, email, message) VALUES (?, ?, ?)', [name, email, message], (err) => {
-        if (err) return res.status(500).json({ message: 'Error sending feedback' });
-        res.json({ message: 'Feedback sent!' });
-    });
+    db.query('INSERT INTO feedback (name, email, message) VALUES (?, ?, ?)', [name, email, message], () => res.json({ success: true }));
 });
 
-// ==============================================
-// 6. ADMIN DASHBOARD ROUTE
-// ==============================================
+// ADMIN
 app.get('/admin/data', (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Access denied' });
-    }
+    if (!req.session.user || req.session.user.role !== 'admin') return res.status(403).json({ message: 'Denied' });
 
-    const queryUsers = 'SELECT * FROM users ORDER BY created_at DESC';
-    const queryFeedback = 'SELECT * FROM feedback ORDER BY created_at DESC';
-    const queryComments = 'SELECT * FROM comments ORDER BY created_at DESC LIMIT 50';
-
-    db.query(queryUsers, (err, users) => {
-        if (err) return res.status(500).json({ message: 'Error' });
-        db.query(queryFeedback, (err2, feedback) => {
-            if (err2) return res.status(500).json({ message: 'Error' });
-            db.query(queryComments, (err3, comments) => {
-                if (err3) return res.status(500).json({ message: 'Error' });
-                res.json({
-                    adminName: req.session.user.username,
-                    totalUsers: users.length,
-                    users, feedback, comments
-                });
+    db.query('SELECT * FROM users', (e, users) => {
+        db.query('SELECT * FROM feedback', (e, fb) => {
+            db.query('SELECT * FROM comments', (e, cm) => {
+                res.json({ adminName: req.session.user.username, totalUsers: users.length, users, feedback: fb, comments: cm });
             });
         });
     });
 });
 
-// ==============================================
-// 7. START SERVER
-// ==============================================
-app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}`);
+app.delete('/admin/delete-user/:id', (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') return res.status(403).json({ message: 'Denied' });
+    if (parseInt(req.params.id) === req.session.user.id) return res.status(400).json({ message: "Cannot delete self" });
+    db.query('DELETE FROM users WHERE id=?', [req.params.id], () => res.json({ success: true }));
 });
+
+app.listen(port, () => console.log(`🚀 Server running on port ${port}`));

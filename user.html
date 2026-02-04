@@ -1,283 +1,436 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile - The Apothecary Diaries</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" type="image/jpg" href="image/logo.jpeg">
-</head>
-<body>
-    <img src="image/16211.JPG" alt="" class="bg-image" />
-    <img src="image/16210.jpg" alt="" class="bg-mb-image" />
-
-    <header>
-        <nav class="nav glass">
-            <div class="nav_bar">
-                <div class="nav_left">
-                    <div class="nav_logo">
-                        <a href="index.html">
-                            <img src="image/logo1.png" alt="Logo" />
-                        </a>
-                    </div>
-                    <ul>
-                        <li class="item"><a href="Anime.html">Anime</a></li>
-                        <li class="item"><a href="manga.html">Manga</a></li>
-                        <li class="item"><a href="character.html">Characters</a></li>
-                        <li class="item"><a href="about.html">About</a></li>
-                    </ul>
-                </div>
-                <div class="nav_right">
-                    <a href="auth.html" class="user-icon">
-                        <img src="image/accicon.png" alt="Account" />
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <div class="nav_mob">
-            <button onclick="menu.hidden^=1">≡</button>
-            <ul id="menu" hidden>
-                <a class="logo1" href="index.html">
-                    <img src="image/logo1.png" alt="Logo">
-                </a>
-                <a href="Anime.html"><li>Anime</li></a>
-                <a href="manga.html"><li>Manga</li></a>
-                <a href="character.html"><li>Characters</li></a>
-                <a href="about.html"><li>About</li></a>
-            </ul>
-            <a id="logoacc" href="auth.html">
-                <img src="image/accicon.png" alt="User Icon" class="user-icon">
-            </a>
-        </div>
-    </header>
-
-    <main>
-        <section class="profile-page">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="avatar-circle" id="profile-initials">--</div>
-                    <div class="profile-details">
-                        <h2 id="display-name">Loading...</h2>
-                        <p>Email: <span id="display-email">...</span></p>
-                        <p>Phone: <span id="display-phone">...</span></p>
-                    </div>
-                </div>
-
-                <div class="profile-section">
-                    <h3>FAVORITE EPISODE</h3>
-                    <div class="fav-episode-card" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="fav-episode-info">
-                            <p class="fav-episode-title" id="display-fav-ep">None set</p>
-                        </div>
-                        <button id="remove-fav-btn" class="remove-fav-btn" style="display: none;">Remove</button>
-                    </div>
-                </div>
-
-                <div class="profile-section">
-                    <h3>EDIT PROFILE</h3>
-                    <form id="edit-profile-form" class="profile-edit-form">
-                        <div class="input-group">
-                            <label>Username</label>
-                            <input type="text" id="edit-username" required />
-                        </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <input type="email" id="edit-email" required />
-                        </div>
-                        <div class="input-group">
-                            <label>Phone</label>
-                            <input type="tel" id="edit-phone" placeholder="Optional" />
-                        </div>
-                        <div class="full-width" style="grid-column: span 2; margin-top: 10px;">
-                            <button type="submit" class="save-btn">Save Changes</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="profile-actions">
-                    <button class="logout-btn" id="logout-btn">Logout</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
-        <p>&copy; 2026 The Apothecary Diaries Project.</p>
-        <p style="margin-top: 5px;">
-            <strong>Disclaimer:</strong> This website is developed strictly for
-            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
-            We do not own the rights to the anime, characters, or media content.
-            All rights belong to their respective owners.
-        </p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="user.js"></script>
-    <script src="main.js"></script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile - The Apothecary Diaries</title>
+    <title>User Profile - The Apothecary Diaries</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass-border': 'rgba(255, 255, 255, 0.2)',
+                        'glass-bg': 'rgba(255, 255, 255, 0.2)',
+                        'theme-orange': '#ffb26b',
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
+            }
+            .nav-link {
+                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
+            }
+            .form-input {
+                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
+            }
+            .action-btn {
+                @apply px-4 py-2 rounded-lg font-bold transition-all duration-300 cursor-pointer shadow-md text-sm border-none;
+            }
+            .btn-primary {
+                @apply bg-theme-orange text-white hover:text-theme-orange hover:bg-white hover:scale-105;
+            }
+            .btn-danger {
+                @apply bg-red-500/80 text-white hover:bg-red-600 hover:scale-105;
+            }
+            .btn-secondary {
+                @apply bg-white/20 text-white hover:bg-white/30;
+            }
+        }
+    </style>
 </head>
 
-<body>
-    <img src="image/16211.JPG" alt="" class="bg-image" />
-    <img src="image/16210.jpg" alt="" class="bg-mb-image" />
+<body class="bg-black font-sans min-h-screen text-white relative">
 
-    <header>
-        <nav class="nav glass">
-            <div class="nav_bar">
-                <div class="nav_left">
-                    <div class="nav_logo">
-                        <a href="index.html">
-                            <img src="image/logo1.png" alt="Logo" />
-                        </a>
-                    </div>
-                    <ul>
-                        <li class="item"><a href="Anime.html">Anime</a></li>
-                        <li class="item"><a href="manga.html">Manga</a></li>
-                        <li class="item"><a href="character.html">Characters</a></li>
-                        <li class="item"><a href="about.html">About</a></li>
-                    </ul>
-                </div>
-                <div class="nav_right">
-                    <a href="auth.html" class="user-icon">
-                        <img src="image/accicon.png" alt="Account" />
-                    </a>
-                </div>
+    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+
+    <header class="fixed top-0 w-full z-50 px-4 py-3">
+        <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
+                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
+                </a>
+                <ul class="hidden md:flex gap-8">
+                    <li><a href="Anime.html" class="nav-link">Anime</a></li>
+                    <li><a href="manga.html" class="nav-link">Manga</a></li>
+                    <li><a href="character.html" class="nav-link">Characters</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                </ul>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a id="user-icon-link" href="#" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
+                    <img id="nav-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
 
-        <div class="nav_mob">
-            <button onclick="menu.hidden^=1">≡</button>
-            <ul id="menu" hidden>
-                <a class="logo1" href="index.html">
-                    <img src="image/logo1.png" alt="Logo">
-                </a>
-                <a href="Anime.html">
-                    <li>Anime</li>
-                </a>
-                <a href="manga.html">
-                    <li>Manga</li>
-                </a>
-                <a href="character.html">
-                    <li>Characters</li>
-                </a>
-                <a href="about.html">
-                    <li>About</li>
-                </a>
-            </ul>
-            <a id="logoacc" href="auth.html">
-                <img src="image/accicon.png" alt="User Icon" class="user-icon">
-            </a>
+        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+            <a href="Anime.html" class="nav-link text-base">Anime</a>
+            <a href="manga.html" class="nav-link text-base">Manga</a>
+            <a href="character.html" class="nav-link text-base">Characters</a>
+            <a href="about.html" class="nav-link text-base">About</a>
+            <button onclick="logout()" class="text-red-400 font-bold mt-2">Logout</button>
         </div>
     </header>
 
-    <main>
-        <section class="profile-page">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar-container">
-                        <img id="current-avatar" src="https://ui-avatars.com/api/?name=Loading&background=333&color=fff"
-                            alt="Profile" class="profile-avatar-img">
-                        <button class="edit-avatar-btn" onclick="openAvatarModal()">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                    </div>
-                    <div class="profile-details">
-                        <h2 id="display-name">Loading...</h2>
-                        <p>Email: <span id="display-email">...</span></p>
-                        <p>Phone: <span id="display-phone">...</span></p>
-                    </div>
-                </div>
+    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto flex flex-col gap-8">
 
-                <div class="profile-section">
-                    <h3>FAVORITE EPISODE</h3>
-                    <div class="fav-episode-card"
-                        style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="fav-episode-info">
-                            <p class="fav-episode-title" id="display-fav-ep">None set</p>
-                        </div>
-                        <button id="remove-fav-btn" class="remove-fav-btn" style="display: none;">Remove</button>
-                    </div>
+        <section class="glass p-8 flex flex-col md:flex-row items-center gap-8 relative">
+            
+            <div class="relative group">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 shadow-lg">
+                    <img id="profile-avatar" src="image/accicon.png" alt="Profile" class="w-full h-full object-cover">
                 </div>
-
-                <div class="profile-section">
-                    <h3>EDIT PROFILE</h3>
-                    <form id="edit-profile-form" class="profile-edit-form">
-                        <div class="input-group">
-                            <label>Username</label>
-                            <input type="text" id="edit-username" required />
-                        </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <input type="email" id="edit-email" required />
-                        </div>
-                        <div class="input-group">
-                            <label>Phone</label>
-                            <input type="tel" id="edit-phone" placeholder="Optional" />
-                        </div>
-                        <div class="full-width" style="grid-column: span 2; margin-top: 10px;">
-                            <button type="submit" class="save-btn">Save Changes</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="profile-actions">
-                    <button class="logout-btn" id="logout-btn">Logout</button>
+                <div onclick="openAvatarModal()" class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                    <i class="fa-solid fa-camera text-2xl text-white"></i>
                 </div>
             </div>
+
+            <div class="flex-1 text-center md:text-left">
+                <h1 id="display-name" class="text-3xl font-bold text-theme-orange mb-1">Loading...</h1>
+                <p id="display-email" class="text-white/70 text-sm mb-4">user@example.com</p>
+                <div class="flex gap-4 justify-center md:justify-start">
+                    <button onclick="toggleEditMode()" class="action-btn btn-secondary">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Profile
+                    </button>
+                    <button onclick="logout()" class="action-btn btn-danger">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+
         </section>
+
+        <section id="edit-section" class="hidden glass p-8 animate-fade-in">
+            <h2 class="text-xl font-bold mb-6 text-theme-orange border-b border-white/10 pb-2">Update Information</h2>
+            <form id="profile-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-white/70 mb-1">Username</label>
+                    <input type="text" id="edit-username" class="form-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-white/70 mb-1">Email</label>
+                    <input type="email" id="edit-email" class="form-input" disabled title="Email cannot be changed">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-white/70 mb-1">Phone</label>
+                    <input type="tel" id="edit-phone" class="form-input">
+                </div>
+                
+                <div class="md:col-span-2 flex justify-end gap-4 mt-2">
+                    <button type="button" onclick="toggleEditMode()" class="action-btn btn-secondary">Cancel</button>
+                    <button type="submit" class="action-btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <section class="glass p-6 flex flex-col h-full md:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-theme-orange"><i class="fa-solid fa-heart mr-2"></i>Favorite Episodes</h2>
+                    <a href="Anime.html" class="text-xs text-white/60 hover:text-white underline">+ Add New</a>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-white/10 text-white/60 text-sm uppercase tracking-wider">
+                                <th class="py-3 px-4">Details</th>
+                                <th class="py-3 px-4 hidden sm:table-cell">Watch</th>
+                                <th class="py-3 px-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fav-table-body" class="text-white/90">
+                            </tbody>
+                    </table>
+                    <div id="no-fav-msg" class="text-center text-white/50 py-8 hidden">
+                        <p>No favorites added yet.</p>
+                        <a href="Anime.html" class="text-theme-orange text-sm hover:underline">Browse Anime</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass p-6 flex flex-col h-full md:col-span-2">
+                <h2 class="text-xl font-bold mb-4 text-theme-orange"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Continue Watching</h2>
+                <div class="flex-1 flex flex-col justify-center items-center text-center p-6 bg-black/10 rounded-xl">
+                    <div id="history-content">
+                        <p class="text-white/60 italic">No watch history found.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
     </main>
 
-    <footer
-        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
-        <p>&copy; 2026 The Apothecary Diaries Project.</p>
-        <p style="margin-top: 5px;">
-            <strong>Disclaimer:</strong> This website is developed strictly for
-            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
-            We do not own the rights to the anime, characters, or media content.
-            All rights belong to their respective owners.
-        </p>
-    </footer>
-    <div id="avatar-modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
-    <div style="background-color: #1a1a1a; margin: 15vh auto; padding: 30px; border: 1px solid #ffb26b; width: 90%; max-width: 400px; text-align: center; border-radius: 15px; position: relative; box-shadow: 0 0 20px rgba(255,178,107,0.2);">
-        
-        <span onclick="closeAvatarModal()" style="position: absolute; top: 10px; right: 20px; color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
-        
-        <h2 style="color: #ffb26b; margin-bottom: 20px; font-family: 'Cinzel', serif;">Change Profile Photo</h2>
-        
-        <div style="margin-bottom: 20px;">
-            <img id="modal-avatar-preview" src="" alt="Preview" 
-                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #ffb26b; display: none;">
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <label style="background: #ffb26b; color: black; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: transform 0.2s;">
-                Upload New Photo
-                <input type="file" id="avatar-upload" accept="image/*" hidden onchange="handleUserAvatarUpload(this)">
-            </label>
+    <div id="avatar-modal" class="fixed inset-0 z-[100] hidden bg-black/80 flex items-center justify-center p-4">
+        <div class="glass max-w-sm w-full p-6 relative animate-scale-up">
+            <button onclick="closeAvatarModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold text-theme-orange mb-6 text-center">Change Avatar</h2>
             
-            <button onclick="saveUserAvatar('default')" style="background: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
-                Remove Photo
-            </button>
+            <div class="flex flex-col gap-4">
+                <label class="block w-full text-center py-4 bg-white/10 border-2 border-dashed border-white/30 rounded-xl cursor-pointer hover:bg-white/20 hover:border-theme-orange transition-all">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl mb-2 text-white/80"></i>
+                    <p class="text-sm">Click to Upload Image</p>
+                    <input type="file" id="avatar-upload" accept="image/*" hidden onchange="handleAvatarUpload(this)">
+                </label>
+                
+                <div class="text-center text-sm text-white/50">- OR -</div>
+
+                <button onclick="saveAvatar('default')" class="action-btn btn-danger w-full">
+                    Remove Current Photo
+                </button>
+            </div>
         </div>
     </div>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="user.js"></script>
-    <script src="main.js"></script>
-</body>
 
+    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for 
+            <span class="text-black">educational and portfolio purposes only</span>. 
+            We do not own the rights to the anime, characters, or media content.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        let currentUser = null;
+
+        function toggleEditMode() {
+            const section = document.getElementById('edit-section');
+            section.classList.toggle('hidden');
+        }
+
+        function openAvatarModal() {
+            document.getElementById('avatar-modal').classList.remove('hidden');
+        }
+
+        function closeAvatarModal() {
+            document.getElementById('avatar-modal').classList.add('hidden');
+        }
+
+        async function logout() {
+            try {
+                await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+                Toastify({ text: "Logged out!", style: { background: "#333" } }).showToast();
+                setTimeout(() => window.location.href = 'index.html', 1000);
+            } catch (err) { console.error(err); }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navAvatar = document.getElementById('nav-avatar');
+            const profileAvatar = document.getElementById('profile-avatar');
+            
+            // --- MOBILE MENU ---
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
+
+            // --- FETCH USER DATA ---
+            try {
+                const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+                const data = await res.json();
+
+                if (!data.loggedIn || !data.user) {
+                    window.location.href = 'auth.html';
+                    return;
+                }
+
+                currentUser = data.user;
+                populateUI(currentUser);
+
+            } catch (err) {
+                console.error("Auth Error:", err);
+                Toastify({ text: "Error loading profile", style: { background: "#ff5f6d" } }).showToast();
+            }
+
+            // --- UPDATE PROFILE ---
+            const form = document.getElementById('profile-form');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('edit-username').value;
+                    const email = document.getElementById('edit-email').value;
+                    const phone = document.getElementById('edit-phone').value;
+                    const btn = form.querySelector('button[type="submit"]');
+                    const originalText = btn.textContent;
+
+                    btn.textContent = "Saving...";
+                    btn.disabled = true;
+
+                    try {
+                        const res = await fetch('/auth/update', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                username, email, phone, 
+                                avatar_id: currentUser.avatar_id 
+                            })
+                        });
+
+                        if (res.ok) {
+                            Toastify({ text: "Profile Updated!", style: { background: "#00b09b" } }).showToast();
+                            setTimeout(() => location.reload(), 1000);
+                        } else {
+                            Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
+                        }
+                    } catch (err) { console.error(err); }
+                    finally {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+
+        // ---  UI ---
+        function populateUI(user) {
+            document.getElementById('display-name').textContent = user.username;
+            document.getElementById('display-email').textContent = user.email;
+            
+            document.getElementById('edit-username').value = user.username;
+            document.getElementById('edit-email').value = user.email;
+            document.getElementById('edit-phone').value = user.phone || '';
+
+            // Avatar
+            let avatarSrc;
+            if (user.avatar_id && user.avatar_id !== 'default') {
+                avatarSrc = user.avatar_id;
+            } else {
+                avatarSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+            }
+            document.getElementById('profile-avatar').src = avatarSrc;
+            document.getElementById('nav-avatar').src = avatarSrc;
+
+            const tbody = document.getElementById('fav-table-body');
+            const noFavMsg = document.getElementById('no-fav-msg');
+            tbody.innerHTML = '';
+
+            let favorites = [];
+            if (user.favorite_episode && user.favorite_episode !== 'None') {
+                favorites.push(user.favorite_episode);
+            }
+
+            if (favorites.length === 0) {
+                noFavMsg.classList.remove('hidden');
+            } else {
+                noFavMsg.classList.add('hidden');
+                favorites.forEach(fav => {
+                    const tr = document.createElement('tr');
+                    tr.className = "border-b border-white/5 hover:bg-white/5 transition-colors";
+                    
+                    let displayDetails = `<span class="font-bold text-theme-orange">${fav}</span>`;
+                    let link = '#';
+
+                    const match = fav.match(/(\d+)/g);
+                    if(match && match.length >= 2) {
+                        const s = match[0];
+                        const e = match[1];
+                        link = `stream.html?season=${s}&ep=${e}`;
+                    }
+
+                    tr.innerHTML = `
+                        <td class="py-3 px-4">${displayDetails}</td>
+                        <td class="py-3 px-4 hidden sm:table-cell">
+                            <a href="${link}" class="text-xs bg-white/10 hover:bg-theme-orange hover:text-black px-3 py-1 rounded transition-colors">Play Now</a>
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <button onclick="removeFavorite('${fav}')" class="text-red-400 hover:text-red-300 transition-colors p-2" title="Remove">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Watch History
+            fetch('/user/progress', { credentials: 'include' })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.continue) {
+                        document.getElementById('history-content').innerHTML = `
+                            <div class="flex flex-col gap-2">
+                                <p class="text-2xl font-bold text-white">Season ${d.continue.season}</p>
+                                <p class="text-xl text-theme-orange">Episode ${d.continue.episode}</p>
+                                <a href="stream.html?season=${d.continue.season}&ep=${d.continue.episode}" class="action-btn btn-primary mt-4 inline-block mx-auto no-underline">
+                                    <i class="fa-solid fa-play mr-2"></i>Resume
+                                </a>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+
+        // --- AVATAR ---
+        window.handleAvatarUpload = (input) => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) { saveAvatar(e.target.result); };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveAvatar = async (avatarData) => {
+            try {
+                const res = await fetch('/auth/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        email: currentUser.email,
+                        phone: currentUser.phone,
+                        avatar_id: avatarData
+                    })
+                });
+
+                if (res.ok) {
+                    Toastify({ text: "Avatar Updated!", style: { background: "#00b09b" } }).showToast();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    Toastify({ text: "Failed to update avatar", style: { background: "#ff5f6d" } }).showToast();
+                }
+            } catch (err) { console.error(err); }
+        };
+
+        window.removeFavorite = async (favItem) => {
+            if(!confirm(`Remove "${favItem}" from favorites?`)) return;
+             alert("Feature requires backend update to support removing favorites."); 
+        };
+
+    </script>
+</body>
 </html>

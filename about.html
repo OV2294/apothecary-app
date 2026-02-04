@@ -1,124 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About - The Apothecary Diaries</title>
-    <link rel="stylesheet" href="styles.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass-border': 'rgba(255, 255, 255, 0.2)',
+                        'glass-bg': 'rgba(255, 255, 255, 0.2)',
+                        'theme-orange': '#ffb26b',
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
+            }
+            .nav-link {
+                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
+            }
+            .form-input {
+                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
+            }
+            .submit-btn {
+                @apply inline-block w-full px-8 py-3 bg-theme-orange text-white font-bold rounded-lg hover:bg-white hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 uppercase tracking-wide;
+            }
+        }
+    </style>
 </head>
 
-<body>
-    <img src="image/16211.JPG" alt="" class="bg-image" />
-    <img src="image/16210.jpg" alt="" class="bg-mb-image" />
+<body class="bg-black font-sans min-h-screen text-white relative">
 
-    <header>
-        <nav class="nav glass">
-            <div class="nav_bar">
-                <div class="nav_left">
-                    <div class="nav_logo">
-                        <a href="index.html">
-                            <img src="image/logo1.png" alt="Logo" />
-                        </a>
-                    </div>
-                    <ul>
-                        <li class="item"><a href="Anime.html">Anime</a></li>
-                        <li class="item"><a href="manga.html">Manga</a></li>
-                        <li class="item"><a href="character.html">Characters</a></li>
-                        <li class="item"><a href="about.html">About</a></li>
-                    </ul>
-                </div>
-                <div class="nav_right">
-                    <a href="auth.html" class="user-icon">
-                        <img src="image/accicon.png" alt="Account" />
-                    </a>
-                </div>
-            </div>
-        </nav>
+    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
 
-        <div class="nav_mob">
-            <button onclick="menu.hidden^=1">≡</button>
-            <ul id="menu" hidden>
-                <a class="logo1" href="index.html">
-                    <img src="image/logo1.png" alt="Logo">
+    <header class="fixed top-0 w-full z-50 px-4 py-3">
+        <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
+                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
                 </a>
-                <a href="Anime.html">
-                    <li>Anime</li>
-                </a>
-                <a href="manga.html">
-                    <li>Manga</li>
-                </a>
-                <a href="character.html">
-                    <li>Characters</li>
-                </a>
-                <a href="about.html">
-                    <li>About</li>
-                </a>
-            </ul>
-            <a id="logoacc" href="auth.html">
-                <img src="image/accicon.png" alt="User Icon" class="user-icon">
-            </a>
-        </div>
-    </header>
-
-    <main>
-        <section class="about-card glass">
-            <div class="about-text">
-                <h1>About Anime</h1>
-                <p>Anime is a diverse form of Japanese animation known for compelling storytelling and unique art
-                    styles.</p>
-
-                <h1>About Website</h1>
-                <p>“The Apothecary Diaries” is an educational platform for discovering web development components
-                    through an anime theme.</p>
-
-                <h2>What you can do here</h2>
-                <ul>
-                    <li>Explore anime seasons in a glassmorphism layout.</li>
-                    <li>View character profiles and series details.</li>
-                    <li>Reference the interface for your own design projects.</li>
+                <ul class="hidden md:flex gap-8">
+                    <li><a href="Anime.html" class="nav-link">Anime</a></li>
+                    <li><a href="manga.html" class="nav-link">Manga</a></li>
+                    <li><a href="character.html" class="nav-link">Characters</a></li>
+                    <li><a href="about.html" class="nav-link text-theme-orange">About</a></li>
                 </ul>
             </div>
 
-            <div class="about-feedback">
-                <h2>Share your feedback</h2>
-                <form id="feedbackForm" class="feedback-form">
-                    <div class="field-group">
-                        <label for="fb-name">Name</label>
-                        <input type="text" id="fb-name" name="name" placeholder="Your name" />
-                    </div>
-                    <div class="field-group">
-                        <label for="fb-email">Email</label>
-                        <input type="email" id="fb-email" name="email" placeholder="you@example.com" />
-                    </div>
-                    <div class="field-group">
-                        <label for="fb-message">Feedback</label>
-                        <textarea id="fb-message" name="message" rows="4" placeholder="Write thoughts here..."
-                            required></textarea>
-                    </div>
-                    <button type="submit" class="watch-btn">Send feedback</button>
-                    <p id="fb-status" class="feedback-status"></p>
-                </form>
+            <div class="flex items-center gap-4">
+                <a id="user-icon-link" href="auth.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
+                    <img id="user-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+            <a href="Anime.html" class="nav-link text-base">Anime</a>
+            <a href="manga.html" class="nav-link text-base">Manga</a>
+            <a href="character.html" class="nav-link text-base">Characters</a>
+            <a href="about.html" class="nav-link text-base text-theme-orange">About</a>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto">
+        
+        <section class="glass p-8 md:p-12">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                
+                <div class="flex flex-col gap-8">
+                    <div>
+                        <h1 class="text-4xl font-bold text-theme-orange mb-4 font-serif">About Anime</h1>
+                        <p class="text-lg leading-relaxed text-white/90">
+                            Anime is a diverse form of Japanese animation known for compelling storytelling and unique art styles.
+                            It covers a wide range of genres, from slice-of-life to psychological thrillers, captivating audiences worldwide.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h1 class="text-4xl font-bold text-theme-orange mb-4 font-serif">About Website</h1>
+                        <p class="text-lg leading-relaxed text-white/90">
+                            “The Apothecary Diaries” is an educational platform for discovering web development components
+                            through an anime theme. This project demonstrates full-stack capabilities including authentication, 
+                            database management, and responsive UI design.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2 inline-block">What you can do here</h2>
+                        <ul class="list-disc list-inside space-y-2 text-white/80 ml-2">
+                            <li>Explore anime seasons and watch episodes.</li>
+                            <li>View character profiles and series details.</li>
+                            <li>Read manga chapters.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w-full lg:border-l lg:border-white/10 lg:pl-12">
+                    <h2 class="text-3xl font-bold text-black mb-6">Share your feedback</h2>
+                    <p class="text-white/70 mb-8 text-sm">We value your thoughts! Let us know what you think about the project.</p>
+                    
+                    <form id="feedbackForm" class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-2">
+                            <label for="fb-name" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Name</label>
+                            <input type="text" id="fb-name" name="name" placeholder="Your name" class="form-input" />
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="fb-email" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Email</label>
+                            <input type="email" id="fb-email" name="email" placeholder="you@example.com" class="form-input" />
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="fb-message" class="font-bold text-sm uppercase tracking-wide text-black/70 ml-1">Feedback</label>
+                            <textarea id="fb-message" name="message" rows="5" placeholder="Write thoughts here..." class="form-input" required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn text-center shadow-lg hover:text-theme-orange hover:shadow-glow">Send Feedback</button>
+                    </form>
+                </div>
+
+            </div>
+
         </section>
+
     </main>
 
-    <footer
-        style="text-align: center; padding: 20px; color:white; font-size: 15px; font-weight: bold; margin-top: 40px;">
-        <p>&copy; 2026 The Apothecary Diaries Project.</p>
-        <p style="margin-top: 5px;">
-            <strong>Disclaimer:</strong> This website is developed strictly for
-            <span style="color: #ffb26b;">educational and portfolio purposes only</span>.
+    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for 
+            <span class="text-black">educational and portfolio purposes only</span>. 
             We do not own the rights to the anime, characters, or media content.
-            All rights belong to their respective owners.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="about.js"></script>
-    <script src="main.js"></script>
-</body>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const userIconLink = document.getElementById('user-icon-link');
+            const userAvatar = document.getElementById('user-avatar');
+            const feedbackForm = document.getElementById('feedbackForm');
 
+            // --- TOAST HELPER ---
+            const showToast = (text, type = 'info') => {
+                let bg = "#333";
+                if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
+                if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
+                
+                Toastify({
+                    text: text, duration: 3000, style: { background: bg },
+                    gravity: "top", position: "right"
+                }).showToast();
+            };
+
+            // --- MOBILE MENU ---
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
+
+            // --- AUTH CHECK ---
+            try {
+                const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+                const data = await res.json();
+
+                if (data.loggedIn && data.user) {
+                    const user = data.user;
+                    if (userIconLink) userIconLink.href = (user.role === 'admin') ? 'admin.html' : 'user.html';
+                    
+                    if (userAvatar) {
+                        let finalSrc = (user.avatar_id && user.avatar_id !== 'default') 
+                            ? user.avatar_id 
+                            : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
+                        userAvatar.src = finalSrc;
+                    }
+                } else {
+                    if (userIconLink) userIconLink.href = 'auth.html';
+                }
+            } catch (err) {
+                console.error("Auth Check Error:", err);
+            }
+
+            // --- FEEDBACK ---
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const name = document.getElementById('fb-name').value;
+                    const email = document.getElementById('fb-email').value;
+                    const message = document.getElementById('fb-message').value;
+                    const btn = feedbackForm.querySelector('button');
+                    const originalText = btn.textContent;
+
+                    if (!message) {
+                        showToast('Please enter a message.', 'error');
+                        return;
+                    }
+
+                    btn.textContent = "Sending...";
+                    btn.disabled = true;
+
+                    try {
+                        const response = await fetch('/feedback', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, message })
+                        });
+
+                        if (response.ok) {
+                            showToast('Feedback sent successfully!', 'success');
+                            feedbackForm.reset();
+                        } else {
+                            const result = await response.json();
+                            showToast(result.message || 'Error sending feedback.', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showToast('Server error. Please try again later.', 'error');
+                    } finally {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
 </html>
