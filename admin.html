@@ -6,7 +6,6 @@
     <title>Admin Dashboard - The Apothecary Diaries</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -22,10 +21,6 @@
                     },
                     boxShadow: {
                         'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
-                        'glow': '0 0 15px rgba(255, 178, 107, 0.3)',
-                    },
-                    fontFamily: {
-                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
                     }
                 }
             }
@@ -37,432 +32,341 @@
             .glass {
                 @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
             }
-            .nav-link {
-                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
+            .sidebar-link {
+                @apply flex items-center gap-3 px-4 py-3 text-white/80 hover:bg-white/10 hover:text-theme-orange transition-all rounded-lg cursor-pointer;
             }
-            .form-input {
-                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-theme-orange focus:bg-black/40 transition-all duration-300;
+            .sidebar-link.active {
+                @apply bg-theme-orange text-black font-bold;
             }
-            .action-btn {
-                @apply px-3 py-1 rounded-md font-bold transition-all duration-300 cursor-pointer shadow-md text-xs border-none uppercase tracking-wider;
+            .stat-card {
+                @apply glass p-6 flex flex-col gap-2;
             }
-            .btn-danger {
-                @apply bg-red-500/20 text-red-300 border border-red-500/50 hover:bg-red-500 hover:text-white;
+            .modal-overlay {
+                @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden;
             }
-            .tab-btn {
-                @apply px-6 py-3 text-white/50 font-bold border-b-2  hover:text-white transition-all duration-300;
-            }
-            
-            .tab-btn.active {
-                @apply text-white border-orange-400 bg-orange-400/10;
-            }
-            .glass-table {
-                @apply w-full text-left border-collapse;
-            }
-            .glass-table th {
-                @apply py-3 px-4 bg-white/10 text-theme-orange font-bold text-sm uppercase border-b border-white/20 whitespace-nowrap;
-            }
-            .glass-table td {
-                @apply py-3 px-4 border-b border-white/5 text-sm text-white/90;
-            }
-            .glass-table tr:hover {
-                @apply bg-white/5;
+            .modal-content {
+                @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl;
             }
         }
     </style>
 </head>
 
-<body class="bg-black font-sans min-h-screen text-white relative">
+<body class="bg-black font-sans min-h-screen text-white flex">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+    <img src="image/16211.JPG" class="fixed inset-0 w-full h-full object-cover opacity-20 -z-10">
 
-    <header class="fixed top-0 w-full z-50 px-4 py-3">
-        <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
-            <div class="flex items-center gap-8">
-                <a href="index.html" class="w-20 h-15 overflow-hidden hover:scale-105 transition-transform">
-                    <img src="image/logo1.png" alt="Logo" class="w-full h-full">
-                </a>
-                <ul class="hidden md:flex gap-8">
-                    <li><a href="Anime.html" class="nav-link">Anime</a></li>
-                    <li><a href="manga.html" class="nav-link">Manga</a></li>
-                    <li><a href="character.html" class="nav-link">Characters</a></li>
-                    <li><a href="about.html" class="nav-link">About</a></li>
-                </ul>
+    <aside class="w-64 glass h-screen fixed left-0 top-0 flex flex-col p-6 z-40">
+        <div class="flex items-center gap-3 mb-10 px-2">
+            <img src="image/logo1.png" class="w-10">
+            <h1 class="font-bold text-xl text-theme-orange">Admin Panel</h1>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <div class="sidebar-link active" onclick="showSection('dashboard')">
+                <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 mr-2">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-xs font-bold text-theme-orange uppercase tracking-widest hidden sm:block">Admin Mode</span>
-                </div>
-                <a id="user-icon-link" href="#" class="w-10 h-10 rounded-full overflow-hidden border-2 border-theme-orange shadow-glow transition-colors">
-                    <img id="nav-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
-                </a>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
+            <div class="sidebar-link" onclick="showSection('users')">
+                <i class="fa-solid fa-users w-5"></i> Users
+            </div>
+            <div class="sidebar-link" onclick="showSection('feedback')">
+                <i class="fa-solid fa-envelope w-5"></i> Feedback
+            </div>
+            <div class="sidebar-link" onclick="showSection('comments')">
+                <i class="fa-solid fa-comments w-5"></i> Comments
             </div>
         </nav>
 
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
-            <a href="Anime.html" class="nav-link text-base">Anime</a>
-            <a href="manga.html" class="nav-link text-base">Manga</a>
-            <button onclick="logout()" class="text-red-400 font-bold mt-2">Logout</button>
+        <div onclick="logout()" class="sidebar-link text-red-400 hover:bg-red-500/10 hover:text-red-500 mt-auto">
+            <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
         </div>
-    </header>
+    </aside>
 
-    <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto flex flex-col gap-8">
-
-        <div class="flex flex-col md:flex-row gap-6">
-            <div class="glass p-6 flex-1 flex items-center gap-4">
-                <div class="w-16 h-16 rounded-full bg-theme-orange flex items-center justify-center text-black text-2xl font-bold" id="admin-initials">
-                    AD
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold text-white">Welcome, <span id="admin-name" class="text-theme-orange">Admin</span></h1>
-                    <p class="text-white/60 text-sm">Dashboard Overview</p>
-                </div>
+    <main class="ml-64 w-full p-8">
+        
+        <header class="flex justify-between items-center mb-8 glass p-6">
+            <div>
+                <h2 class="text-2xl font-bold">Welcome, <span id="admin-name" class="text-theme-orange">Admin</span></h2>
+                <p class="text-white/50 text-sm">Here is what’s happening today.</p>
             </div>
+            
+            <div class="relative cursor-pointer group" onclick="openProfileModal()">
+                <img id="admin-avatar" src="image/accicon.png" class="w-12 h-12 rounded-full border-2 border-theme-orange object-cover shadow-lg group-hover:scale-105 transition-transform">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-black"></div>
+            </div>
+        </header>
 
-            <div class="glass p-6 w-full md:w-1/3 flex items-center justify-between">
-                <div>
-                    <p class="text-white/60 text-sm uppercase tracking-wider">Total Users</p>
-                    <h2 class="text-4xl font-bold text-white mt-1" id="total-users">0</h2>
+        <div id="dashboard-section" class="space-y-8 animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="stat-card">
+                    <div class="text-theme-orange text-3xl font-bold" id="total-users">0</div>
+                    <div class="text-white/60">Total Users</div>
                 </div>
-                <i class="fa-solid fa-users text-4xl text-theme-orange/50"></i>
+                <div class="stat-card">
+                    <div class="text-blue-400 text-3xl font-bold" id="total-comments">0</div>
+                    <div class="text-white/60">Comments Posted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-green-400 text-3xl font-bold" id="total-feedback">0</div>
+                    <div class="text-white/60">Feedback Received</div>
+                </div>
             </div>
         </div>
 
-        <div class="glass overflow-hidden">
-            <div class="flex border-b border-white/10 bg-theme-orange overflow-x-auto">
-                <button class="tab-btn active" onclick="switchTab('users')"><i class="fa-solid fa-users mr-2"></i>Users</button>
-                <button class="tab-btn" onclick="switchTab('feedback')"><i class="fa-solid fa-comment-dots mr-2"></i>Feedback</button>
-                <button class="tab-btn" onclick="switchTab('comments')"><i class="fa-solid fa-comments mr-2"></i>Comments</button>
-                <button class="tab-btn" onclick="switchTab('settings')"><i class="fa-solid fa-gear mr-2"></i>Settings</button>
+        <div id="users-section" class="hidden animate-fade-in">
+            <div class="glass p-6">
+                <h3 class="text-xl font-bold mb-4 text-theme-orange">Registered Users</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-white/10 text-theme-orange">
+                            <tr>
+                                <th class="p-3 rounded-l-lg">ID</th>
+                                <th class="p-3">Username</th>
+                                <th class="p-3">Email</th>
+                                <th class="p-3">Role</th>
+                                <th class="p-3 rounded-r-lg">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
 
-            <div class="p-0 min-h-[400px]">
-                
-                <div id="view-users" class="tab-content block">
-                    <div class="overflow-x-auto">
-                        <table class="glass-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th class="text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-table-body">
-                                <tr><td colspan="5" class="text-center py-8 text-white/50">Loading users...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div id="feedback-section" class="hidden animate-fade-in">
+            <div class="glass p-6">
+                <h3 class="text-xl font-bold mb-4 text-theme-orange">User Feedback</h3>
+                <div id="feedback-list" class="flex flex-col gap-4"></div>
+            </div>
+        </div>
 
-                <div id="view-feedback" class="tab-content hidden">
-                    <div class="overflow-x-auto">
-                        <table class="glass-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Message</th>
-                                </tr>
-                            </thead>
-                            <tbody id="feedback-table-body">
-                                <tr><td colspan="4" class="text-center py-8 text-white/50">Loading feedback...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="view-comments" class="tab-content hidden">
-                    <div class="overflow-x-auto">
-                        <table class="glass-table">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Location</th>
-                                    <th>Comment</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="comments-table-body">
-                                <tr><td colspan="4" class="text-center py-8 text-white/50">Loading comments...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="view-settings" class="tab-content hidden p-8">
-                    <h2 class="text-2xl font-bold text-theme-orange mb-6">Admin Profile Settings</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-                        
-                        <div class="flex flex-col gap-4 items-center md:items-start">
-                            <label class="block text-sm font-bold text-white/70">Profile Picture</label>
-                            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer">
-                                <img id="settings-avatar" src="image/accicon.png" class="w-full h-full object-cover">
-                                <div onclick="document.getElementById('admin-avatar-upload').click()" class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <i class="fa-solid fa-camera text-white text-2xl"></i>
-                                </div>
-                            </div>
-                            <input type="file" id="admin-avatar-upload" hidden accept="image/*" onchange="handleAdminAvatar(this)">
-                            <p class="text-xs text-white/50 text-center md:text-left">Click image to upload new avatar</p>
-                        </div>
-
-                        <form id="admin-update-form" class="flex flex-col gap-4 w-full">
-                            <div>
-                                <label class="block text-sm font-bold text-white/70 mb-1">Username</label>
-                                <input type="text" id="admin-username" class="form-input">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-white/70 mb-1">Email</label>
-                                <input type="email" id="admin-email" class="form-input" disabled>
-                            </div>
-                            <button type="submit" class="bg-theme-orange text-black font-bold py-2 px-6 rounded-lg hover:bg-white hover:scale-105 transition-all mt-4 w-max">
-                                Save Changes
-                            </button>
-                        </form>
-
-                    </div>
-                </div>
-
+        <div id="comments-section" class="hidden animate-fade-in">
+            <div class="glass p-6">
+                <h3 class="text-xl font-bold mb-4 text-theme-orange">Recent Comments</h3>
+                <div id="all-comments-list" class="flex flex-col gap-4"></div>
             </div>
         </div>
 
     </main>
 
-    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
-        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
-        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-black">educational and portfolio purposes only</span>. 
-            We do not own the rights to the anime, characters, or media content.
-        </p>
-    </footer>
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-white/50 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-2xl font-bold text-theme-orange mb-6">Edit Avatar</h3>
+
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <img id="modal-avatar-preview" src="image/accicon.png" class="w-full h-full rounded-full object-cover border-2 border-white/20">
+                
+                <label for="avatar-upload" class="absolute bottom-0 right-0 bg-theme-orange text-black p-2 rounded-full cursor-pointer hover:bg-white transition-colors shadow-lg">
+                    <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleFileSelect(this)">
+            </div>
+
+            <p class="text-white/60 text-sm mb-6">Click the camera icon to upload a new profile picture.</p>
+
+            <button onclick="saveAdminAvatar()" class="w-full py-3 bg-theme-orange text-black font-bold rounded-lg hover:bg-white hover:scale-105 transition-all">
+                Save Changes
+            </button>
+
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
         let currentAdmin = null;
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            document.querySelectorAll('.tab-content').forEach(div => div.classList.add('hidden'));
-            document.querySelectorAll('.tab-content').forEach(div => div.classList.remove('block'));
-            
-            const target = document.getElementById(`view-${tabName}`);
-            target.classList.remove('hidden');
-            target.classList.add('block');
-        }
-
-        // --- LOGOUT ---
-        async function logout() {
-            try {
-                await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
-                Toastify({ text: "Logged out!", style: { background: "#333" } }).showToast();
-                setTimeout(() => window.location.href = 'index.html', 1000);
-            } catch (err) { console.error(err); }
-        }
+        let tempAvatarBase64 = null;
 
         document.addEventListener("DOMContentLoaded", async () => {
-            
-            // MOBILE MENU
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileBtn) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    mobileMenu.classList.toggle('flex');
-                });
-            }
-
-            // LOAD DATA
-            await loadAdminData();
-
-            const updateForm = document.getElementById('admin-update-form');
-            if(updateForm) {
-                updateForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    await updateAdminProfile();
-                });
-            }
+            await checkAdminAuth();
+            loadDashboardData();
         });
 
-        async function loadAdminData() {
+        async function checkAdminAuth() {
             try {
-                const res = await fetch('/admin/data', { credentials: 'include' });
+                const res = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
+                const data = await res.json();
 
-                if (res.status === 401 || res.status === 403) {
-                    document.body.innerHTML = `
-                        <div class="h-screen flex items-center justify-center flex-col gap-4 text-white">
-                            <h1 class="text-4xl font-bold text-red-500">Access Denied</h1>
-                            <p>You do not have permission to view this page.</p>
-                            <a href="index.html" class="text-theme-orange underline">Return Home</a>
-                        </div>`;
+                if (!data.loggedIn || data.user.role !== 'admin') {
+                    window.location.href = 'auth.html';
                     return;
                 }
 
-                const data = await res.json();
+                currentAdmin = data.user;
                 
-                // Stats & Header
-                document.getElementById('total-users').textContent = data.totalUsers || 0;
-                document.getElementById('admin-name').textContent = data.adminName || 'Admin';
+                document.getElementById('admin-name').textContent = currentAdmin.username;
+
+                const avatarImg = document.getElementById('admin-avatar');
+                const modalImg = document.getElementById('modal-avatar-preview');
                 
-                const initials = (data.adminName || 'AD').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
-                document.getElementById('admin-initials').textContent = initials;
-
-                populateSettingsForm(); 
-
-                // Users Table
-                const userTbody = document.getElementById('users-table-body');
-                userTbody.innerHTML = '';
-                if(data.users && data.users.length > 0) {
-                    data.users.forEach(u => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>#${u.id}</td>
-                            <td class="font-bold text-white">${u.username}</td>
-                            <td class="text-white/70">${u.email}</td>
-                            <td>
-                                <span class="px-2 py-1 rounded text-xs font-bold ${u.role === 'admin' ? 'bg-theme-orange text-black' : 'bg-white/10 text-white'}">
-                                    ${u.role.toUpperCase()}
-                                </span>
-                            </td>
-                            <td class="text-right">
-                                ${u.role !== 'admin' ? 
-                                `<button onclick="deleteUser(${u.id})" class="action-btn btn-danger">Delete</button>` : 
-                                '<span class="text-xs text-white/30">Protected</span>'}
-                            </td>
-                        `;
-                        userTbody.appendChild(tr);
-                    });
+                let finalSrc;
+                if (currentAdmin.avatar_id && currentAdmin.avatar_id !== 'default') {
+                    finalSrc = currentAdmin.avatar_id;
                 } else {
-                    userTbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No users found.</td></tr>';
+                    
+                    finalSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAdmin.username)}&background=ffb26b&color=000&bold=true`;
                 }
 
-                // Feedback Table
-                const fbTbody = document.getElementById('feedback-table-body');
-                fbTbody.innerHTML = '';
-                if(data.feedback && data.feedback.length > 0) {
-                    data.feedback.forEach(f => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td class="text-white/50 text-xs">${new Date(f.created_at).toLocaleDateString()}</td>
-                            <td class="font-bold">${f.name || 'Anonymous'}</td>
-                            <td>${f.email || '-'}</td>
-                            <td class="text-white/80 italic">"${f.message}"</td>
-                        `;
-                        fbTbody.appendChild(tr);
-                    });
-                } else {
-                    fbTbody.innerHTML = '<tr><td colspan="4" class="text-center py-4">No feedback received.</td></tr>';
-                }
-
-                // Comments Table
-                const cmTbody = document.getElementById('comments-table-body');
-                cmTbody.innerHTML = '';
-                if(data.comments && data.comments.length > 0) {
-                    data.comments.forEach(c => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td class="font-bold text-theme-orange">${c.username}</td>
-                            <td class="text-xs">S${c.season} E${c.episode}</td>
-                            <td>${c.comment_text}</td>
-                            <td class="text-white/50 text-xs">${new Date(c.created_at).toLocaleDateString()}</td>
-                        `;
-                        cmTbody.appendChild(tr);
-                    });
-                } else {
-                    cmTbody.innerHTML = '<tr><td colspan="4" class="text-center py-4">No comments found.</td></tr>';
-                }
+                avatarImg.src = finalSrc;
+                modalImg.src = finalSrc; 
 
             } catch (err) {
-                console.error("Load Data Error:", err);
-                Toastify({ text: "Error loading dashboard", style: { background: "#ff5f6d" } }).showToast();
+                console.error("Auth Error", err);
             }
         }
 
-        async function populateSettingsForm() {
+        async function loadDashboardData() {
             try {
-                const res = await fetch('/auth/me', { credentials: 'include' });
+                const res = await fetch('/admin/data');
+                if(!res.ok) throw new Error("Failed to load");
+                
                 const data = await res.json();
-                if(data.user) {
-                    currentAdmin = data.user;
-                    document.getElementById('admin-username').value = data.user.username;
-                    document.getElementById('admin-email').value = data.user.email;
-                    
-                    // Avatar
-                    const avatarImg = document.getElementById('settings-avatar');
-                    const navAvatar = document.getElementById('nav-avatar');
-                    let src = (data.user.avatar_id && data.user.avatar_id !== 'default') 
-                        ? data.user.avatar_id 
-                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.username)}&background=ffb26b&color=000&bold=true`;
-                    
-                    avatarImg.src = src;
-                    navAvatar.src = src;
-                }
+                
+                document.getElementById('total-users').textContent = data.totalUsers;
+                document.getElementById('total-comments').textContent = data.comments.length;
+                document.getElementById('total-feedback').textContent = data.feedback.length;
+
+                renderUsers(data.users);
+                renderFeedback(data.feedback);
+                renderComments(data.comments);
+
             } catch(e) { console.error(e); }
         }
 
-        window.deleteUser = async (id) => {
-            if(!confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
+        function openProfileModal() {
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.getElementById('profile-modal').classList.add('flex');
+        }
 
-            try {
-                const res = await fetch(`/admin/delete-user/${id}`, { 
-                    method: 'DELETE', 
-                    credentials: 'include' 
-                });
-                
-                if(res.ok) {
-                    Toastify({ text: "User Deleted", style: { background: "#00b09b" } }).showToast();
-                    loadAdminData(); 
-                } else {
-                    Toastify({ text: "Failed to delete user", style: { background: "#ff5f6d" } }).showToast();
-                }
-            } catch(e) { console.error(e); }
-        };
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+            document.getElementById('profile-modal').classList.remove('flex');
+            tempAvatarBase64 = null; 
+        }
 
-        // --- AVATAR ---
-        window.handleAdminAvatar = (input) => {
+        function handleFileSelect(input) {
             const file = input.files[0];
-            if(!file) return;
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = (e) => {
-                document.getElementById('settings-avatar').src = e.target.result;
-                currentAdmin.tempAvatar = e.target.result;
+                tempAvatarBase64 = e.target.result;
+                document.getElementById('modal-avatar-preview').src = tempAvatarBase64;
             };
             reader.readAsDataURL(file);
-        };
+        }
 
-        async function updateAdminProfile() {
-            const username = document.getElementById('admin-username').value;
-            const avatar = currentAdmin.tempAvatar || currentAdmin.avatar_id;
+        async function saveAdminAvatar() {
+            if (!tempAvatarBase64) {
+                closeProfileModal();
+                return;
+            }
 
             try {
                 const res = await fetch('/auth/update', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        username, 
-                        email: currentAdmin.email, 
-                        avatar_id: avatar 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        username: currentAdmin.username, 
+                        avatar_id: tempAvatarBase64
                     })
                 });
 
-                if(res.ok) {
-                    Toastify({ text: "Admin Profile Updated", style: { background: "#00b09b" } }).showToast();
-                    loadAdminData(); 
+                if (res.ok) {
+                    Toastify({ text: "Avatar Updated!", style: { background: "#00b09b" } }).showToast();
+                    
+                    document.getElementById('admin-avatar').src = tempAvatarBase64;
+                    currentAdmin.avatar_id = tempAvatarBase64;
+                    closeProfileModal();
                 } else {
                     Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
                 }
-            } catch(e) { console.error(e); }
+            } catch (err) {
+                console.error(err);
+                Toastify({ text: "Server Error", style: { background: "#ff5f6d" } }).showToast();
+            }
         }
+
+        window.showSection = (sectionId) => {
+            ['dashboard', 'users', 'feedback', 'comments'].forEach(id => {
+                document.getElementById(`${id}-section`).classList.add('hidden');
+            });
+            document.getElementById(`${sectionId}-section`).classList.remove('hidden');
+            
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        };
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = users.map(u => `
+                <tr class="border-b border-white/10 hover:bg-white/5">
+                    <td class="p-3 text-white/50">#${u.id}</td>
+                    <td class="p-3 font-bold">${u.username}</td>
+                    <td class="p-3 text-white/70">${u.email}</td>
+                    <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${u.role === 'admin' ? 'bg-theme-orange text-black' : 'bg-white/20'}">${u.role.toUpperCase()}</span></td>
+                    <td class="p-3">
+                        <button onclick="deleteUser(${u.id})" class="text-red-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderFeedback(feedback) {
+            const container = document.getElementById('feedback-list');
+            container.innerHTML = feedback.length ? feedback.map(f => `
+                <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-bold text-theme-orange">${f.name || 'Anonymous'}</span>
+                        <span class="text-xs text-white/40">${new Date(f.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-sm text-white/80">${f.message}</p>
+                    <p class="text-xs text-white/40 mt-2">${f.email || 'No email'}</p>
+                </div>
+            `).join('') : '<p class="text-white/50">No feedback yet.</p>';
+        }
+
+        function renderComments(comments) {
+            const container = document.getElementById('all-comments-list');
+            container.innerHTML = comments.length ? comments.map(c => `
+                <div class="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-3">
+                    <div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs shrink-0">
+                        ${c.username ? c.username[0].toUpperCase() : 'A'}
+                    </div>
+                    <div>
+                        <div class="flex gap-2 items-center">
+                            <span class="font-bold text-sm">${c.username}</span>
+                            <span class="text-xs text-white/40">Season ${c.season} Ep ${c.episode}</span>
+                        </div>
+                        <p class="text-sm text-white/80 mt-1">${c.comment_text}</p>
+                    </div>
+                </div>
+            `).join('') : '<p class="text-white/50">No comments yet.</p>';
+        }
+
+        window.deleteUser = async (id) => {
+            if(!confirm("Are you sure you want to delete this user?")) return;
+            try {
+                const res = await fetch(`/admin/delete-user/${id}`, { method: 'DELETE' });
+                if(res.ok) { 
+                    Toastify({ text: "User deleted", style: { background: "#333" } }).showToast();
+                    loadDashboardData(); 
+                } else {
+                    const d = await res.json();
+                    Toastify({ text: d.message, style: { background: "#ff5f6d" } }).showToast();
+                }
+            } catch(e) { console.error(e); }
+        };
+
+        window.logout = async () => {
+            await fetch('/auth/logout', { method: 'POST' });
+            window.location.href = 'index.html';
+        };
 
     </script>
 </body>

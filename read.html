@@ -6,7 +6,6 @@
     <title>Read Manga - The Apothecary Diaries</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -41,7 +40,7 @@
                 @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
             }
             .nav-btn {
-                @apply px-4 py-2 bg-white text-theme-orange border border-white/20 rounded-lg hover:bg-theme-orange hover:text-white transition-all font-bold text-sm flex items-center gap-2;
+                @apply px-4 py-2 bg-white text-theme-orange border border-white/20 rounded-lg hover:bg-theme-orange hover:text-black transition-all font-bold text-sm flex items-center gap-2;
             }
             .nav-btn:disabled {
                 @apply opacity-50 cursor-not-allowed hover:bg-white hover:text-theme-orange;
@@ -97,7 +96,7 @@
             <div class="flex items-center gap-3">
                 <button id="prev-chapter-top" class="nav-btn"><i class="fa-solid fa-chevron-left"></i> Prev</button>
                 
-                <select id="chapter-select" class="bg-white text-theme-orange border border-white/20 rounded px-4 py-2 text-sm focus:outline-none focus:border-theme-orange font-bold cursor-pointer">
+                <select id="chapter-select" class="bg-white text-black border border-white/20 rounded px-4 py-2 text-sm focus:outline-none focus:border-theme-orange font-bold cursor-pointer">
                     <option value="" disabled selected>Select Chapter</option>
                 </select>
 
@@ -119,7 +118,7 @@
 
     </main>
 
-    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
             <strong>Disclaimer:</strong> This website is developed strictly for 
@@ -136,7 +135,6 @@
         let currentUser = null;
 
         document.addEventListener("DOMContentLoaded", async () => {
-            
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileBtn) {
@@ -205,15 +203,12 @@
                 } else {
                     document.getElementById('chapter-title').textContent = "No Chapters Found";
                 }
-            } catch (e) {
-                console.error("Error loading manga list", e);
-            }
+            } catch (e) { console.error(e); }
         }
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
             select.innerHTML = '';
-            
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
                 opt.value = ch.chapter_number;
@@ -226,7 +221,6 @@
         function loadChapterContent(chapterNum) {
             const titleEl = document.getElementById('chapter-title');
             const iframeEl = document.getElementById('manga-frame');
-            
             const chapterData = allChapters.find(c => c.chapter_number == chapterNum);
 
             if (chapterData) {
@@ -236,12 +230,10 @@
                 if(link.includes('/view')) {
                     link = link.replace('/view', '/preview');
                 }
-                
                 iframeEl.src = link;
                 
                 const newUrl = `${window.location.pathname}?chapter=${chapterNum}`;
                 window.history.pushState({path: newUrl}, '', newUrl);
-                
                 document.getElementById('chapter-select').value = chapterNum;
             } else {
                 titleEl.textContent = `Chapter ${chapterNum} Not Found`;
@@ -255,23 +247,19 @@
         function changeChapter(newChap) {
             const exists = allChapters.some(c => c.chapter_number == newChap);
             if (!exists) return;
-            
             currentChapterNum = newChap;
             loadChapterContent(currentChapterNum);
         }
 
         function updateControls() {
             const currentIndex = allChapters.findIndex(c => c.chapter_number == currentChapterNum);
-            
             const hasPrev = currentIndex > 0;
             const hasNext = currentIndex < allChapters.length - 1;
-
             ['top', 'btm'].forEach(pos => {
                 document.getElementById(`prev-chapter-${pos}`).disabled = !hasPrev;
                 document.getElementById(`next-chapter-${pos}`).disabled = !hasNext;
             });
         }
-
     </script>
 </body>
 </html>
