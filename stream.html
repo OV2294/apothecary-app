@@ -35,8 +35,12 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
+
             .glass {
                 @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
+                transform: translateZ(0); 
+                -webkit-transform: translateZ(0);
+                backface-visibility: hidden;
             }
             .nav-link {
                 @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300;
@@ -68,7 +72,6 @@
 </head>
 
 <body class="bg-black font-sans min-h-screen text-white relative">
-    <div class="fixed inset-0 bg-black -z-20"></div>
     <img src="image/apothbgland.png" alt="Background"
         class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
     <img src="image/apothbgport.png" alt="Background"
@@ -107,7 +110,7 @@
     </header>
 
     <main id="main-content" class="pt-28 pb-20 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-
+        <div class="fixed inset-0 bg-black -z-20"></div>
         <div class="lg:col-span-2 flex flex-col gap-6">
 
             <div class="glass p-1 overflow-hidden relative aspect-video shadow-2xl bg-black">
