@@ -460,13 +460,16 @@
             } catch(e) { console.error(e); }
         };
 
-        // --- AVATAR HANDLERS ---
-        window.handleAvatarUpload = (input) => {
+        window.handleAdminAvatar = (input) => {
             const file = input.files[0];
             if(!file) return;
             const reader = new FileReader();
+            
             reader.onload = async (e) => {
-                await performUpdate({ avatar_id: e.target.result });
+                const newAvatarBase64 = e.target.result;
+                
+                await performUpdate({ avatar_id: newAvatarBase64 });
+                
                 closeProfileModal();
             };
             reader.readAsDataURL(file);
@@ -474,7 +477,9 @@
 
         window.removeAdminAvatar = async () => {
             if(!confirm("Remove custom avatar?")) return;
+            
             await performUpdate({ avatar_id: 'default' });
+            
             closeProfileModal();
         };
 
@@ -502,9 +507,30 @@
                 });
 
                 if(res.ok) {
-                    Toastify({ text: "Profile Updated", style: { background: "#00b09b" } }).showToast();
-                    populateSettingsForm(); 
-                    document.getElementById('admin-name').textContent = body.username;
+                    Toastify({ text: "Updated successfully!", style: { background: "#00b09b" } }).showToast();
+                    
+                    currentAdmin = { ...currentAdmin, ...fields };
+                    
+                    let newSrc;
+                    if (fields.avatar_id) {
+                        if (fields.avatar_id === 'default') {
+                            newSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(body.username)}&background=ffb26b&color=000&bold=true`;
+                            currentAdmin.avatar_id = 'default';
+                        } else {
+                            newSrc = fields.avatar_id;
+                            currentAdmin.avatar_id = fields.avatar_id;
+                        }
+                        
+                        document.getElementById('nav-avatar').src = newSrc;
+                        document.getElementById('admin-welcome-avatar').src = newSrc;
+                        document.getElementById('settings-avatar').src = newSrc;
+                        document.getElementById('modal-avatar-preview').src = newSrc;
+                    }
+
+                    if (fields.username) {
+                        document.getElementById('admin-name').textContent = fields.username;
+                    }
+
                 } else {
                     Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
                 }
