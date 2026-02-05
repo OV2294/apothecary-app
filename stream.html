@@ -35,11 +35,6 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
-            html, body {
-                background-color: transparent;
-                margin: 0;
-                padding: 0;
-            }
             .glass {
                 @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
             }
@@ -73,7 +68,7 @@
 </head>
 
 <body class="bg-black font-sans min-h-screen text-white relative">
-
+    <div class="fixed inset-0 bg-black -z-20"></div>
     <img src="image/apothbgland.png" alt="Background"
         class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
     <img src="image/apothbgport.png" alt="Background"
