@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -70,7 +71,7 @@
                 @apply bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col gap-2 hover:bg-white/10 transition-colors shadow-lg;
             }
             .modal-overlay {
-                @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden;
+                @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center hidden;
             }
             .modal-content {
                 @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl;
@@ -81,8 +82,10 @@
 
 <body class="bg-black font-sans min-h-screen text-white relative">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+    <img src="image/16211.JPG" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/16210.jpg" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
 
     <header class="fixed top-0 w-full z-50 px-4 py-3">
         <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
@@ -101,16 +104,19 @@
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 mr-2">
                     <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-xs font-bold text-theme-orange uppercase tracking-widest hidden sm:block">Admin Mode</span>
+                    <span class="text-xs font-bold text-theme-orange uppercase tracking-widest hidden sm:block">Admin
+                        Mode</span>
                 </div>
                 <div class="relative cursor-pointer group" onclick="openProfileModal()">
-                    <img id="nav-avatar" src="image/accicon.png" alt="Account" class="w-10 h-10 rounded-full border-2 border-theme-orange object-cover shadow-glow transition-transform group-hover:scale-105">
+                    <img id="nav-avatar" src="image/accicon.png" alt="Account"
+                        class="w-10 h-10 rounded-full border-2 border-theme-orange object-cover shadow-glow transition-transform group-hover:scale-105">
                 </div>
                 <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
 
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+        <div id="mobile-menu"
+            class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
             <a href="Anime.html" class="nav-link text-base">Anime</a>
             <a href="manga.html" class="nav-link text-base">Manga</a>
             <button onclick="logout()" class="text-red-400 font-bold mt-2">Logout</button>
@@ -125,12 +131,14 @@
                     <img id="admin-welcome-avatar" src="image/accicon.png" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-white">Welcome, <span id="admin-name" class="text-theme-orange">Admin</span></h1>
+                    <h1 class="text-2xl font-bold text-white">Welcome, <span id="admin-name"
+                            class="text-theme-orange">Admin</span></h1>
                     <p class="text-white/60 text-sm">Dashboard Overview</p>
                 </div>
             </div>
 
-            <div class="glass p-8 flex flex-wrap justify-around items-center gap-8 text-center divide-x divide-white/10">
+            <div
+                class="glass p-8 flex flex-wrap justify-around items-center gap-8 text-center divide-x divide-white/10">
                 <div class="flex-1 min-w-[120px]">
                     <i class="fa-solid fa-users text-2xl text-theme-orange mb-2"></i>
                     <h2 class="text-4xl font-bold text-white" id="total-users">0</h2>
@@ -151,14 +159,18 @@
 
         <div class="glass overflow-hidden flex flex-col min-h-[500px]">
             <div class="flex border-b border-white/10 bg-black/20 overflow-x-auto">
-                <button class="tab-btn active" onclick="switchTab('users')"><i class="fa-solid fa-users mr-2"></i>Users</button>
-                <button class="tab-btn" onclick="switchTab('feedback')"><i class="fa-solid fa-comment-dots mr-2"></i>Feedback</button>
-                <button class="tab-btn" onclick="switchTab('comments')"><i class="fa-solid fa-comments mr-2"></i>Comments</button>
-                <button class="tab-btn" onclick="switchTab('settings')"><i class="fa-solid fa-gear mr-2"></i>Settings</button>
+                <button class="tab-btn active" onclick="switchTab('users')"><i
+                        class="fa-solid fa-users mr-2"></i>Users</button>
+                <button class="tab-btn" onclick="switchTab('feedback')"><i
+                        class="fa-solid fa-comment-dots mr-2"></i>Feedback</button>
+                <button class="tab-btn" onclick="switchTab('comments')"><i
+                        class="fa-solid fa-comments mr-2"></i>Comments</button>
+                <button class="tab-btn" onclick="switchTab('settings')"><i
+                        class="fa-solid fa-gear mr-2"></i>Settings</button>
             </div>
 
             <div class="p-6 relative flex-1">
-                
+
                 <div id="view-users" class="tab-content block">
                     <div class="overflow-x-auto">
                         <table class="glass-table">
@@ -172,7 +184,9 @@
                                 </tr>
                             </thead>
                             <tbody id="users-table-body">
-                                <tr><td colspan="5" class="text-center py-8 text-white/50">Loading users...</td></tr>
+                                <tr>
+                                    <td colspan="5" class="text-center py-8 text-white/50">Loading users...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -193,34 +207,38 @@
                 <div id="view-settings" class="tab-content hidden">
                     <h2 class="text-2xl font-bold text-theme-orange mb-6">Admin Profile Settings</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-                        
+
                         <div class="flex flex-col gap-4 items-center md:items-start">
                             <label class="block text-sm font-bold text-white/70">Profile Picture</label>
-                            
-                            <div onclick="openProfileModal()" class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer">
+
+                            <div onclick="openProfileModal()"
+                                class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer transform hover:scale-105 transition-transform">
                                 <img id="settings-avatar" src="image/accicon.png" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+
+                                <div onclick="openProfileModal()"
+                                    class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <i class="fa-solid fa-pen text-white text-2xl"></i>
                                 </div>
                             </div>
-                            
+
                             <p class="text-xs text-white/50 text-center md:text-left">Click image to edit</p>
                         </div>
 
                         <form id="admin-update-form" class="flex flex-col gap-4 w-full">
                             <div>
-                                <label class="block text-sm font-bold text-white/70 mb-1">Username</label>
+                                <label class="block text-sm font-bold text-black mb-1">Username</label>
                                 <input type="text" id="admin-username" class="form-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-white/70 mb-1">Email</label>
+                                <label class="block text-sm font-bold text-black mb-1">Email</label>
                                 <input type="email" id="admin-email" class="form-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-white/70 mb-1">Phone Number</label>
+                                <label class="block text-sm font-bold text-black mb-1">Phone Number</label>
                                 <input type="text" id="admin-phone" class="form-input" placeholder="+123 456 7890">
                             </div>
-                            <button type="submit" class="bg-theme-orange text-black font-bold py-2 px-6 rounded-lg hover:bg-white hover:scale-105 transition-all mt-4 w-max">
+                            <button type="submit"
+                                class="bg-theme-orange text-black font-bold py-2 px-6 rounded-lg hover:bg-white hover:scale-105 transition-all mt-4 w-max">
                                 Save Changes
                             </button>
                         </form>
@@ -230,7 +248,8 @@
             </div>
 
             <div class="p-4 flex justify-end border-t border-white/10 bg-black/20">
-                <button onclick="logout()" class="flex items-center gap-2 px-6 py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all font-bold text-sm">
+                <button onclick="logout()"
+                    class="flex items-center gap-2 px-6 py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all font-bold text-sm">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </button>
             </div>
@@ -241,7 +260,7 @@
 
     <div id="profile-modal" class="modal-overlay">
         <div class="modal-content text-center">
-            
+
             <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-white/50 hover:text-white">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
@@ -249,16 +268,20 @@
             <h3 class="text-2xl font-bold text-theme-orange mb-6">Edit Avatar</h3>
 
             <div class="relative w-24 h-24 mx-auto mb-6">
-                <img id="modal-avatar-preview" src="image/accicon.png" class="w-full h-full rounded-full object-cover border-2 border-white/20">
+                <img id="modal-avatar-preview" src="image/accicon.png"
+                    class="w-full h-full rounded-full object-cover border-2 border-white/20">
             </div>
 
             <div class="flex flex-col gap-3">
-                <label for="avatar-upload" class="w-full py-2 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all text-sm font-bold flex items-center justify-center gap-2">
+                <label for="avatar-upload"
+                    class="w-full py-2 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all text-sm font-bold flex items-center justify-center gap-2">
                     <i class="fa-solid fa-upload"></i> Upload New
                 </label>
-                <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleAdminAvatar(this)">
+                <input type="file" id="avatar-upload" class="hidden" accept="image/*"
+                    onchange="handleAdminAvatar(this)">
 
-                <button onclick="removeAdminAvatar()" class="w-full py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all text-sm font-bold flex items-center justify-center gap-2">
+                <button onclick="removeAdminAvatar()"
+                    class="w-full py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all text-sm font-bold flex items-center justify-center gap-2">
                     <i class="fa-solid fa-trash"></i> Remove Avatar
                 </button>
             </div>
@@ -266,17 +289,18 @@
         </div>
     </div>
 
-    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer
+        class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-theme-orange">educational and portfolio purposes only</span>. 
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-black">educational and portfolio purposes only</span>.
             We do not own the rights to the anime, characters, or media content.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
         let currentAdmin = null;
 
@@ -286,24 +310,26 @@
 
             document.querySelectorAll('.tab-content').forEach(div => div.classList.add('hidden'));
             document.querySelectorAll('.tab-content').forEach(div => div.classList.remove('block'));
-            
+
             const target = document.getElementById(`view-${tabName}`);
             target.classList.remove('hidden');
             target.classList.add('block');
         }
 
-        // --- POPUP LOGIC ---
+        // --- POPUP  ---
         window.openProfileModal = () => {
             const modal = document.getElementById('profile-modal');
-            if(modal) {
+            if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
+            } else {
+                console.error("Modal element not found!");
             }
         }
 
         window.closeProfileModal = () => {
             const modal = document.getElementById('profile-modal');
-            if(modal) {
+            if (modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }
@@ -331,7 +357,7 @@
             await loadAdminData();
 
             const updateForm = document.getElementById('admin-update-form');
-            if(updateForm) {
+            if (updateForm) {
                 updateForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     await updateAdminProfile();
@@ -350,19 +376,19 @@
                 }
 
                 const data = await res.json();
-                
+
                 document.getElementById('total-users').textContent = data.totalUsers || 0;
                 document.getElementById('total-comments').textContent = data.comments ? data.comments.length : 0;
                 document.getElementById('total-feedback').textContent = data.feedback ? data.feedback.length : 0;
-                
+
                 document.getElementById('admin-name').textContent = data.adminName || 'Admin';
 
-                populateSettingsForm(); 
+                populateSettingsForm();
 
                 // USERS TABLE
                 const userTbody = document.getElementById('users-table-body');
                 userTbody.innerHTML = '';
-                if(data.users && data.users.length > 0) {
+                if (data.users && data.users.length > 0) {
                     data.users.forEach(u => {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
@@ -381,7 +407,7 @@
                 // FEEDBACK
                 const fbList = document.getElementById('feedback-list');
                 fbList.innerHTML = '';
-                if(data.feedback && data.feedback.length > 0) {
+                if (data.feedback && data.feedback.length > 0) {
                     data.feedback.forEach(f => {
                         const card = document.createElement('div');
                         card.className = "info-card";
@@ -403,7 +429,7 @@
                 // COMMENTS
                 const cmList = document.getElementById('comments-list');
                 cmList.innerHTML = '';
-                if(data.comments && data.comments.length > 0) {
+                if (data.comments && data.comments.length > 0) {
                     data.comments.forEach(c => {
                         const card = document.createElement('div');
                         card.className = "info-card";
@@ -431,9 +457,9 @@
             try {
                 const res = await fetch('/auth/me', { credentials: 'include' });
                 const data = await res.json();
-                if(data.user) {
+                if (data.user) {
                     currentAdmin = data.user;
-                    
+
                     document.getElementById('admin-username').value = data.user.username;
                     document.getElementById('admin-email').value = data.user.email;
                     document.getElementById('admin-phone').value = data.user.phone || '';
@@ -450,23 +476,23 @@
                     document.getElementById('settings-avatar').src = src;
                     document.getElementById('modal-avatar-preview').src = src;
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
 
         window.deleteUser = async (id) => {
-            if(!confirm("Are you sure?")) return;
+            if (!confirm("Are you sure?")) return;
             try {
                 const res = await fetch(`/admin/delete-user/${id}`, { method: 'DELETE', credentials: 'include' });
-                if(res.ok) {
+                if (res.ok) {
                     Toastify({ text: "User Deleted", style: { background: "#00b09b" } }).showToast();
-                    loadAdminData(); 
+                    loadAdminData();
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         };
 
         window.handleAdminAvatar = (input) => {
             const file = input.files[0];
-            if(!file) return;
+            if (!file) return;
             const reader = new FileReader();
             reader.onload = async (e) => {
                 await performUpdate({ avatar_id: e.target.result });
@@ -476,7 +502,7 @@
         };
 
         window.removeAdminAvatar = async () => {
-            if(!confirm("Remove custom avatar?")) return;
+            if (!confirm("Remove custom avatar?")) return;
             await performUpdate({ avatar_id: 'default' });
             closeProfileModal();
         };
@@ -485,7 +511,7 @@
             const username = document.getElementById('admin-username').value;
             const email = document.getElementById('admin-email').value;
             const phone = document.getElementById('admin-phone').value;
-            
+
             await performUpdate({ username, email, phone });
         }
 
@@ -495,7 +521,7 @@
                     username: currentAdmin.username,
                     email: currentAdmin.email,
                     phone: currentAdmin.phone,
-                    ...fields 
+                    ...fields
                 };
 
                 const res = await fetch('/auth/update', {
@@ -504,15 +530,16 @@
                     body: JSON.stringify(body)
                 });
 
-                if(res.ok) {
+                if (res.ok) {
                     Toastify({ text: "Profile Updated", style: { background: "#00b09b" } }).showToast();
-                    populateSettingsForm(); 
+                    populateSettingsForm();
                     document.getElementById('admin-name').textContent = body.username;
                 } else {
                     Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
     </script>
 </body>
+
 </html>
