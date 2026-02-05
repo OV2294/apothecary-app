@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Authentication - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -58,9 +59,11 @@
 
 <body class="bg-black font-sans min-h-screen text-white relative">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
-
+    <img src="image/apothbgland.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/apothbgport.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+        
     <header class="fixed top-0 w-full z-50 px-4 py-3">
         <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
             <div class="flex items-center gap-8">
@@ -76,14 +79,16 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="#" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors opacity-50 cursor-default">
+                <a href="#"
+                    class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors opacity-50 cursor-default">
                     <img src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
                 </a>
                 <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
 
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+        <div id="mobile-menu"
+            class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
             <a href="Anime.html" class="nav-link text-base">Anime</a>
             <a href="manga.html" class="nav-link text-base">Manga</a>
             <a href="character.html" class="nav-link text-base">Characters</a>
@@ -92,19 +97,19 @@
     </header>
 
     <main class="pt-32 pb-20 px-4 flex items-center justify-center min-h-screen">
-        
+
         <div class="glass w-full max-w-md p-0 overflow-hidden relative">
-            
+
             <div class="flex border-b border-white/10 bg-black/20">
                 <div id="tab-login" class="tab-btn active" onclick="switchTab('login')">Login</div>
                 <div id="tab-register" class="tab-btn" onclick="switchTab('register')">Sign Up</div>
             </div>
 
             <div class="p-8">
-                
+
                 <form id="login-form" class="flex flex-col gap-4 animate-fade-in">
                     <h2 class="text-2xl font-bold text-center mb-2">Welcome Back</h2>
-                    
+
                     <div>
                         <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Email</label>
                         <input type="email" id="login-email" placeholder="you@example.com" class="form-input" required>
@@ -112,8 +117,10 @@
 
                     <div class="relative">
                         <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Password</label>
-                        <input type="password" id="login-password" placeholder="Your password" class="form-input" required>
-                        <i class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
+                        <input type="password" id="login-password" placeholder="Your password" class="form-input"
+                            required>
+                        <i
+                            class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
                     </div>
 
                     <div class="text-right">
@@ -125,7 +132,7 @@
 
                 <form id="register-form" class="hidden flex-col gap-4 animate-fade-in">
                     <h2 class="text-2xl font-bold text-center mb-2">Create Account</h2>
-                    
+
                     <div>
                         <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Username</label>
                         <input type="text" id="reg-username" placeholder="Username" class="form-input" required>
@@ -144,13 +151,16 @@
                     <div class="relative">
                         <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Password</label>
                         <input type="password" id="reg-password" placeholder="Min 6 chars" class="form-input" required>
-                        <i class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
+                        <i
+                            class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
                     </div>
 
                     <div class="relative">
                         <label class="block text-sm font-bold text-white/70 mb-1 ml-1">Confirm Password</label>
-                        <input type="password" id="reg-confirm" placeholder="Re-enter password" class="form-input" required>
-                        <i class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
+                        <input type="password" id="reg-confirm" placeholder="Re-enter password" class="form-input"
+                            required>
+                        <i
+                            class="fa-solid fa-eye absolute right-4 top-[38px] text-white/50 cursor-pointer hover:text-white toggle-pass"></i>
                     </div>
 
                     <button type="submit" class="auth-btn">Sign Up</button>
@@ -161,17 +171,18 @@
 
     </main>
 
-    <footer class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer
+        class="py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-theme-orange">educational and portfolio purposes only</span>. 
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-theme-orange">educational and portfolio purposes only</span>.
             We do not own the rights to the anime, characters, or media content.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
         function switchTab(tab) {
             const loginForm = document.getElementById('login-form');
@@ -184,7 +195,7 @@
                 loginForm.classList.add('flex');
                 regForm.classList.add('hidden');
                 regForm.classList.remove('flex');
-                
+
                 loginTab.classList.add('active');
                 regTab.classList.remove('active');
             } else {
@@ -192,14 +203,14 @@
                 loginForm.classList.remove('flex');
                 regForm.classList.remove('hidden');
                 regForm.classList.add('flex');
-                
+
                 loginTab.classList.remove('active');
                 regTab.classList.add('active');
             }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            
+
             // --- UI VARIABLES ---
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -210,7 +221,7 @@
                 let bg = "#333";
                 if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
                 if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
-                
+
                 Toastify({
                     text: text, duration: 3000, style: { background: bg },
                     gravity: "top", position: "right"
@@ -246,7 +257,7 @@
             if (loginForm) {
                 loginForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    
+
                     const email = document.getElementById('login-email').value;
                     const password = document.getElementById('login-password').value;
                     const btn = loginForm.querySelector('button');
@@ -318,8 +329,8 @@
 
                         if (res.ok) {
                             showToast("Account created! Please log in.", "success");
-                            switchTab('login'); 
-                            document.getElementById('login-email').value = email; 
+                            switchTab('login');
+                            document.getElementById('login-email').value = email;
                         } else {
                             showToast(data.message || "Registration failed", "error");
                         }
@@ -336,4 +347,5 @@
         });
     </script>
 </body>
+
 </html>

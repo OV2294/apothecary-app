@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -48,8 +49,10 @@
 
 <body class="bg-black font-sans min-h-screen text-white relative">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+    <img src="image/apothbgland.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/apothbgport.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
 
     <header class="fixed top-0 w-full z-50 px-4 py-3">
         <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
@@ -66,14 +69,16 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a id="user-icon-link" href="auth.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
+                <a id="user-icon-link" href="auth.html"
+                    class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
                     <img id="user-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
                 </a>
                 <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
 
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+        <div id="mobile-menu"
+            class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
             <a href="Anime.html" class="nav-link text-base">Anime</a>
             <a href="manga.html" class="nav-link text-base">Manga</a>
             <a href="character.html" class="nav-link text-base">Characters</a>
@@ -84,32 +89,39 @@
     <main class="pt-32 pb-20 px-4 max-w-6xl mx-auto flex flex-col gap-12">
 
         <section class="glass p-8 md:p-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-center text-black mb-8 font-serif drop-shadow-md">About the Series</h1>
-            
+            <h1 class="text-4xl md:text-5xl font-bold text-center text-theme-orange mb-8 font-serif drop-shadow-md">
+                About the Series</h1>
+
             <div class="flex flex-col md:flex-row gap-8 items-center">
                 <div class="w-full md:w-1/2 text-white/90 text-lg leading-relaxed space-y-4">
                     <p>
-                        <span class="font-bold text-black">The Apothecary Diaries</span> (Kusuriya no Hitorigoto) follows Maomao, a young girl trained in the art of herbal medicine, who is forced to work as a lowly servant in the inner palace.
+                        <span class="font-bold text-theme-orange">The Apothecary Diaries</span> (Kusuriya no Hitorigoto)
+                        follows Maomao, a young girl trained in the art of herbal medicine, who is forced to work as a
+                        lowly servant in the inner palace.
                     </p>
                     <p>
-                        Though she yearns for an ordinary life, her eccentricity and knowledge of poisons soon draw the attention of Jinshi, a handsome and calculating eunuch.
+                        Though she yearns for an ordinary life, her eccentricity and knowledge of poisons soon draw the
+                        attention of Jinshi, a handsome and calculating eunuch.
                     </p>
                     <p>
-                        This fan project is dedicated to providing a clean, accessible way to enjoy both the anime and manga adaptations of this masterpiece.
+                        This fan project is dedicated to providing a clean, accessible way to enjoy both the anime and
+                        manga adaptations of this masterpiece.
                     </p>
                 </div>
                 <div class="w-full md:w-1/2 rounded-xl overflow-hidden shadow-2xl border border-white/20">
-                    <img src="image/16209.jpg" alt="About Image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="image/16209.jpg" alt="About Image"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
             </div>
         </section>
 
         <section class="glass p-8 md:p-12 max-w-3xl mx-auto w-full">
             <h2 class="text-3xl font-bold text-center text-white mb-6">Send Feedback</h2>
-            
+
             <div id="feedback-container">
                 <div class="flex flex-col items-center justify-center py-8">
-                    <div class="w-8 h-8 border-4 border-theme-orange border-t-transparent rounded-full animate-spin"></div>
+                    <div class="w-8 h-8 border-4 border-theme-orange border-t-transparent rounded-full animate-spin">
+                    </div>
                     <p class="mt-4 text-white/50">Checking access...</p>
                 </div>
             </div>
@@ -118,11 +130,12 @@
 
     </main>
 
-    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer
+        class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-theme-orange">educational and portfolio purposes only</span>. 
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-theme-orange">educational and portfolio purposes only</span>.
             We do not own the rights to the anime, characters, or media content.
         </p>
     </footer>
@@ -131,7 +144,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
-            
+
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const userIconLink = document.getElementById('user-icon-link');
@@ -153,10 +166,10 @@
                 if (data.loggedIn && data.user) {
                     const user = data.user;
                     if (userIconLink) userIconLink.href = (user.role === 'admin') ? 'admin.html' : 'user.html';
-                    
+
                     if (userAvatar) {
-                        let finalSrc = (user.avatar_id && user.avatar_id !== 'default') 
-                            ? user.avatar_id 
+                        let finalSrc = (user.avatar_id && user.avatar_id !== 'default')
+                            ? user.avatar_id
                             : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=ffb26b&color=000&bold=true`;
                         userAvatar.src = finalSrc;
                     }
@@ -169,7 +182,7 @@
                 }
             } catch (err) {
                 console.error("Auth Check Error:", err);
-                renderLockScreen(); 
+                renderLockScreen();
             }
 
             function renderLockScreen() {
@@ -255,4 +268,5 @@
         });
     </script>
 </body>
+
 </html>

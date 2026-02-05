@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Watch - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpg" href="image/logo.jpeg">
@@ -68,8 +69,10 @@
 
 <body class="bg-black font-sans min-h-screen text-white relative">
 
-    <img src="image/16211.JPG" alt="Background" class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
-    <img src="image/16210.jpg" alt="Background" class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
+    <img src="image/apothbgland.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
+    <img src="image/apothbgport.png" alt="Background"
+        class="fixed inset-0 w-full h-full -z-10 block md:hidden opacity-90 transition-opacity duration-700">
 
     <header class="fixed top-0 w-full z-50 px-4 py-3">
         <nav class="glass flex items-center justify-between px-6 py-3 max-w-7xl h-20 mx-auto">
@@ -86,14 +89,16 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a id="user-icon-link" href="auth.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
+                <a id="user-icon-link" href="auth.html"
+                    class="w-10 h-10 rounded-full overflow-hidden border border-white/50 hover:border-theme-orange transition-colors">
                     <img id="nav-avatar" src="image/accicon.png" alt="Account" class="w-full h-full object-cover">
                 </a>
                 <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
 
-        <div id="mobile-menu" class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+        <div id="mobile-menu"
+            class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
             <a href="Anime.html" class="nav-link text-base text-theme-orange">Anime</a>
             <a href="manga.html" class="nav-link text-base">Manga</a>
             <a href="character.html" class="nav-link text-base">Characters</a>
@@ -104,16 +109,15 @@
     <main id="main-content" class="pt-32 pb-20 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         <div class="lg:col-span-2 flex flex-col gap-6">
-            
+
             <div class="glass p-1 overflow-hidden relative aspect-video shadow-2xl bg-black">
-                <iframe id="video-player" class="w-full h-full rounded-xl" 
-                    src="" 
-                    title="Video Player" frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                <iframe id="video-player" class="w-full h-full rounded-xl" src="" title="Video Player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
                 <div id="video-loader" class="absolute inset-0 flex items-center justify-center bg-black/80 z-10">
-                    <div class="w-10 h-10 border-4 border-theme-orange border-t-transparent rounded-full animate-spin"></div>
+                    <div class="w-10 h-10 border-4 border-theme-orange border-t-transparent rounded-full animate-spin">
+                    </div>
                 </div>
             </div>
 
@@ -122,7 +126,7 @@
                     <h1 id="ep-info-display" class="text-2xl font-bold text-theme-orange">
                         Loading...
                     </h1>
-                    
+
                     <div class="flex gap-3">
                         <button id="prev-btn" class="action-btn"><i class="fa-solid fa-backward-step"></i> Prev</button>
                         <button id="next-btn" class="action-btn">Next <i class="fa-solid fa-forward-step"></i></button>
@@ -135,13 +139,16 @@
 
             <div class="glass p-6">
                 <h3 class="text-xl font-bold mb-4 border-b border-white/10 pb-2">Comments</h3>
-                
+
                 <form id="comment-form" class="flex gap-4 mb-8">
-                    <img id="comment-avatar" src="image/accicon.png" class="w-10 h-10 rounded-full object-cover hidden sm:block">
+                    <img id="comment-avatar" src="image/accicon.png"
+                        class="w-10 h-10 rounded-full object-cover hidden sm:block">
                     <div class="flex-1">
-                        <input type="text" id="comment-input" placeholder="Add a comment..." class="comment-input" required>
+                        <input type="text" id="comment-input" placeholder="Add a comment..." class="comment-input"
+                            required>
                         <div class="flex justify-end mt-2">
-                            <button type="submit" class="px-6 py-2 bg-theme-orange text-white font-bold rounded-lg hover:bg-white hover:text-theme-orange transition-all text-sm">Post</button>
+                            <button type="submit"
+                                class="px-6 py-2 bg-theme-orange text-white font-bold rounded-lg hover:bg-white hover:text-theme-orange transition-all text-sm">Post</button>
                         </div>
                     </div>
                 </form>
@@ -156,11 +163,12 @@
         <div class="glass lg:h-[calc(100vh-160px)] flex flex-col sticky top-32">
             <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/20 rounded-t-2xl">
                 <h3 class="font-bold text-lg text-theme-orange">Episodes</h3>
-                <select id="season-select" class="bg-white text-theme-orange border border-white/20 rounded px-2 py-1 text-sm focus:outline-none focus:border-theme-orange">
+                <select id="season-select"
+                    class="bg-white text-theme-orange border border-white/20 rounded px-2 py-1 text-sm focus:outline-none focus:border-theme-orange">
                     <option value="1">Season 1</option>
                 </select>
             </div>
-            
+
             <div id="episode-list" class="flex-1 overflow-y-auto custom-scroll">
                 <div class="p-4 text-center text-white/50">Loading episodes...</div>
             </div>
@@ -168,19 +176,20 @@
 
     </main>
 
-    <footer class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+    <footer
+        class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
         <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
-            <strong>Disclaimer:</strong> This website is developed strictly for 
-            <span class="text-theme-orange">educational and portfolio purposes only</span>. 
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-theme-orange">educational and portfolio purposes only</span>.
             We do not own the rights to the anime, characters, or media content.
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+
     <script>
-        let SERIES_DATA = {}; 
+        let SERIES_DATA = {};
         let currentSeason = 1;
         let currentEp = 1;
         let currentUser = null;
@@ -199,17 +208,17 @@
             try {
                 const authRes = await fetch('/auth/me?t=' + Date.now(), { credentials: 'include' });
                 const authData = await authRes.json();
-                
+
                 if (authData.loggedIn && authData.user) {
                     currentUser = authData.user;
                     setupUserUI(currentUser);
-                    
+
                     const params = new URLSearchParams(window.location.search);
                     if (params.has('season')) currentSeason = parseInt(params.get('season'));
                     if (params.has('ep')) currentEp = parseInt(params.get('ep'));
 
                     await loadSeriesData();
-                    
+
                     document.getElementById('season-select').value = currentSeason;
                     updateSeasonDropdown();
                     loadEpisode(currentSeason, currentEp);
@@ -226,7 +235,7 @@
                 }
             } catch (err) {
                 console.error("Init Error:", err);
-                showLockScreen(); 
+                showLockScreen();
             }
         });
 
@@ -234,7 +243,7 @@
             const mainContent = document.getElementById('main-content');
             mainContent.classList.remove('grid', 'grid-cols-1', 'lg:grid-cols-3', 'gap-8');
             mainContent.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'min-h-[50vh]');
-            
+
             mainContent.innerHTML = `
                 <div class="glass p-10 text-center flex flex-col items-center gap-4 max-w-md w-full animate-fade-in">
                     <div class="text-5xl mb-2">🔒</div>
@@ -243,21 +252,21 @@
                     <a href="auth.html" class="login-lock-btn">Login Now</a>
                 </div>
             `;
-            
+
             const userLink = document.getElementById('user-icon-link');
-            if(userLink) userLink.href = 'auth.html';
+            if (userLink) userLink.href = 'auth.html';
         }
 
         function setupUserUI(user) {
             const navAvatar = document.getElementById('nav-avatar');
             const commentAvatar = document.getElementById('comment-avatar');
             const src = (user.avatar_id && user.avatar_id !== 'default') ? user.avatar_id : 'image/accicon.png';
-            
-            if(navAvatar) navAvatar.src = src;
-            if(commentAvatar) commentAvatar.src = src;
-            
+
+            if (navAvatar) navAvatar.src = src;
+            if (commentAvatar) commentAvatar.src = src;
+
             document.getElementById('user-icon-link').href = (user.role === 'admin') ? 'admin.html' : 'user.html';
-            
+
             if (user.favorite_episode) {
                 currentFavorites = user.favorite_episode.split(',').map(s => s.trim());
             }
@@ -268,7 +277,7 @@
         async function loadSeriesData() {
             try {
                 const res = await fetch('/anime');
-                
+
                 if (res.status === 401) {
                     showLockScreen();
                     return;
@@ -284,15 +293,15 @@
                     if (!SERIES_DATA[s]) SERIES_DATA[s] = [];
                     SERIES_DATA[s].push({
                         ep: ep.episode_number,
-                        title: ep.title, 
-                        src: getEmbedUrl(link) 
+                        title: ep.title,
+                        src: getEmbedUrl(link)
                     });
                 });
 
                 for (const s in SERIES_DATA) SERIES_DATA[s].sort((a, b) => a.ep - b.ep);
-                if(!SERIES_DATA[currentSeason] && Object.keys(SERIES_DATA).length > 0) {
-                     currentSeason = parseInt(Object.keys(SERIES_DATA)[0]);
-                     currentEp = 1;
+                if (!SERIES_DATA[currentSeason] && Object.keys(SERIES_DATA).length > 0) {
+                    currentSeason = parseInt(Object.keys(SERIES_DATA)[0]);
+                    currentEp = 1;
                 }
                 updateSeasonDropdown();
             } catch (err) { console.error(err); }
@@ -314,13 +323,13 @@
             const infoDisplay = document.getElementById('ep-info-display');
 
             if (!epData) {
-                if(seasonData.length > 0 && e !== 1) { loadEpisode(s, 1); return; }
-                if(Object.keys(SERIES_DATA).length > 0) { infoDisplay.textContent = "Episode Not Found"; }
+                if (seasonData.length > 0 && e !== 1) { loadEpisode(s, 1); return; }
+                if (Object.keys(SERIES_DATA).length > 0) { infoDisplay.textContent = "Episode Not Found"; }
                 return;
             }
 
             infoDisplay.textContent = `Season ${s} | Episode ${e}`;
-            
+
             loader.classList.remove('hidden');
             player.src = epData.src;
             player.onload = () => loader.classList.add('hidden');
@@ -331,13 +340,13 @@
             nextBtn.onclick = () => changeEpisode(s, e + 1);
             prevBtn.disabled = (e <= 1);
             nextBtn.disabled = (e >= seasonData.length);
-            
+
             document.querySelectorAll('.episode-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.querySelector(`[data-ep="${e}"]`);
-            if(activeBtn) activeBtn.classList.add('active');
+            if (activeBtn) activeBtn.classList.add('active');
             updateFavIconState();
-            
-            fetch('/user/progress', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ season: s, episode: e }) }).catch(e=>console.error(e));
+
+            fetch('/user/progress', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: s, episode: e }) }).catch(e => console.error(e));
         }
 
         function renderEpisodeList(season) {
@@ -357,7 +366,7 @@
 
         function changeEpisode(s, e) {
             const newUrl = `${window.location.pathname}?season=${s}&ep=${e}`;
-            window.history.pushState({path: newUrl}, '', newUrl);
+            window.history.pushState({ path: newUrl }, '', newUrl);
             currentSeason = s; currentEp = e;
             loadEpisode(s, e);
         }
@@ -393,7 +402,7 @@
             if (currentFavorites.includes(epString)) currentFavorites = currentFavorites.filter(item => item !== epString);
             else currentFavorites.push(epString);
             updateFavIconState();
-            try { await fetch('/auth/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: currentUser.username, favorite_episode: currentFavorites.join(', ') }) }); } catch (err) {}
+            try { await fetch('/auth/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: currentUser.username, favorite_episode: currentFavorites.join(', ') }) }); } catch (err) { }
         }
 
         async function handlePostComment(e) {
@@ -401,14 +410,15 @@
             const input = document.getElementById('comment-input');
             const text = input.value;
             const list = document.getElementById('comments-list');
-            if(list.children.length > 0 && list.children[0].tagName === 'P') list.innerHTML = '';
+            if (list.children.length > 0 && list.children[0].tagName === 'P') list.innerHTML = '';
             const div = document.createElement('div');
             div.className = "flex gap-3 animate-fade-in";
             div.innerHTML = `<div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs">${currentUser.username[0].toUpperCase()}</div><div><div class="flex items-center gap-2"><span class="font-bold text-sm text-theme-orange">${currentUser.username}</span><span class="text-xs text-white/40">Just now</span></div><p class="text-sm text-white/90 mt-1">${text}</p></div>`;
             list.prepend(div);
             input.value = '';
-            try { await fetch('/comments', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ season: currentSeason, episode: currentEp, text: text }) }); } catch(e) {}
+            try { await fetch('/comments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: currentSeason, episode: currentEp, text: text }) }); } catch (e) { }
         }
     </script>
 </body>
+
 </html>
