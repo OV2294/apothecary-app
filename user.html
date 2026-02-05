@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile - The Apothecary Diaries</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -60,14 +61,17 @@
     <main class="pt-32 pb-20 px-4 max-w-4xl mx-auto space-y-8">
 
         <section class="glass p-8 flex flex-col md:flex-row gap-8 items-center md:items-start">
-            
+
             <div class="flex flex-col items-center gap-4">
                 <div class="relative group w-32 h-32">
-                    <img id="profile-avatar" src="image/accicon.png" class="w-full h-full rounded-full object-cover border-4 border-theme-orange shadow-lg">
-                    <label for="avatar-input" class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity text-white font-bold">
+                    <img id="profile-avatar" src="image/accicon.png"
+                        class="w-full h-full rounded-full object-cover border-4 border-theme-orange shadow-lg">
+                    <label for="avatar-input"
+                        class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity text-white font-bold">
                         Change
                     </label>
-                    <input type="file" id="avatar-input" class="hidden" accept="image/*" onchange="handleAvatarUpload(this)">
+                    <input type="file" id="avatar-input" class="hidden" accept="image/*"
+                        onchange="handleAvatarUpload(this)">
                 </div>
                 <h2 class="text-2xl font-bold" id="display-name">User</h2>
             </div>
@@ -85,10 +89,11 @@
                     </div>
                     <div class="md:col-span-2">
                         <label class="text-sm text-white/60 block mb-1">Email</label>
-                        <input type="email" id="inp-email" class="profile-input opacity-50" >
+                        <input type="email" id="inp-email" class="profile-input opacity-50">
                     </div>
                 </div>
-                <button onclick="updateProfile()" class="px-6 py-2 bg-theme-orange text-black font-bold rounded hover:bg-white transition-colors">
+                <button onclick="updateProfile()"
+                    class="px-6 py-2 bg-white text-theme-orange font-bold rounded hover:bg-theme-orange hover:text-white transition-colors">
                     Save Changes
                 </button>
             </div>
@@ -96,12 +101,15 @@
 
         <section class="glass p-8">
             <h3 class="text-xl font-bold text-theme-orange mb-4 border-b border-white/20 pb-2">Continue Watching</h3>
-            <div id="continue-watching-box" class="p-4 bg-white/5 rounded-lg border border-white/10 flex justify-between items-center">
+            <div id="continue-watching-box"
+                class="p-4 bg-white/5 rounded-lg border border-white/10 flex justify-between items-center">
                 <div>
                     <p class="font-bold text-lg" id="last-watched-title">No history found</p>
-                    <p class="text-sm text-white/50" id="last-watched-sub">Start watching anime to see progress here.</p>
+                    <p class="text-sm text-white/50" id="last-watched-sub">Start watching anime to see progress here.
+                    </p>
                 </div>
-                <a href="Anime.html" id="resume-btn" class="hidden px-4 py-2 bg-white text-theme-orange rounded font-bold hover:bg-theme-orange hover:text-white transition-colors">
+                <a href="Anime.html" id="resume-btn"
+                    class="hidden px-4 py-2 bg-white text-theme-orange rounded font-bold hover:bg-theme-orange hover:text-white transition-colors">
                     Resume
                 </a>
             </div>
@@ -115,7 +123,15 @@
         </section>
 
     </main>
-
+    <footer
+        class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
+        <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
+        <p class="mt-2 px-4 opacity-80 max-w-2xl mx-auto">
+            <strong>Disclaimer:</strong> This website is developed strictly for
+            <span class="text-theme-orange">educational and portfolio purposes only</span>.
+            We do not own the rights to the anime, characters, or media content.
+        </p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
@@ -137,7 +153,7 @@
 
                 currentUser = data.user;
 
-                
+
                 document.getElementById('display-name').textContent = currentUser.username;
                 document.getElementById('inp-username').value = currentUser.username;
                 document.getElementById('inp-email').value = currentUser.email;
@@ -162,24 +178,24 @@
                 if (data.continue) {
                     document.getElementById('last-watched-title').textContent = `Season ${data.continue.season} | Episode ${data.continue.episode}`;
                     document.getElementById('last-watched-sub').textContent = "Pick up where you left off";
-                    
+
                     const btn = document.getElementById('resume-btn');
                     btn.classList.remove('hidden');
                     btn.href = `stream.html?season=${data.continue.season}&ep=${data.continue.episode}`;
                 }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         function renderFavoritesList() {
             const listContainer = document.getElementById('favorites-list');
-            
+
             if (!currentUser.favorite_episode || currentUser.favorite_episode === 'None' || currentUser.favorite_episode.trim() === '') {
                 listContainer.innerHTML = '<p class="text-white/50 italic">No favorites added yet.</p>';
                 return;
             }
 
             const favs = currentUser.favorite_episode.split(',').map(s => s.trim()).filter(s => s);
-            
+
             listContainer.innerHTML = '';
             favs.forEach(fav => {
                 const div = document.createElement('div');
@@ -201,7 +217,7 @@
 
             let favs = currentUser.favorite_episode.split(',').map(s => s.trim()).filter(s => s);
             favs = favs.filter(f => f !== itemToRemove);
-            
+
             const newFavString = favs.join(', ');
 
             try {
@@ -209,14 +225,14 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        username: currentUser.username, 
+                        username: currentUser.username,
                         favorite_episode: newFavString
                     })
                 });
 
                 if (res.ok) {
                     currentUser.favorite_episode = newFavString;
-                    renderFavoritesList(); 
+                    renderFavoritesList();
                     Toastify({ text: "Removed from favorites", style: { background: "#333" } }).showToast();
                 } else {
                     Toastify({ text: "Failed to remove", style: { background: "#ff5f6d" } }).showToast();
@@ -231,14 +247,14 @@
             try {
                 const res = await fetch('/auth/update', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, phone })
                 });
                 if (res.ok) {
                     Toastify({ text: "Profile Updated", style: { background: "#00b09b" } }).showToast();
                     document.getElementById('display-name').textContent = username;
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         };
 
         window.handleAvatarUpload = (input) => {
@@ -249,14 +265,14 @@
                 try {
                     const res = await fetch('/auth/update', {
                         method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username: currentUser.username, avatar_id: e.target.result })
                     });
-                    if(res.ok) {
+                    if (res.ok) {
                         document.getElementById('profile-avatar').src = e.target.result;
                         Toastify({ text: "Avatar Updated", style: { background: "#00b09b" } }).showToast();
                     }
-                } catch(err) {}
+                } catch (err) { }
             };
             reader.readAsDataURL(file);
         };
@@ -268,4 +284,5 @@
 
     </script>
 </body>
+
 </html>

@@ -218,7 +218,7 @@
                                 <label class="block text-sm font-bold text-white/70 mb-1">Phone Number</label>
                                 <input type="text" id="admin-phone" class="form-input" placeholder="+123 456 7890">
                             </div>
-                            <button type="submit" class="bg-theme-orange text-black font-bold py-2 px-6 rounded-lg hover:bg-white hover:scale-105 transition-all mt-4 w-max">
+                            <button type="submit" class="bg-white text-theme-orange font-bold py-2 px-6 rounded-lg hover:bg-theme-orange hover:text-white hover:scale-105 transition-all mt-4 w-max">
                                 Save Changes
                             </button>
                         </form>
@@ -311,7 +311,7 @@
             try {
                 await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
                 Toastify({ text: "Logged out!", style: { background: "#333" } }).showToast();
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                setTimeout(() => window.location.href = 'Anime.html', 1000);
             } catch (err) { console.error(err); }
         }
 
