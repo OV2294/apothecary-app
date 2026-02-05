@@ -196,12 +196,14 @@
                         
                         <div class="flex flex-col gap-4 items-center md:items-start">
                             <label class="block text-sm font-bold text-white/70">Profile Picture</label>
-                            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer">
+                            
+                            <div onclick="openProfileModal()" class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer">
                                 <img id="settings-avatar" src="image/accicon.png" class="w-full h-full object-cover">
-                                <div onclick="openProfileModal()" class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <i class="fa-solid fa-pen text-white text-2xl"></i>
                                 </div>
                             </div>
+                            
                             <p class="text-xs text-white/50 text-center md:text-left">Click image to edit</p>
                         </div>
 
@@ -278,7 +280,7 @@
     <script>
         let currentAdmin = null;
 
-        function switchTab(tabName) {
+        window.switchTab = (tabName) => {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
@@ -290,11 +292,29 @@
             target.classList.add('block');
         }
 
-        async function logout() {
+        // --- POPUP LOGIC ---
+        window.openProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if(modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        window.closeProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // --- LOGOUT ---
+        window.logout = async () => {
             try {
                 await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
                 Toastify({ text: "Logged out!", style: { background: "#333" } }).showToast();
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                setTimeout(() => window.location.href = 'Anim.html', 1000);
             } catch (err) { console.error(err); }
         }
 
@@ -319,6 +339,7 @@
             }
         });
 
+        // --- DATA LOADING ---
         async function loadAdminData() {
             try {
                 const res = await fetch('/admin/data', { credentials: 'include' });
@@ -338,6 +359,7 @@
 
                 populateSettingsForm(); 
 
+                // USERS TABLE
                 const userTbody = document.getElementById('users-table-body');
                 userTbody.innerHTML = '';
                 if(data.users && data.users.length > 0) {
@@ -356,6 +378,7 @@
                     });
                 } else { userTbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No users found.</td></tr>'; }
 
+                // FEEDBACK
                 const fbList = document.getElementById('feedback-list');
                 fbList.innerHTML = '';
                 if(data.feedback && data.feedback.length > 0) {
@@ -377,6 +400,7 @@
                     });
                 } else { fbList.innerHTML = '<p class="text-center text-white/50 col-span-full">No feedback received.</p>'; }
 
+                // COMMENTS
                 const cmList = document.getElementById('comments-list');
                 cmList.innerHTML = '';
                 if(data.comments && data.comments.length > 0) {
@@ -440,15 +464,6 @@
             } catch(e) { console.error(e); }
         };
 
-        function openProfileModal() {
-            document.getElementById('profile-modal').classList.remove('hidden');
-            document.getElementById('profile-modal').classList.add('flex');
-        }
-        function closeProfileModal() {
-            document.getElementById('profile-modal').classList.add('hidden');
-            document.getElementById('profile-modal').classList.remove('flex');
-        }
-
         window.handleAdminAvatar = (input) => {
             const file = input.files[0];
             if(!file) return;
@@ -498,7 +513,6 @@
                 }
             } catch(e) { console.error(e); }
         }
-
     </script>
 </body>
 </html>
