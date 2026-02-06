@@ -220,8 +220,6 @@
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
 
-            select.innerHTML = '';
-
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
                 opt.value = ch.chapter_number;
