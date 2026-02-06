@@ -223,16 +223,17 @@
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
-
-            select.innerHTML = '';
-
-            allChapters.forEach(ch => {
-                const opt = document.createElement('option');
-                opt.value = ch.chapter_number;
-                opt.textContent = `Chapter ${ch.chapter_number}`;
-                if (parseInt(ch) == currentChapterNum) opt.selected = true;
-                select.appendChild(opt);
-            });
+            const chaps = Object.keys(allChapters).sort();
+            if (chaps.length > 0) {
+                select.innerHTML = '';
+                chaps.forEach(ch => {
+                    const opt = document.createElement('option');
+                    opt.value = ch.chapter_number;
+                    opt.text = `Chapter ${ch.chapter_number}`;
+                    if (parseInt(ch) == currentChapterNum) opt.selected = true;
+                    select.appendChild(opt);
+                });
+            }
             select.value = currentChapterNum;
         }
 
