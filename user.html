@@ -28,11 +28,24 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
-            .glass { @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl; }
-            .nav-link { @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300; }
-            .profile-input { @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-theme-orange; }
-         
-            .fav-item { @apply flex justify-between items-center bg-white/5 border border-white/10 p-3 rounded-lg mb-2 hover:bg-white/10 transition-colors; }
+            .glass { 
+                @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl; 
+            }
+            .nav-link { 
+                @apply text-white font-bold text-lg hover:text-theme-orange transition-colors duration-300; 
+            }
+            .profile-input { 
+                @apply w-full bg-black/20 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-theme-orange; 
+            }
+            .modal-overlay {
+                @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] items-center justify-center;
+            }
+            .modal-content {
+                @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl;
+            }
+            .fav-item { 
+                @apply flex justify-between items-center bg-white/5 border border-white/10 p-3 rounded-lg mb-2 hover:bg-white/10 transition-colors; 
+            }
         }
     </style>
 </head>
@@ -65,7 +78,7 @@
 
         <section class="glass p-8 flex flex-col md:flex-row gap-8 items-center md:items-start">
 
-            <div class="flex flex-col items-center gap-4">
+            <!-- <div class="flex flex-col items-center gap-4">
                 <div class="relative group w-32 h-32">
                     <img id="profile-avatar" src="image/accicon.png"
                         class="w-full h-full rounded-full object-cover border-4 border-theme-orange shadow-lg">
@@ -74,13 +87,23 @@
                         Change
                     </label>
                     <input type="file" id="avatar-input" class="hidden" accept="image/*"
-                        onchange="handleAvatarUpload(this)">
+                        onchange="handleUserAvatar(this)">
                 </div>
                 <h2 class="text-2xl font-bold" id="display-name">User</h2>
+            </div> -->
+            <div class="flex flex-col gap-4 items-center md:items-start">
+                <div onclick="openProfileModal()"
+                    class="w-32 h-32 rounded-full overflow-hidden border-4 border-theme-orange/50 shadow-lg mb-2 relative group cursor-pointer transform hover:scale-105 transition-transform">
+                    <img id="profile-avatar" src="image/accicon.png" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fa-solid fa-pen text-white text-2xl"></i>
+                    </div>
+                </div>
             </div>
-
             <div class="flex-1 w-full space-y-4">
-                <h3 class="text-xl font-bold text-theme-orange border-b border-white/20 pb-2">Profile
+                <h3 class="flex justify-between text-xl font-bold text-theme-orange border-b border-white/20 pb-2">
+                    Profile
                     <button onclick="logout()"
                         class="flex items-center gap-2 px-6 py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all font-bold text-sm">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -89,7 +112,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="text-sm text-white/60 block mb-1">Username</label>
-                        <input type="text" id="inp-username" class="profile-input">
+                        <input type="text" id="inp-username" class="profile-input" placeholder="name">
                     </div>
                     <div>
                         <label class="text-sm text-white/60 block mb-1">Phone</label>
@@ -97,7 +120,7 @@
                     </div>
                     <div class="md:col-span-2">
                         <label class="text-sm text-white/60 block mb-1">Email</label>
-                        <input type="email" id="inp-email" class="profile-input opacity-50">
+                        <input type="email" id="inp-email" class="profile-input opacity-50" placeholder="user@gmail.com">
                     </div>
                 </div>
                 <button onclick="updateProfile()"
@@ -131,6 +154,35 @@
         </section>
 
     </main>
+    <div id="profile-modal" class="modal-overlay hidden">
+        <div class="modal-content text-center">
+
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-white/50 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-2xl font-bold text-theme-orange mb-6">Edit Avatar</h3>
+
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <img id="modal-avatar-preview" src="image/accicon.png"
+                    class="w-full h-full rounded-full object-cover border-2 border-white/20">
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <label for="avatar-upload"
+                    class="w-full py-2 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all text-sm font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-upload"></i> Upload New
+                </label>
+                <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleUserAvatar(this)">
+
+                <button onclick="removeUserAvatar()"
+                    class="w-full py-2 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500 hover:text-white transition-all text-sm font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-trash"></i> Remove Avatar
+                </button>
+            </div>
+
+        </div>
+    </div>
     <footer
         class="mt-auto py-8 text-center text-white/90 text-sm relative z-10 glass rounded-t-2xl mx-auto w-[95%] max-w-7xl mb-4">
         <p class="font-bold">&copy; 2026 The Apothecary Diaries Project.</p>
@@ -265,25 +317,63 @@
             } catch (e) { console.error(e); }
         };
 
-        window.handleAvatarUpload = (input) => {
+        window.openProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        window.closeProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+        window.handleUserAvatar = (input) => {
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
+
             reader.onload = async (e) => {
-                try {
-                    const res = await fetch('/auth/update', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username: currentUser.username, avatar_id: e.target.result })
-                    });
-                    if (res.ok) {
-                        document.getElementById('profile-avatar').src = e.target.result;
-                        Toastify({ text: "Avatar Updated", style: { background: "#00b09b" } }).showToast();
-                    }
-                } catch (err) { }
+                const newAvatarBase64 = e.target.result;
+
+                await performUpdate({ avatar_id: newAvatarBase64 });
+
+                closeProfileModal();
             };
             reader.readAsDataURL(file);
         };
+
+        window.removeUserAvatar = async () => {
+            if (!confirm("Remove custom avatar?")) return;
+
+            await performUpdate({ avatar_id: 'default' });
+
+            closeProfileModal();
+        };
+
+        // window.handleUserAvatar = (input) => {
+        //     const file = input.files[0];
+        //     if (!file) return;
+        //     const reader = new FileReader();
+        //     reader.onload = async (e) => {
+        //         try {
+        //             const res = await fetch('/auth/update', {
+        //                 method: 'POST',
+        //                 headers: { 'Content-Type': 'application/json' },
+        //                 body: JSON.stringify({ username: currentUser.username, avatar_id: e.target.result })
+        //             });
+        //             if (res.ok) {
+        //                 document.getElementById('profile-avatar').src = e.target.result;
+        //                 Toastify({ text: "Avatar Updated", style: { background: "#00b09b" } }).showToast();
+        //             }
+        //         } catch (err) { }
+        //     };
+        //     reader.readAsDataURL(file);
+        // };
 
         window.logout = async () => {
             await fetch('/auth/logout', { method: 'POST' });
