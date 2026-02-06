@@ -213,22 +213,110 @@
 
                 currentUser = data.user;
 
-
                 document.getElementById('display-name').textContent = currentUser.username;
                 document.getElementById('inp-username').value = currentUser.username;
                 document.getElementById('inp-email').value = currentUser.email;
                 document.getElementById('inp-phone').value = currentUser.phone || '';
 
-                const avatarImg = document.getElementById('profile-avatar');
-                if (currentUser.avatar_id && currentUser.avatar_id !== 'default') {
-                    avatarImg.src = currentUser.avatar_id;
-                }
+                // Load Avatar
+                updateAvatarUI(currentUser.avatar_id);
 
                 loadWatchHistory();
-
                 renderFavoritesList();
 
             } catch (e) { console.error(e); }
+        }
+
+        function updateAvatarUI(avatarId) {
+            const defaultImg = 'image/accicon.png';
+            const src = (avatarId && avatarId !== 'default') ? avatarId : defaultImg;
+            
+            const profileImg = document.getElementById('profile-avatar');
+            if(profileImg) profileImg.src = src;
+
+            const modalImg = document.getElementById('modal-avatar-preview');
+            if(modalImg) modalImg.src = src;
+
+            const navImg = document.getElementById('nav-avatar'); 
+            if(navImg) navImg.src = src;
+        }
+
+        async function performUpdate(updates) {
+            try {
+                const payload = { 
+                    username: currentUser.username, 
+                    ...updates 
+                };
+
+                const res = await fetch('/auth/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    Object.assign(currentUser, updates);
+                    
+                    if (updates.avatar_id) {
+                        updateAvatarUI(updates.avatar_id);
+                    }
+                    
+                    Toastify({ text: "Update Successful", style: { background: "#00b09b" } }).showToast();
+                } else {
+                    Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
+                }
+            } catch (err) {
+                console.error("Update error:", err);
+                Toastify({ text: "Error updating profile", style: { background: "#ff5f6d" } }).showToast();
+            }
+        }
+
+        window.handleUserAvatar = (input) => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+
+            reader.onload = async (e) => {
+                const newAvatarBase64 = e.target.result;
+                await performUpdate({ avatar_id: newAvatarBase64 });
+                closeProfileModal();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.removeUserAvatar = async () => {
+            if (!confirm("Remove custom avatar?")) return;
+            await performUpdate({ avatar_id: 'default' });
+            closeProfileModal();
+        };
+
+        window.updateProfile = async () => {
+            const newUsername = document.getElementById('inp-username').value;
+            const newPhone = document.getElementById('inp-phone').value;
+
+            await performUpdate({ 
+                username: newUsername, 
+                phone: newPhone 
+            });
+            
+            document.getElementById('display-name').textContent = newUsername;
+        };
+
+        window.openProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                updateAvatarUI(currentUser.avatar_id);
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        window.closeProfileModal = () => {
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
 
         async function loadWatchHistory() {
@@ -274,112 +362,18 @@
 
         window.removeFavorite = async (itemToRemove) => {
             if (!currentUser.favorite_episode) return;
-
             let favs = currentUser.favorite_episode.split(',').map(s => s.trim()).filter(s => s);
             favs = favs.filter(f => f !== itemToRemove);
-
             const newFavString = favs.join(', ');
 
-            try {
-                const res = await fetch('/auth/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: currentUser.username,
-                        favorite_episode: newFavString
-                    })
-                });
-
-                if (res.ok) {
-                    currentUser.favorite_episode = newFavString;
-                    renderFavoritesList();
-                    Toastify({ text: "Removed from favorites", style: { background: "#333" } }).showToast();
-                } else {
-                    Toastify({ text: "Failed to remove", style: { background: "#ff5f6d" } }).showToast();
-                }
-            } catch (err) { console.error(err); }
+            await performUpdate({ favorite_episode: newFavString });
+            renderFavoritesList();
         };
-
-        window.updateProfile = async () => {
-            const username = document.getElementById('inp-username').value;
-            const phone = document.getElementById('inp-phone').value;
-
-            try {
-                const res = await fetch('/auth/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, phone })
-                });
-                if (res.ok) {
-                    Toastify({ text: "Profile Updated", style: { background: "#00b09b" } }).showToast();
-                    document.getElementById('display-name').textContent = username;
-                }
-            } catch (e) { console.error(e); }
-        };
-
-        window.openProfileModal = () => {
-            const modal = document.getElementById('profile-modal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        }
-
-        window.closeProfileModal = () => {
-            const modal = document.getElementById('profile-modal');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-        }
-        window.handleUserAvatar = (input) => {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-
-            reader.onload = async (e) => {
-                const newAvatarBase64 = e.target.result;
-
-                await performUpdate({ avatar_id: newAvatarBase64 });
-
-                closeProfileModal();
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.removeUserAvatar = async () => {
-            if (!confirm("Remove custom avatar?")) return;
-
-            await performUpdate({ avatar_id: 'default' });
-
-            closeProfileModal();
-        };
-
-        // window.handleUserAvatar = (input) => {
-        //     const file = input.files[0];
-        //     if (!file) return;
-        //     const reader = new FileReader();
-        //     reader.onload = async (e) => {
-        //         try {
-        //             const res = await fetch('/auth/update', {
-        //                 method: 'POST',
-        //                 headers: { 'Content-Type': 'application/json' },
-        //                 body: JSON.stringify({ username: currentUser.username, avatar_id: e.target.result })
-        //             });
-        //             if (res.ok) {
-        //                 document.getElementById('profile-avatar').src = e.target.result;
-        //                 Toastify({ text: "Avatar Updated", style: { background: "#00b09b" } }).showToast();
-        //             }
-        //         } catch (err) { }
-        //     };
-        //     reader.readAsDataURL(file);
-        // };
 
         window.logout = async () => {
             await fetch('/auth/logout', { method: 'POST' });
             window.location.href = 'Anime.html';
         };
-
     </script>
 </body>
 
