@@ -221,32 +221,17 @@
             }
         }
 
-        // function populateDropdown() {
-        //     const select = document.getElementById('chapter-select');
-        //     select.innerHTML = '';
-
-        //     allChapters.forEach(ch => {
-        //         const opt = document.createElement('option');
-        //         opt.value = ch.chapter_number;
-        //         opt.textContent = `Chapter ${ch.chapter_number}`;
-        //         if (ch.chapter_number == currentChapterNum) opt.selected = true;
-        //         select.appendChild(opt);
-        //     });
-        // }
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
-            const chapters = Object.keys(allChapters).sort();
-            if (chapters.length > 0) {
-                select.innerHTML = '';
-                allChapters.forEach(ch => {
-                    const opt = document.createElement('option');
-                    opt.value = ch.chapter_number; 
-                    opt.text = `Chapter ${ch.chapter_number}`;
-                    if (parseInt(s) === currentChapterNum) opt.selected = true;
-                    select.appendChild(opt);
-                });
-                select.value = currentChapterNum;
-            }
+            select.innerHTML = '';
+
+            allChapters.forEach(ch => {
+                const opt = document.createElement('option');
+                opt.value = ch.chapter_number;
+                opt.textContent = `Chapter ${ch.chapter_number}`;
+                if (ch.chapter_number == currentChapterNum) opt.selected = true;
+                select.appendChild(opt);
+            });
         }
 
         function loadChapterContent(chapterNum) {
