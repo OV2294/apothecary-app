@@ -258,10 +258,13 @@
                 loginForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
 
-                    const email = document.getElementById('login-email').value;
-                    const password = document.getElementById('login-password').value;
+                    const emailInput = document.getElementById('login-email');
+                    const passwordInput = document.getElementById('login-password');
                     const btn = loginForm.querySelector('button');
                     const originalText = btn.textContent;
+
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value.trim();
 
                     btn.textContent = "Logging in...";
                     btn.disabled = true;
@@ -281,13 +284,16 @@
                             setTimeout(() => window.location.href = 'Anime.html', 1000);
                         } else {
                             if (res.status === 404) {
-                                showToast("Email not found. Please Sign Up.", "error");
-                                email.focus();
+                                showToast("Email not found.", "error");
+                                emailInput.focus();
                             }
                             else if (res.status === 401) {
                                 showToast("Incorrect password.", "error");
-                                password.value = ''; 
-                                password.focus();
+                                password.value = '';
+                                passwordInput.focus();
+                            }
+                            else {
+                                showToast(data.message || "Login failed.", "error");
                             }
                         }
                     } catch (err) {
