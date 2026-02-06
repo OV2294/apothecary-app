@@ -280,7 +280,15 @@
                             showToast("Login successful!", "success");
                             setTimeout(() => window.location.href = 'Anime.html', 1000);
                         } else {
-                            showToast(data.message || "Invalid credentials", "error");
+                            if (res.status === 404) {
+                                showToast("Email not found. Please Sign Up.", "error");
+                                emailInput.focus();
+                            }
+                            else if (res.status === 401) {
+                                showToast("Incorrect password.", "error");
+                                passwordInput.value = ''; 
+                                passwordInput.focus();
+                            }
                         }
                     } catch (err) {
                         console.error(err);
