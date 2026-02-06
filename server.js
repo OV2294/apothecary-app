@@ -56,11 +56,14 @@ app.post('/auth/register', async (req, res) => {
 app.post('/auth/login', (req, res) => {
     const { email, password } = req.body;
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-        if (err || results.length === 0) return res.status(401).json({ message: 'Invalid credentials' });
-        bcrypt.compare(password, results[0].password_hash, (err, isMatch) => {
-            if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-            req.session.user = results[0];
-            req.session.save(() => res.json({ message: 'Login successful', role: results[0].role }));
+        if (err) { return res.status(500).json({ message: 'Database error' });}
+        if (results.length === 0) { return res.status(404).json({ message: 'Email not registered' }); }
+        const user = results[0];
+        bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+            if (err) return res.status(500).json({ message: 'Error checking password' });
+            if (!isMatch) { return res.status(401).json({ message: 'Incorrect password' }); }
+            req.session.user = user;
+            req.session.save(() => { res.json({ message: 'Login successful', role: user.role }); });
         });
     });
 });
