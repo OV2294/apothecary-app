@@ -68,10 +68,23 @@
                     <li><a href="about.html" class="nav-link">About</a></li>
                 </ul>
             </div>
-            <div class="flex items-center gap-4">
+            <!-- <div class="flex items-center gap-4">
                 <button onclick="logout()" class="text-red-400 hover:text-white font-bold">Logout</button>
+            </div> -->
+            <div class="flex items-center gap-4">
+                <div class="relative cursor-pointer group" onclick="openProfileModal()">
+                    <img id="nav-avatar" src="image/accicon.png" alt="Account"
+                        class="w-10 h-10 rounded-full border-2 border-theme-orange object-cover shadow-glow transition-transform group-hover:scale-105">
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">≡</button>
             </div>
         </nav>
+        <div id="mobile-menu"
+            class="hidden absolute top-20 right-4 w-48 glass flex-col items-center py-4 space-y-4 md:hidden">
+            <a href="Anime.html" class="nav-link text-base">Anime</a>
+            <a href="manga.html" class="nav-link text-base">Manga</a>
+            <button onclick="logout()" class="text-red-400 font-bold mt-2">Logout</button>
+        </div>
     </header>
 
     <main class="pt-32 pb-20 px-4 max-w-4xl mx-auto space-y-8">
@@ -188,6 +201,14 @@
         let currentUser = null;
 
         document.addEventListener("DOMContentLoaded", async () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
             await loadUserProfile();
         });
 
