@@ -282,12 +282,12 @@
                         } else {
                             if (res.status === 404) {
                                 showToast("Email not found. Please Sign Up.", "error");
-                                emailInput.focus();
+                                email.focus();
                             }
                             else if (res.status === 401) {
                                 showToast("Incorrect password.", "error");
-                                passwordInput.value = ''; 
-                                passwordInput.focus();
+                                password.value = ''; 
+                                password.focus();
                             }
                         }
                     } catch (err) {
