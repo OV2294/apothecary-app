@@ -235,7 +235,7 @@
                 chaps.forEach(ch => {
                     const opt = document.createElement('option');
                     opt.value = ch.chapter_number; 
-                    opt.text = `Chapter ${ch.chapterNum}`;
+                    opt.text = `Chapter ${ch.chapter_number}`;
                     if (parseInt(ch) === currentChapterNum) opt.selected = true;
                     select.appendChild(opt);
                 });
