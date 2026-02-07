@@ -157,15 +157,15 @@ app.get('/anime', (req, res) => {
 app.get('/manga', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Please login' }); 
     db.query('SELECT * FROM manga_chapters ORDER BY chapter_number ASC', (err, results) => {
-        res.json(results || []);
-        // if (err) return res.status(500).json({ message: "DB Error" });
-        // const data = results.map(row => ({
-        //     chapter: row.chapter_number,
-        //     title: `Chapter ${row.chapter_number}`,
-        //     description: "",
-        //     pdf_link: row.drive_link
-        // }));
-        // res.json(data);
+        // res.json(results || []);
+        if (err) return res.status(500).json({ message: "DB Error" });
+        const data = results.map(row => ({
+            chapter: row.chapter_number,
+            title: `Chapter ${row.chapter_number}`,
+            description: "",
+            pdf_link: row.drive_link
+        }));
+        res.json(data);
     });
 });
 
