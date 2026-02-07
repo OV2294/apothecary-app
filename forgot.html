@@ -148,21 +148,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const togglePassBtn = document.getElementById('toggle-pass');
             const passwordInput = document.getElementById('new-password');
-            const form = document.getElementById('reset-form');
 
-            // --- TOAST HELPER ---
-            const showToast = (text, type = 'info') => {
-                let bg = "#333";
-                if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
-                if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
-
-                Toastify({
-                    text: text, duration: 3000, style: { background: bg },
-                    gravity: "top", position: "right"
-                }).showToast();
-            };
-
-            // --- MOBILE MENU ---
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
@@ -172,35 +158,49 @@
 
             if (togglePassBtn && passwordInput) {
                 togglePassBtn.addEventListener('click', () => {
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        togglePassBtn.classList.remove('fa-eye');
-                        togglePassBtn.classList.add('fa-eye-slash');
-                    } else {
-                        passwordInput.type = 'password';
-                        togglePassBtn.classList.remove('fa-eye-slash');
-                        togglePassBtn.classList.add('fa-eye');
-                    }
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    togglePassBtn.classList.toggle('fa-eye');
+                    togglePassBtn.classList.toggle('fa-eye-slash');
                 });
             }
 
-            // --- RESET ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailFromLogin = urlParams.get('email');
+            const emailInput = document.getElementById('reset-email');
+
+            if (emailFromLogin && emailInput) {
+                emailInput.value = emailFromLogin;
+            }
+
+            const form = document.getElementById('reset-form');
+
+            // TOAST HELPER
+            const showToast = (text, type = 'info') => {
+                let bg = "#333";
+                if (type === 'success') bg = "linear-gradient(to right, #00b09b, #96c93d)";
+                if (type === 'error') bg = "linear-gradient(to right, #ff5f6d, #ffc371)";
+                Toastify({ text: text, duration: 3000, style: { background: bg }, gravity: "top", position: "right" }).showToast();
+            };
+
             if (form) {
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
 
-                    const email = document.getElementById('reset-email').value;
-                    const phone = document.getElementById('reset-phone').value;
-                    const newPassword = document.getElementById('new-password').value;
+                    const email = document.getElementById('reset-email').value.trim();
+                    const phone = document.getElementById('reset-phone').value.trim();
+                    const newPassword = document.getElementById('new-password').value.trim();
                     const btn = form.querySelector('button');
                     const originalText = btn.textContent;
 
-                    // Validation
-                    if (newPassword.length < 6) {
-                        showToast("Password must be at least 6 characters", "error");
+                    // --- VALIDATION ---
+
+                    if (newPassword.length < 8) {
+                        showToast("Password must be at least 8 characters.", "error");
                         return;
                     }
 
+                    // --- SEND TO SERVER ---
                     btn.textContent = "Verifying...";
                     btn.disabled = true;
 
@@ -215,13 +215,10 @@
 
                         if (res.ok) {
                             showToast("Password reset successful!", "success");
-                            setTimeout(() => {
-                                window.location.href = 'auth.html';
-                            }, 2000);
+                            setTimeout(() => window.location.href = 'auth.html', 2000);
                         } else {
-                            showToast(data.message || "Verification failed. Check credentials.", "error");
+                            showToast(data.message || "Verification failed.", "error");
                         }
-
                     } catch (err) {
                         console.error(err);
                         showToast("Server connection error", "error");

@@ -124,7 +124,8 @@
                     </div>
 
                     <div class="text-right">
-                        <a href="forgot.html" class="text-sm text-theme-orange hover:underline">Forgot Password?</a>
+                        <a href="#" onclick="navigateToForgot(event)"
+                            class="text-sm text-theme-orange hover:underline">Forgot Password?</a>
                     </div>
 
                     <button type="submit" class="auth-btn">Log In</button>
@@ -319,7 +320,7 @@
                     const confirm = document.getElementById('reg-confirm').value;
                     const btn = regForm.querySelector('button');
                     const originalText = btn.textContent;
-                    
+
                     if (/\s/.test(username)) {
                         showToast("Username cannot contain spaces", "error");
                         return;
@@ -369,6 +370,31 @@
             }
 
         });
+        function navigateToForgot(e) {
+            e.preventDefault();
+
+            const emailInput = document.getElementById('login-email');
+            const emailVal = emailInput ? emailInput.value.trim() : '';
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailVal) {
+                Toastify({
+                    text: "Please enter your email first.",
+                    style: { background: "#ff5f6d" }
+                }).showToast();
+
+                emailInput.focus();
+                return;
+            }
+            if (!emailPattern.test(emailVal)) {
+                Toastify({
+                    text: "Please enter a valid email address.",
+                    style: { background: "#ff5f6d" }
+                }).showToast();
+                emailInput.focus();
+                return;
+            }
+            window.location.href = `forgot.html?email=${encodeURIComponent(emailVal)}`;
+        }
     </script>
 </body>
 

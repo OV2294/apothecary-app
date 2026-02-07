@@ -80,11 +80,26 @@ app.get('/auth/me', (req, res) => {
 
 app.post('/auth/reset-with-phone', async (req, res) => {
     const { email, phone, newPassword } = req.body;
-    db.query('SELECT id FROM users WHERE email = ? AND phone = ?', [email, phone], async (err, results) => {
-        if (results.length === 0) return res.status(401).json({ message: 'Invalid details' });
-        const hash = await bcrypt.hash(newPassword, 10);
-        db.query('UPDATE users SET password_hash = ? WHERE email = ?', [hash, email], () => {
-            res.json({ message: 'Password reset successful' });
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+        if (err) return res.status(500).json({ message: 'Database error' });
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Email not found' });
+        }
+
+        const user = results[0];
+
+        if (user.phone !== phone) {
+            return res.status(401).json({ message: 'Incorrect phone number' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        db.query('UPDATE users SET password_hash = ? WHERE email = ?', [hashedPassword, email], (err) => {
+            if (err) return res.status(500).json({ message: 'Error updating password' });
+            
+            res.status(200).json({ message: 'Password reset successful' });
         });
     });
 });
