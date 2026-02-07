@@ -204,11 +204,24 @@
                 const res = await fetch('/manga');
                 if (res.status === 401) { window.location.href = 'auth.html'; return; }
 
-                const data = await res.json();
+                // const data = await res.json();
 
+                // if (data && data.length > 0) {
+                //     allChapters = data.sort((a, b) => a.chapter - b.chapter);
+
+                //     populateDropdown();
+                //     loadChapterContent(currentChapterNum);
+                // } else {
+                //     document.getElementById('chapter-title').textContent = "No Chapters Found";
+                // }
+                if (!res.ok) throw new Error("Failed to fetch");
+                const data = await res.json();
                 if (data && data.length > 0) {
                     allChapters = data.sort((a, b) => a.chapter - b.chapter);
-
+                    const exists = allChapters.some(c => c.chapter == currentChapterNum);
+                    if (!exists) {
+                        currentChapterNum = allChapters[0].chapter;
+                    }
                     populateDropdown();
                     loadChapterContent(currentChapterNum);
                 } else {
@@ -239,7 +252,7 @@
                 select.innerHTML = '';
                 chaps.forEach(ch => {
                     const opt = document.createElement('option');
-                    opt.value = ch.chapter; 
+                    opt.value = ch.chapter;
                     opt.text = `Chapter ${ch.chapter}`;
                     if (parseInt(ch) === currentChapterNum) opt.selected = true;
                     select.appendChild(opt);
