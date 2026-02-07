@@ -93,6 +93,12 @@ app.post('/auth/reset-with-phone', async (req, res) => {
             return res.status(401).json({ message: 'Incorrect phone number' });
         }
 
+        const isSamePassword = await bcrypt.compare(newPassword, user.password_hash);
+        
+        if (isSamePassword) {
+            return res.status(400).json({ message: 'New password cannot be the same as the old password' });
+        }
+        
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
 
