@@ -207,7 +207,10 @@
 
                 if (data && data.length > 0) {
                     allChapters = data.sort((a, b) => a.chapter - b.chapter);
-
+                    const exists = allChapters.some(c => c.chapter == currentChapterNum);
+                    if (!exists) {
+                        currentChapterNum = allChapters[0].chapter;
+                    }
                     populateDropdown();
                     loadChapterContent(currentChapterNum);
                 } else {
@@ -220,18 +223,18 @@
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
+            if (!select) return;
+            
             select.innerHTML = '';
 
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
-
-                opt.value = ch.chapter;
+                
+                opt.value = ch.chapter; 
                 opt.textContent = ch.title; 
-
-                if (ch.chapter == currentChapterNum) opt.selected = true;
+                
                 select.appendChild(opt);
             });
-
             select.value = currentChapterNum;
         }
 
