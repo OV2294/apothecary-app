@@ -98,7 +98,7 @@ app.post('/auth/reset-with-phone', async (req, res) => {
         if (isSamePassword) {
             return res.status(400).json({ message: 'New password cannot be the same as the old password' });
         }
-        
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
 
@@ -157,7 +157,15 @@ app.get('/anime', (req, res) => {
 app.get('/manga', (req, res) => {
     if (!req.session.user) return res.status(401).json({ message: 'Please login' }); 
     db.query('SELECT * FROM manga_chapters ORDER BY chapter_number ASC', (err, results) => {
-        res.json(results || []);
+        // res.json(results || []);
+        if (err) return res.status(500).json({ message: "DB Error" });
+        const data = results.map(row => ({
+            chapter: row.chapter_number,
+            title: `Chapter ${row.chapter_number}`,
+            description: "",
+            pdf_link: row.drive_link
+        }));
+        res.json(data);
     });
 });
 
