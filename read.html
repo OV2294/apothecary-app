@@ -191,9 +191,10 @@
 
                 currentUser = data.user;
                 const navAvatar = document.getElementById('nav-avatar');
-                let src = (currentUser.avatar_id && currentUser.avatar_id !== 'default') ? currentUser.avatar_id : 'image/accicon.png';
-                if (navAvatar) navAvatar.src = src;
-                document.getElementById('user-icon-link').href = (currentUser.role === 'admin') ? 'admin.html' : 'user.html';
+                if (navAvatar && currentUser.avatar_id) navAvatar.src = currentUser.avatar_id;
+
+                const userLink = document.getElementById('user-icon-link');
+                if (userLink) userLink.href = (currentUser.role === 'admin') ? 'admin.html' : 'user.html';
 
             } catch (err) { console.error("Auth check failed", err); }
         }
@@ -206,7 +207,8 @@
                 const data = await res.json();
 
                 if (data && data.length > 0) {
-                    allChapters = data.sort((a, b) => a.chapter_number - b.chapter_number);
+                    allChapters = data.sort((a, b) => a.chapter - b.chapter);
+
                     populateDropdown();
                     loadChapterContent(currentChapterNum);
                 } else {
@@ -219,76 +221,72 @@
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
-            
-            // allChapters.forEach(ch => {
-            //     const opt = document.createElement('option');
-            //     opt.value = ch.chapter_number;
-            //     opt.textContent = `Chapter ${ch.chapter_number}`;
-            //     if (parseInt(ch) == currentChapterNum) opt.selected = true;
-            //     select.appendChild(opt);
-            // });
+            select.innerHTML = '';
 
-            // select.value = currentChapterNum;
-            const chaps = Object.keys(allChapters).sort();
-            if (chaps.length > 0) {
-                select.innerHTML = '';
-                chaps.forEach(ch => {
+            allChapters.forEach(ch => {
                 const opt = document.createElement('option');
-                opt.value = ch.chapter_number;
-                opt.textContent = `Chapter ${ch.chapter_number}`;
-                if (parseInt(ch) == currentChapterNum) opt.selected = true;
+
+                opt.value = ch.chapter;
+                opt.textContent = ch.title; 
+
+                if (ch.chapter == currentChapterNum) opt.selected = true;
                 select.appendChild(opt);
-                });
-                select.value = currentChapterNum;
-            }
+            });
+
+            select.value = currentChapterNum;
         }
 
         function loadChapterContent(chapterNum) {
             const titleEl = document.getElementById('chapter-title');
             const iframeEl = document.getElementById('manga-frame');
-
-            const chapterData = allChapters.find(c => c.chapter_number == chapterNum);
+            const chapterData = allChapters.find(c => c.chapter == chapterNum);
 
             if (chapterData) {
-                titleEl.textContent = `Chapter ${chapterNum}`;
+                titleEl.textContent = chapterData.title;
 
-                let link = chapterData.drive_link;
-                if (link.includes('/view')) {
+                let link = chapterData.pdf_link;
+
+                if (link && link.includes('/view')) {
                     link = link.replace('/view', '/preview');
                 }
 
-                iframeEl.src = link;
-
+                if (iframeEl) iframeEl.src = link;
                 const newUrl = `${window.location.pathname}?chapter=${chapterNum}`;
                 window.history.pushState({ path: newUrl }, '', newUrl);
 
                 document.getElementById('chapter-select').value = chapterNum;
+                updateControls();
             } else {
                 titleEl.textContent = `Chapter ${chapterNum} Not Found`;
                 if (typeof Toastify !== 'undefined') {
                     Toastify({ text: "Chapter not available", style: { background: "#ff5f6d" } }).showToast();
                 }
             }
-            updateControls();
         }
 
         function changeChapter(newChap) {
-            const exists = allChapters.some(c => c.chapter_number == newChap);
-            if (!exists) return;
+            const exists = allChapters.some(c => c.chapter == newChap);
 
-            currentChapterNum = newChap;
-            loadChapterContent(currentChapterNum);
+            if (exists) {
+                currentChapterNum = newChap;
+                loadChapterContent(currentChapterNum);
+            } else {
+                Toastify({ text: "No more chapters.", style: { background: "#333" } }).showToast();
+            }
         }
 
         function updateControls() {
-            const currentIndex = allChapters.findIndex(c => c.chapter_number == currentChapterNum);
+            const currentIndex = allChapters.findIndex(c => c.chapter == currentChapterNum);
 
             const hasPrev = currentIndex > 0;
             const hasNext = currentIndex < allChapters.length - 1;
 
             ['top', 'btm'].forEach(pos => {
-                document.getElementById(`prev-chapter-${pos}`).disabled = !hasPrev;
-                document.getElementById(`next-chapter-${pos}`).disabled = !hasNext;
+                const prevBtn = document.getElementById(`prev-chapter-${pos}`);
+                const nextBtn = document.getElementById(`next-chapter-${pos}`);
+
+                if (prevBtn) prevBtn.disabled = !hasPrev;
+                if (nextBtn) nextBtn.disabled = !hasNext;
             });
         }
 
