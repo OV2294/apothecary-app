@@ -150,6 +150,7 @@
             const userIconLink = document.getElementById('user-icon-link');
             const userAvatar = document.getElementById('user-avatar');
             const feedbackContainer = document.getElementById('feedback-container');
+            const feedbackForm = document.getElementById('feedback-form');
 
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
@@ -239,7 +240,13 @@
                     Toastify({ text: "Please enter a message.", style: { background: "#ff5f6d" } }).showToast();
                     return;
                 }
-
+                if (message.length > 500) {
+                    Toastify({ 
+                        text: "Feedback too long (Max 500 chars).", 
+                        style: { background: "#ff5f6d" } 
+                    }).showToast();
+                    return;
+                }
                 btn.textContent = "Sending...";
                 btn.disabled = true;
 
