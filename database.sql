@@ -15,6 +15,8 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+select * from users;
+
 -- ==========================================
 -- 2. FEEDBACK & HISTORY
 -- ==========================================
@@ -211,3 +213,7 @@ INSERT INTO anime_episodes (season, episode, drive_link) VALUES
 (2, 22, 'https://drive.google.com/file/d/1xD2dWpHiuV5E5_EnAvV31Dm0BUDoe75V/view?usp=sharing'),
 (2, 23, 'https://drive.google.com/file/d/1K3Y0aIsSaRqwMflDVhzr6N9p9j_pgO8v/view?usp=sharing'),
 (2, 24, 'https://drive.google.com/file/d/16Be5Q28OqvvRC4pqx_Rfss_uYh8ciMPg/view?usp=sharing');
+
+UPDATE episodes 
+SET video_url = 'YOUR_NEW_GOOGLE_DRIVE_LINK_HERE' 
+WHERE season = 1 AND episode = 1;
