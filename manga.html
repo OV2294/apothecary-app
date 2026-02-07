@@ -218,16 +218,17 @@
                         return;
                     }
 
-                    chapters.sort((a, b) => a.chapter_number - b.chapter_number);
+                    chapters.sort((a, b) => a.chapter - b.chapter);
 
                     chapters.forEach(chapter => {
                         const tile = document.createElement("div");
                         tile.className = "chapter-tile";
-                        tile.innerHTML = `<span>Chapter ${chapter.chapter_number}</span>`;
+                        
+                        tile.innerHTML = `<span>${chapter.title}</span>`;
 
                         tile.addEventListener("click", () => {
-                            if (chapter.drive_link) {
-                                window.location.href = `read.html?chapter=${chapter.chapter_number}`;
+                            if (chapter.pdf_link) {
+                                window.location.href = `read.html?chapter=${chapter.chapter}`;
                             } else {
                                 Toastify({
                                     text: "Link not available yet.",
