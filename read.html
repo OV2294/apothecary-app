@@ -220,31 +220,19 @@
 
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
-            // select.innerHTML = '';
+            select.innerHTML = '';
 
-            // allChapters.forEach(ch => {
-            //     const opt = document.createElement('option');
+            allChapters.forEach(ch => {
+                const opt = document.createElement('option');
 
-            //     opt.value = ch.chapter;
-            //     opt.textContent = ch.title; 
+                opt.value = ch.chapter;
+                opt.textContent = ch.title; 
 
-            //     if (ch.chapter == currentChapterNum) opt.selected = true;
-            //     select.appendChild(opt);
-            // });
+                if (ch.chapter == currentChapterNum) opt.selected = true;
+                select.appendChild(opt);
+            });
 
-            // select.value = currentChapterNum;
-            const chaps = Object.keys(allChapters).sort();
-            if (chaps.length > 0) {
-                select.innerHTML = '';
-                chaps.forEach(ch => {
-                    const opt = document.createElement('option');
-                    opt.value = ch.chapter; 
-                    opt.text = `Chapter ${ch.chapter}`;
-                    if (parseInt(ch) === currentChapterNum) opt.selected = true;
-                    select.appendChild(opt);
-                });
-                select.value = currentChapterNum;
-            }
+            select.value = currentChapterNum;
         }
 
         function loadChapterContent(chapterNum) {
