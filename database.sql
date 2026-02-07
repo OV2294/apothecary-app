@@ -215,5 +215,33 @@ INSERT INTO anime_episodes (season, episode, drive_link) VALUES
 (2, 24, 'https://drive.google.com/file/d/16Be5Q28OqvvRC4pqx_Rfss_uYh8ciMPg/view?usp=sharing');
 
 UPDATE episodes 
-SET video_url = 'YOUR_NEW_GOOGLE_DRIVE_LINK_HERE' 
+SET video_url = 'https://drive.google.com/file/d/1USAn35mJBimLB2NykSCQ1d92Dsa2XWld/view?usp=sharing' 
 WHERE season = 1 AND episode = 1;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1fBRnlwjLKbQjdfsoLaSKKZ-fGZy_E0Th/view?usp=sharing' 
+WHERE season = 1 AND episode = 2;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1yufCBvgBSyqW038-dE4Orpl7yJKuswMo/view?usp=sharing' 
+WHERE season = 1 AND episode = 3;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1VlNf_gZDSdpqrP78BpjaAIVkYGoIQQj5/view?usp=sharing' 
+WHERE season = 1 AND episode = 4;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1Gq8UNzopdq2aD9wq8SbtUQvn51uuFgYI/view?usp=sharing' 
+WHERE season = 1 AND episode = 5;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1W6jfB1g6-XnwkGg20JcTpyd89E7VcNPS/view?usp=sharing' 
+WHERE season = 1 AND episode = 6;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1wFrkFbp4PoMbPr4ouP0yHa5SHk0Viy-9/view?usp=sharing' 
+WHERE season = 1 AND episode = 7;
+
+UPDATE episodes 
+SET video_url = 'https://drive.google.com/file/d/1RozkO2WNCHQ__sYFZQAHewS4CU0rJYWX/view?usp=sharing' 
+WHERE season = 1 AND episode = 8;
