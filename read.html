@@ -225,7 +225,7 @@
             const select = document.getElementById('chapter-select');
             if (!select) return;
             
-            select.innerHTML = '<option value="1">Chapter 1</option>';
+            select.innerHTML = '';
 
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
@@ -256,7 +256,7 @@
                 const newUrl = `${window.location.pathname}?chapter=${chapterNum}`;
                 window.history.pushState({ path: newUrl }, '', newUrl);
 
-                document.getElementById('chapter-select').value = chapterNum;
+                document.getElementById('chapter-select').value = currentChapterNum;
                 updateControls();
             } else {
                 titleEl.textContent = `Chapter ${chapterNum} Not Found`;
