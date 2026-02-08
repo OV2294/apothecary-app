@@ -171,10 +171,20 @@ app.get('/manga', (req, res) => {
 
 app.get('/comments', (req, res) => {
     const { season, episode } = req.query;
-    let sql = 'SELECT * FROM comments ORDER BY created_at DESC';
+    let sql = 'SELECT * FROM comments';
     let params = [];
-    if(season && episode) { sql += ' WHERE season=? AND episode=?'; params=[season, episode]; }
-    db.query(sql, params, (err, r) => res.json(r || []));
+    if (season && episode) {
+        sql += ' WHERE season = ? AND episode = ?';
+        params = [season, episode];
+    }
+    sql += ' ORDER BY created_at DESC';
+    db.query(sql, params, (err, results) => {
+        if (err) {
+            console.error("Comment Fetch Error:", err);
+            return res.json([]); 
+        }
+        res.json(results || []);
+    });
 });
 
 app.post('/comments', (req, res) => {
