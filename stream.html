@@ -126,7 +126,7 @@
                     <div>
                         <a href="Anime.html"
                             class="inline-flex items-center gap-2 text-white/70 hover:text-theme-orange transition-colors font-bold mb-2">
-                            <i class="fa-solid fa-arrow-left"></i> Back to Anime 
+                            <i class="fa-solid fa-arrow-left"></i> Back to Anime
                         </a>
                     </div>
                     <h1 id="ep-info-display" class="text-2xl font-bold text-theme-orange">
@@ -159,8 +159,7 @@
                     </div>
                 </form>
 
-                <div id="comments-list" class="flex flex-col gap-4 max-h-[400px] overflow-y-auto custom-scroll pr-2">
-                    <p class="text-white/40 text-center italic">No comments yet. Be the first!</p>
+                <div id="comments-list" class="flex flex-col gap-4 max-h-[400px] overflow-y-auto pr-2">
                 </div>
             </div>
 
@@ -224,7 +223,7 @@
                     if (params.has('ep')) currentEp = parseInt(params.get('ep'));
 
                     await loadSeriesData();
-
+                    await loadComments();
                     document.getElementById('season-select').value = currentSeason;
                     updateSeasonDropdown();
                     loadEpisode(currentSeason, currentEp);
@@ -234,7 +233,13 @@
                         currentSeason = parseInt(e.target.value);
                         renderEpisodeList(currentSeason);
                     });
-                    document.getElementById('comment-form').addEventListener('submit', handlePostComment);
+                    const commentForm = document.getElementById('comment-form');
+                    if (commentForm) {
+                        commentForm.addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            await postComment();
+                        });
+                    }
 
                 } else {
                     showLockScreen();
@@ -411,19 +416,71 @@
             try { await fetch('/auth/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: currentUser.username, favorite_episode: currentFavorites.join(', ') }) }); } catch (err) { }
         }
 
-        async function handlePostComment(e) {
-            e.preventDefault();
-            const input = document.getElementById('comment-input');
-            const text = input.value;
-            const list = document.getElementById('comments-list');
-            if (list.children.length > 0 && list.children[0].tagName === 'P') list.innerHTML = '';
-            const div = document.createElement('div');
-            div.className = "flex gap-3 animate-fade-in";
-            div.innerHTML = `<div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs">${currentUser.username[0].toUpperCase()}</div><div><div class="flex items-center gap-2"><span class="font-bold text-sm text-theme-orange">${currentUser.username}</span><span class="text-xs text-white/40">Just now</span></div><p class="text-sm text-white/90 mt-1">${text}</p></div>`;
-            list.prepend(div);
-            input.value = '';
-            try { await fetch('/comments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: currentSeason, episode: currentEp, text: text }) }); } catch (e) { }
+        async function loadComments() {
+        const list = document.getElementById('comments-list');
+        if (!list) return;
+
+        try {
+            const res = await fetch(`/comments?season=${currentSeason}&episode=${currentEpisode}`);
+            const comments = await res.json();
+
+            list.innerHTML = '';
+
+            if (comments.length === 0) {
+                list.innerHTML = '<p class="text-white/50 text-sm text-center">No comments yet. Be the first!</p>';
+                return;
+            }
+
+            comments.forEach(c => {
+                const div = document.createElement('div');
+                div.className = "p-3 bg-white/5 border border-white/10 rounded-lg flex gap-3";
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs shrink-0">
+                        ${c.username ? c.username[0].toUpperCase() : 'U'}
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-theme-orange font-bold text-sm">${c.username}</span>
+                            <span class="text-[10px] text-white/40">${new Date(c.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <p class="text-sm text-white/90 mt-1">${c.comment_text}</p>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        } catch (err) {
+            console.error("Error loading comments:", err);
         }
+    }
+
+    async function postComment() {
+        const input = document.getElementById('comment-input'); 
+        const text = input.value.trim();
+        if (!text) return;
+
+        try {
+            const res = await fetch('/comments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    text: text, 
+                    season: currentSeason, 
+                    episode: currentEpisode 
+                })
+            });
+
+            if (res.ok) {
+                input.value = ''; 
+                loadComments();   
+            } else {
+                const data = await res.json();
+                alert(data.message || "Login required to comment");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     </script>
 </body>
 
