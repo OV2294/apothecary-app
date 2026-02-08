@@ -34,6 +34,13 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none; 
+                scrollbar-width: none;  
+            }
             .glass {
                 @apply backdrop-blur-md bg-glass-bg border border-glass-border shadow-glass rounded-2xl;
             }
@@ -47,7 +54,7 @@
     </style>
 </head>
 
-<body class="bg-black font-sans min-h-screen text-white relative">
+<body class="bg-black font-sans min-h-screen text-white relative .no-scrollbar">
 
     <img src="image/apothbgland.png" alt="Background"
         class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
@@ -241,9 +248,9 @@
                     return;
                 }
                 if (message.length > 500) {
-                    Toastify({ 
-                        text: "Feedback too long (Max 500 chars).", 
-                        style: { background: "#ff5f6d" } 
+                    Toastify({
+                        text: "Feedback too long (Max 500 chars).",
+                        style: { background: "#ff5f6d" }
                     }).showToast();
                     return;
                 }
