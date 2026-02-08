@@ -62,7 +62,7 @@ CREATE TABLE manga_chapters (
     drive_link TEXT NOT NULL
 );
 
-select * from manga_vhapters;
+select * from manga_chapters;
 
 INSERT INTO manga_chapters (chapter_number, drive_link) VALUES 
 (1, 'https://drive.google.com/file/d/1ODYeg8unRL2D3ya8wZU0FdG9agmgcRbv/view?usp=sharing'),
@@ -216,6 +216,8 @@ INSERT INTO anime_episodes (season, episode, drive_link) VALUES
 (2, 23, 'https://drive.google.com/file/d/1K3Y0aIsSaRqwMflDVhzr6N9p9j_pgO8v/view?usp=sharing'),
 (2, 24, 'https://drive.google.com/file/d/16Be5Q28OqvvRC4pqx_Rfss_uYh8ciMPg/view?usp=sharing');
 
-UPDATE episodes 
-SET video_url = 'https://drive.google.com/file/d/1USAn35mJBimLB2NykSCQ1d92Dsa2XWld/view?usp=sharing' 
-WHERE season = 1 AND episode = 1;
+select * from anime_episodes;
+
+UPDATE anime_episodes 
+SET drive_link = 'https://drive.google.com/file/d/1stxaa08bN-rAPJbw2-4uWDGFeIemL3j0/view?usp=sharing' 
+WHERE id=24;
