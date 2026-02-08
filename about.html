@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-scrollbar">
 
 <head>
     <meta charset="UTF-8" />
@@ -44,12 +44,14 @@
                 @apply inline-block px-6 py-2 bg-white text-theme-orange font-bold rounded-lg hover:bg-theme-orange hover:text-white hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-4 no-underline;
             }
         }
-        body::-webkit-scrollbar {
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
-        body {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        html, body, .no-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
     </style>
 </head>
@@ -248,9 +250,9 @@
                     return;
                 }
                 if (message.length > 500) {
-                    Toastify({ 
-                        text: "Feedback too long (Max 500 chars).", 
-                        style: { background: "#ff5f6d" } 
+                    Toastify({
+                        text: "Feedback too long (Max 500 chars).",
+                        style: { background: "#ff5f6d" }
                     }).showToast();
                     return;
                 }
