@@ -93,13 +93,18 @@
 
         <div
             class="p-4 bg-glass-bg backdrop-blur-2xl flex flex-col md:flex-row justify-between items-center gap-4 border-glass-border shadow-glass rounded-2xl">
-
+            <div>
+                <a href="manga.html"
+                    class="inline-flex items-center gap-2 text-white/70 hover:text-theme-orange transition-colors font-bold mb-2">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Manga
+                </a>
+            </div>
             <h1 class="text-xl font-bold md:text-theme-orange" id="chapter-title">Loading...</h1>
 
             <div class="flex items-center gap-3">
                 <button id="prev-chapter-top" class="nav-btn"><i class="fa-solid fa-chevron-left"></i> Prev</button>
                 <select id="chapter-select"
-                    class="bg-white text-theme-orange border border-white/20 rounded px-2 py-1 text-sm focus:outline-none focus:border-theme-orange">
+                    class="bg-white text-theme-orange border font-bold border-white/20 rounded px-2 py-1 text-sm focus:outline-none focus:border-theme-orange">
                     <option value="1" disabled selected>Chapter 1</option>
                 </select>
                 <button id="next-chapter-top" class="nav-btn">Next <i class="fa-solid fa-chevron-right"></i></button>
@@ -224,15 +229,15 @@
         function populateDropdown() {
             const select = document.getElementById('chapter-select');
             if (!select) return;
-            
+
             select.innerHTML = '';
 
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
-                
+
                 opt.value = parseFloat(ch.chapter);
-                opt.textContent = ch.title; 
-                
+                opt.textContent = ch.title;
+
                 select.appendChild(opt);
             });
             select.value = currentChapterNum;
