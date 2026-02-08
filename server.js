@@ -183,6 +183,19 @@ app.post('/comments', (req, res) => {
     db.query('INSERT INTO comments (username, comment_text, season, episode) VALUES (?, ?, ?, ?)', 
     [req.session.user.username, text, season, episode], () => res.json({ success: true }));
 });
+app.delete('/admin/comment/:id', (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+    const commentId = req.params.id;
+    db.query('DELETE FROM comments WHERE id = ?', [commentId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Database error" });
+        }
+        res.json({ success: true, message: "Comment deleted" });
+    });
+});
 
 // === FEEDBACK  ===
 app.post('/feedback', (req, res) => {
@@ -191,7 +204,19 @@ app.post('/feedback', (req, res) => {
     const { name, email, message } = req.body;
     db.query('INSERT INTO feedback (name, email, message) VALUES (?, ?, ?)', [name, email, message], () => res.json({ success: true }));
 });
-
+app.delete('/admin/feedback/:id', (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+    const feedbackId = req.params.id;
+    db.query('DELETE FROM feedback WHERE id = ?', [feedbackId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Database error" });
+        }
+        res.json({ success: true, message: "Feedback deleted" });
+    });
+});
 // === ADMIN ===
 app.get('/admin/data', (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') return res.status(403).json({ message: 'Denied' });

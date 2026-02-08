@@ -411,6 +411,10 @@
                                     <p class="text-xs text-white/40">${f.email || 'No email'}</p>
                                 </div>
                                 <span class="text-[10px] bg-white/10 px-2 py-1 rounded text-white/60">${new Date(f.created_at).toLocaleDateString()}</span>
+                                <button onclick="deleteItem('feedback', ${item.id}, 'feedback-${item.id}')" 
+                                    class="absolute top-2 right-2 text-white/40 hover:text-red-500 transition-colors">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
                             <hr class="border-white/10">
                             <p class="text-sm text-white/90 italic">"${f.message}"</p>
@@ -430,6 +434,10 @@
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs shrink-0">
                                     ${c.username ? c.username[0].toUpperCase() : 'U'}
+                                    <button onclick="deleteItem('comment', ${item.id}, 'comment-${item.id}')" 
+                                        class="absolute top-2 right-2 text-white/40 hover:text-red-500 transition-colors">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-sm">${c.username}</h4>
@@ -558,6 +566,33 @@
                     Toastify({ text: "Update Failed", style: { background: "#ff5f6d" } }).showToast();
                 }
             } catch (e) { console.error(e); }
+        }
+        async function deleteItem(type, id, elementId) {
+            if (!confirm("Are you sure you want to permanently delete this?")) return;
+
+            try {
+                const endpoint = type === 'comment'
+                    ? `/admin/comment/${id}`
+                    : `/admin/feedback/${id}`;
+
+                const res = await fetch(endpoint, { method: 'DELETE' });
+                const data = await res.json();
+
+                if (res.ok) {
+                    const card = document.getElementById(elementId);
+                    if (card) {
+                        card.style.transition = "opacity 0.5s";
+                        card.style.opacity = "0";
+                        setTimeout(() => card.remove(), 500);
+                    }
+                    Toastify({ text: "Deleted successfully", style: { background: "#00b09b" } }).showToast();
+                } else {
+                    alert(data.message || "Failed to delete");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error connecting to server");
+            }
         }
     </script>
 </body>
