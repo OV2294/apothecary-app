@@ -404,24 +404,28 @@
                     data.feedback.forEach(f => {
                         const card = document.createElement('div');
                         card.className = "info-card";
+                        card.id = `feedback-${f.id}`;
                         card.innerHTML = `
                             <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-bold text-theme-orange">${f.name || 'Anonymous'}</h4>
-                                    <p class="text-xs text-white/40">${f.email || 'No email'}</p>
-                                </div>
-                                <span class="text-[10px] bg-white/10 px-2 py-1 rounded text-white/60">${new Date(f.created_at).toLocaleDateString()}</span>
-                                <button onclick="deleteItem('feedback', ${item.id}, 'feedback-${item.id}')" 
-                                    class="absolute top-2 right-2 text-white/40 hover:text-red-500 transition-colors">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                            <div>
+                                <h4 class="font-bold text-theme-orange">${f.name || 'Anonymous'}</h4>
+                                <p class="text-xs text-white/40">${f.email || 'No email'}</p>
                             </div>
-                            <hr class="border-white/10">
+                            <span class="text-[10px] bg-white/10 px-2 py-1 rounded text-white/60">${new Date(f.created_at).toLocaleDateString()}</span>
+                
+                            <button onclick="deleteItem('feedback', ${f.id}, 'feedback-${f.id}')" 
+                                class="ml-2 text-white/40 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            </div>
+                            <hr class="border-white/10 my-2">
                             <p class="text-sm text-white/90 italic">"${f.message}"</p>
                         `;
                         fbList.appendChild(card);
                     });
-                } else { fbList.innerHTML = '<p class="text-center text-white/50 col-span-full">No feedback received.</p>'; }
+                } else {
+                    fbList.innerHTML = '<p class="text-center text-white/50 col-span-full">No feedback received.</p>';
+                }
 
                 // COMMENTS
                 const cmList = document.getElementById('comments-list');
@@ -430,28 +434,33 @@
                     data.comments.forEach(c => {
                         const card = document.createElement('div');
                         card.className = "info-card";
+                        card.id = `comment-${c.id}`;
                         card.innerHTML = `
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3 relative">
                                 <div class="w-8 h-8 rounded-full bg-theme-orange flex items-center justify-center text-black font-bold text-xs shrink-0">
                                     ${c.username ? c.username[0].toUpperCase() : 'U'}
-                                    <button onclick="deleteItem('comment', ${item.id}, 'comment-${item.id}')" 
-                                        class="absolute top-2 right-2 text-white/40 hover:text-red-500 transition-colors">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-sm">${c.username}</h4>
                                     <p class="text-[10px] text-white/40">S${c.season} | E${c.episode}</p>
                                 </div>
+                
+                                <button onclick="deleteItem('comment', ${c.id}, 'comment-${c.id}')" 
+                                    class="absolute top-0 right-0 text-white/40 hover:text-red-500 transition-colors">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
-                            <p class="text-sm text-white/80 mt-1">${c.comment_text}</p>
-                            <div class="text-right text-[10px] text-white/30 mt-auto">${new Date(c.created_at).toLocaleDateString()}</div>
-                        `;
+                            <p class="text-sm text-white/80 mt-2">${c.comment_text}</p>
+                            <div class="text-right text-[10px] text-white/30 mt-auto pt-2">${new Date(c.created_at).toLocaleDateString()}</div>
+                            `;
                         cmList.appendChild(card);
                     });
-                } else { cmList.innerHTML = '<p class="text-center text-white/50 col-span-full">No comments found.</p>'; }
-
-            } catch (err) { console.error(err); }
+                } else { 
+                    cmList.innerHTML = '<p class="text-center text-white/50 col-span-full">No comments found.</p>'; 
+                }
+            } catch (err) { 
+                console.error(err); 
+            }
         }
 
         async function populateSettingsForm() {

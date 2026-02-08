@@ -230,9 +230,26 @@ app.get('/admin/data', (req, res) => {
 });
 
 app.delete('/admin/delete-user/:id', (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'admin') return res.status(403).json({ message: 'Denied' });
-    if (parseInt(req.params.id) === req.session.user.id) return res.status(400).json({ message: "Cannot delete self" });
-    db.query('DELETE FROM users WHERE id=?', [req.params.id], () => res.json({ success: true }));
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+    const userId = req.params.id;
+    db.query('SELECT username, email FROM users WHERE id = ?', [userId], (err, results) => {
+        if (err || results.length === 0) return res.status(404).json({ message: "User not found" });
+        const username = results[0].username;
+        const email = results[0].email;
+        db.query('DELETE FROM comments WHERE username = ?', [username], () => {
+            db.query('DELETE FROM feedback WHERE email = ?', [email], () => {
+                db.query('DELETE FROM users WHERE id = ?', [userId], (err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ message: "Database Error" });
+                    }
+                    res.json({ success: true, message: "User and all related data deleted." });
+                });
+            });
+        });
+    });
 });
 
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
