@@ -62,6 +62,8 @@ CREATE TABLE manga_chapters (
     drive_link TEXT NOT NULL
 );
 
+select * from manga_vhapters;
+
 INSERT INTO manga_chapters (chapter_number, drive_link) VALUES 
 (1, 'https://drive.google.com/file/d/1ODYeg8unRL2D3ya8wZU0FdG9agmgcRbv/view?usp=sharing'),
 (2, 'https://drive.google.com/file/d/1LkRNUZ1VneH3mJS6RKnO-zxeRFUBdiR2/view?usp=sharing'),

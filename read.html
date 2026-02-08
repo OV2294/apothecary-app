@@ -230,13 +230,12 @@
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
                 
-                opt.value = String(ch.chapter);
+                opt.value = parseFloat(ch.chapter);
                 opt.textContent = ch.title; 
                 
                 select.appendChild(opt);
             });
             select.value = currentChapterNum;
-            select.textContent = ch.title;
         }
 
         function loadChapterContent(chapterNum) {
