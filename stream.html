@@ -421,7 +421,7 @@
         if (!list) return;
 
         try {
-            const res = await fetch(`/comments?season=${currentSeason}&episode=${currentEpisode}`);
+            const res = await fetch(`/comments?season=${currentSeason}&episode=${currentEp}`);
             const comments = await res.json();
 
             list.innerHTML = '';
@@ -465,7 +465,7 @@
                 body: JSON.stringify({ 
                     text: text, 
                     season: currentSeason, 
-                    episode: currentEpisode 
+                    episode: currentEp 
                 })
             });
 
