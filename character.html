@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-scrollbar">
 
 <head>
     <meta charset="UTF-8" />
@@ -47,6 +47,15 @@
             .char-card.active {
                 @apply grayscale-0 border-theme-orange scale-105 shadow-glow;
             }
+        }
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body, .no-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
     </style>
 </head>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-scrollbar">
 
 <head>
     <meta charset="UTF-8" />
@@ -76,6 +76,15 @@
             .modal-content {
                 @apply bg-[#1a1a1a] border border-white/20 rounded-2xl p-8 max-w-sm w-full relative shadow-2xl;
             }
+        }
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body, .no-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
     </style>
 </head>

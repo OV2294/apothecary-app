@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-scrollbar">
 
 <head>
     <meta charset="UTF-8" />
@@ -47,6 +47,15 @@
             .auth-btn {
                 @apply w-full py-3 bg-white text-theme-orange font-bold rounded-lg hover:text-white hover:bg-theme-orange hover:scale-105 transition-all duration-300 cursor-pointer border-none mt-6 uppercase tracking-wide shadow-lg;
             }
+        }
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body, .no-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
     </style>
 </head>
