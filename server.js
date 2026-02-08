@@ -77,7 +77,21 @@ app.get('/auth/me', (req, res) => {
     if (!req.session.user) return res.json({ loggedIn: false });
     res.json({ loggedIn: true, user: req.session.user });
 });
-
+app.post('/auth/check-email', (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ exists: false });
+    db.query('SELECT id FROM users WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Database error" });
+        }
+        if (results.length > 0) {
+            res.json({ exists: true });
+        } else {
+            res.json({ exists: false });
+        }
+    });
+});
 app.post('/auth/reset-with-phone', async (req, res) => {
     const { email, phone, newPassword } = req.body;
     db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
