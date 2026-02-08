@@ -50,7 +50,7 @@
     </style>
 </head>
 
-<body class="font-sans min-h-screen relative">
+<body class="bg-black font-sans min-h-screen text-white relative">
 
     <img src="image/apothbgland.png" alt="Background"
         class="fixed inset-0 w-full h-full -z-10 hidden md:block opacity-90 transition-opacity duration-700">
@@ -230,7 +230,7 @@
             allChapters.forEach(ch => {
                 const opt = document.createElement('option');
                 
-                opt.value = ch.chapter; 
+                opt.value = String(ch.chapter);
                 opt.textContent = ch.title; 
                 
                 select.appendChild(opt);
