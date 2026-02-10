@@ -219,5 +219,5 @@ INSERT INTO anime_episodes (season, episode, drive_link) VALUES
 select * from anime_episodes;
 
 UPDATE anime_episodes 
-SET drive_link = 'https://drive.google.com/file/d/1stxaa08bN-rAPJbw2-4uWDGFeIemL3j0/view?usp=sharing' 
-WHERE id=24;
+SET drive_link = 'https://drive.google.com/file/d/1X_v0VdpPUWeeS6ffzVZchndYLX_TsEg_/view?usp=sharing' 
+WHERE id=40;
