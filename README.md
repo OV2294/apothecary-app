@@ -54,7 +54,6 @@ It demonstrates how episodes and chapters can be managed and displayed dynamical
 ---
 
 ## 🧠 What I Learned
-- Add **watch history and continue watching feature**
 - Building a **full-stack web application**
 - Connecting **Node.js backend with MySQL database**
 - Designing responsive interfaces using **Tailwind CSS**
